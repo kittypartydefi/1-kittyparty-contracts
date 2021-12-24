@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/Kittens.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> Kittens.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/22</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: BSL
+pragma solidity ^0.8.2;
+&nbsp;
+import "@openzeppelin/contracts/access/AccessControl.sol";
+&nbsp;
+import "./interfaces/IKittens.sol";
+&nbsp;
+import "hardhat/console.sol";
+&nbsp;
+/// @title Kitty Party Types and options
+/// @notice Utilized by factory while deciding what party to start
+/// There are three parties
+contract Kittens is IKittens, AccessControl {
+    bytes32 public constant KITTYPARTY = keccak256("KITTYPARTY");
+&nbsp;
+    event KittenAddedToParty(address Kitten, address KittyParty);
+    event KittenCreated(address Kitten);
+&nbsp;
+    //later we improve the kitten to be something where there is a DID that has verifiable claims as to their credit etc
+<span class="fstat-no" title="function not covered" >    constructor() {</span>
+<span class="cstat-no" title="statement not covered" >        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender)</span>;
+    }
+&nbsp;
+    Litter masterLitter;
+    mapping(address =&gt; Litter) myLitter; //the mapping of the kittens belonging to a kittyparty
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function addKitten(address value) external onlyRole(KITTYPARTY) {</span>
+        //Add this kitten to the particular party
+        // Modify this to wait for Kitten to accept inviteKitten
+<span class="cstat-no" title="statement not covered" >        if (!masterLitter.exists[value]) {</span>
+<span class="cstat-no" title="statement not covered" >            masterLitter.index[value] = masterLitter.kittenList.length</span>;
+<span class="cstat-no" title="statement not covered" >            masterLitter.exists[value] = true</span>;
+<span class="cstat-no" title="statement not covered" >            masterLitter.kittenList.push(Kitten(value, 0))</span>;
+<span class="cstat-no" title="statement not covered" >            emit KittenCreated(value);</span>
+        }
+        //if the kitten exists in the contract then revert
+<span class="cstat-no" title="statement not covered" >        if (myLitter[msg.sender].exists[value]) <span class="cstat-no" title="statement not covered" >revert("EXISTS")</span>;</span>
+<span class="cstat-no" title="statement not covered" >        myLitter[msg.sender].index[value] = myLitter[msg.sender].kittenList.length</span>;
+<span class="cstat-no" title="statement not covered" >        myLitter[msg.sender].exists[value] = true</span>;
+<span class="cstat-no" title="statement not covered" >        myLitter[msg.sender].kittenList.push(Kitten(value, 0))</span>;
+<span class="cstat-no" title="statement not covered" >        emit KittenAddedToParty(value, msg.sender);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setupKittyParty(address childContract) external onlyRole(DEFAULT_ADMIN_ROLE) {</span>
+<span class="cstat-no" title="statement not covered" >        _setupRole(KITTYPARTY, childContract)</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getList(address kittyParty) external view returns (Kitten[] memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return myLitter[kittyParty].kittenList;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getLength(address kittyParty) external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return myLitter[kittyParty].kittenList.length - 1;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getValueAt(address kittyParty, uint256 i) external view returns (Kitten memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return myLitter[kittyParty].kittenList[i];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getIndex(address kittyParty, address _kitten) external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return myLitter[kittyParty].index[_kitten];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function checkExists(address kittyParty, address _kitten) external view returns (bool exists) {</span>
+<span class="cstat-no" title="statement not covered" >        if (myLitter[kittyParty].exists[_kitten]) <span class="cstat-no" title="statement not covered" >return true;</span></span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getAllList() external view returns (Kitten[] memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return masterLitter.kittenList;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getAllLength() external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return masterLitter.kittenList.length - 1;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getAllValueAt(uint256 i) external view returns (Kitten memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return masterLitter.kittenList[i];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getIndex(address _kitten) external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return masterLitter.index[_kitten];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function checkAllExists(address _kitten) external view returns (bool exists) {</span>
+<span class="cstat-no" title="statement not covered" >        if (masterLitter.exists[_kitten]) <span class="cstat-no" title="statement not covered" >return true;</span></span>
+    } 
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 20 2021 19:11:10 GMT+0800 (Singapore Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/KittyPartyFactory.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> KittyPartyFactory.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/38</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/38</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: BSL
+pragma solidity ^0.8.0;
+&nbsp;
+import "@openzeppelin/contracts-upgradeable/proxy/ClonesUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+&nbsp;
+import './KittyPartyController.sol';
+import './interfaces/IKittyPartyInit.sol';
+&nbsp;
+&nbsp;
+import "hardhat/console.sol";
+&nbsp;
+//TODO: just inherit from ERC1155Holder instead of defining our own receiver
+&nbsp;
+contract KittyPartyFactory is IKittenPartyInit, IERC1155Receiver {
+     
+    address public tomCatContract;
+    address public accountantContract;
+    address public litterAddress;
+    address public daoTreasuryContract;
+    address public oracleAddress;
+    mapping(address =&gt; address[]) public myKitties;
+&nbsp;
+    bool public shouldReject;
+&nbsp;
+    bytes public lastData;
+    address public lastOperator;
+    address public lastFrom;
+    uint256 public lastId;
+    uint256 public lastValue;
+&nbsp;
+    bytes4 constant internal ERC1155_ACCEPTED = 0xf23a6e61; // bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"))
+    bytes4 constant internal ERC1155_BATCH_ACCEPTED = 0xbc197c81; // bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"))
+&nbsp;
+    event KittyLive(address indexed kreator, address kitty);
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(</span>
+        address _tomCatContract, 
+        address _accountantContract,
+        address _litterAddress,
+        address _daoTreasuryContract,
+        address _oracleAddress
+    )   {
+<span class="cstat-no" title="statement not covered" >        tomCatContract = _tomCatContract</span>;
+<span class="cstat-no" title="statement not covered" >        accountantContract = _accountantContract</span>;
+<span class="cstat-no" title="statement not covered" >        litterAddress = _litterAddress</span>;
+<span class="cstat-no" title="statement not covered" >        daoTreasuryContract = _daoTreasuryContract</span>;
+<span class="cstat-no" title="statement not covered" >        oracleAddress = _oracleAddress</span>;
+     }
+    /// @dev anyone can create a Kitty
+<span class="fstat-no" title="function not covered" >    function createKitty(</span>
+         KittyInitiator memory _kittyInitiator
+    )
+        external
+        returns (address kittyAddress)
+    {
+<span class="cstat-no" title="statement not covered" >        address kitty = ClonesUpgradeable.clone(tomCatContract);</span>
+<span class="cstat-no" title="statement not covered" >        (bool success,) = address(accountantContract).call(abi.encodeWithSignature("setupMinter(address)", kitty));</span>
+<span class="cstat-no" title="statement not covered" >        require(success, "Not able to set minter")</span>;
+<span class="cstat-no" title="statement not covered" >        require(_kittyInitiator.maxKittens &lt;= 400, "Too many Kittens")</span>;// Kitty Party is a community not a single pool
+        //Attempt to get the stake amount, if no stake left then we will stop additional rounds
+        //Should save how much stake was set by kreator
+        //allowance should not be greater than maxKittens*amountInDaiPerRound
+<span class="cstat-no" title="statement not covered" >        IERC20 dai = IERC20(_kittyInitiator.dai_address);</span>
+<span class="cstat-no" title="statement not covered" >        uint256 allowance = dai.allowance( msg.sender, address(this));</span>
+        //require minimum stake to avoid kreators creating arbitarily
+<span class="cstat-no" title="statement not covered" >        require(allowance &gt;= _kittyInitiator.amountInDAIPerRound / 10, "Min 10% req as Stake")</span>;
+<span class="cstat-no" title="statement not covered" >        require(dai.transferFrom(msg.sender, address(_kittyInitiator.yieldContract), allowance), "Kreator stake fail")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        KittyPartyController(kitty).initialize(</span>
+            _kittyInitiator,
+            accountantContract,
+            daoTreasuryContract,
+            msg.sender, 
+            oracleAddress,
+            litterAddress,
+            allowance
+        );
+        //Add to the kitten list
+<span class="cstat-no" title="statement not covered" >        myKitties[msg.sender].push(kitty)</span>;
+<span class="cstat-no" title="statement not covered" >        emit KittyLive(msg.sender, kitty);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        (bool successLitter,) = address(litterAddress).call(abi.encodeWithSignature("setupKittyParty(address)", kitty));</span>
+<span class="cstat-no" title="statement not covered" >        require(successLitter, "Not able to set KittyParty role!")</span>;
+        
+<span class="cstat-no" title="statement not covered" >        return kitty;</span>
+     }
+     
+<span class="fstat-no" title="function not covered" >    function getMyKitties(address candidateAddress) external view returns (address[] memory) {</span>
+<span class="cstat-no" title="statement not covered" >        return myKitties[candidateAddress];</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setShouldReject(bool _value) public {</span>
+<span class="cstat-no" title="statement not covered" >        shouldReject = _value</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function onERC1155Received(</span>
+        address _operator, 
+        address _from, 
+        uint256 _id, 
+        uint256 _value, 
+        bytes calldata _data
+    ) 
+        external 
+        override
+        returns (bytes4) 
+    {
+<span class="cstat-no" title="statement not covered" >        lastOperator = _operator</span>;
+<span class="cstat-no" title="statement not covered" >        lastFrom = _from</span>;
+<span class="cstat-no" title="statement not covered" >        lastId = _id</span>;
+<span class="cstat-no" title="statement not covered" >        lastValue = _value</span>;
+<span class="cstat-no" title="statement not covered" >        lastData = _data</span>;
+<span class="cstat-no" title="statement not covered" >        if (shouldReject == true) {</span>
+<span class="cstat-no" title="statement not covered" >            revert("onERC1155Received: transfer not accepted")</span>;
+        } else {
+<span class="cstat-no" title="statement not covered" >            return ERC1155_ACCEPTED;</span>
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function onERC1155BatchReceived(</span>
+        address _operator, 
+        address _from, 
+        uint256[] calldata _ids, 
+        uint256[] calldata _values, 
+        bytes calldata _data
+    ) 
+        external 
+        override
+        returns (bytes4) 
+    {
+<span class="cstat-no" title="statement not covered" >        lastOperator = _operator</span>;
+<span class="cstat-no" title="statement not covered" >        lastFrom = _from</span>;
+<span class="cstat-no" title="statement not covered" >        lastId = _ids[0]</span>;
+<span class="cstat-no" title="statement not covered" >        lastValue = _values[0]</span>;
+<span class="cstat-no" title="statement not covered" >        lastData = _data</span>;
+<span class="cstat-no" title="statement not covered" >        if (shouldReject == true) {</span>
+<span class="cstat-no" title="statement not covered" >            revert("onERC1155BatchReceived: transfer not accepted")</span>;
+        } else {
+<span class="cstat-no" title="statement not covered" >            return ERC1155_BATCH_ACCEPTED;</span>
+        }
+    }
+&nbsp;
+    // ERC165 interface support
+<span class="fstat-no" title="function not covered" >    function supportsInterface(bytes4 interfaceID) </span>
+        external 
+        pure 
+        override 
+        returns (bool) 
+    {
+<span class="cstat-no" title="statement not covered" >        return  interfaceID == 0x01ffc9a7 ||    // ERC165</span>
+                interfaceID == 0x4e2312e0;      // ERC1155_ACCEPTED ^ ERC1155_BATCH_ACCEPTED;
+    }
+&nbsp;
+&nbsp;
+    
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 20 2021 19:11:10 GMT+0800 (Singapore Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

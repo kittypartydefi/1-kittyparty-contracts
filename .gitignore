@@ -1,0 +1,15 @@
+node_modules
+
+#Hardhat files
+cache
+artifacts
+
+#Private Keys
+mnemonic.txt
+
+build
+
+.env
+
+services/graph-node/data
+hardhat/src

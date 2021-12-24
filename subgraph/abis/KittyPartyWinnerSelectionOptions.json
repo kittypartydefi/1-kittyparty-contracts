@@ -1,0 +1,31 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "_winningStrategy",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bool",
+        "name": "_vrfEnabled",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "winnerStrategy",
+    "outputs": [
+      {
+        "internalType": "enum KittyPartyWinnerSelectionOptions.WinningStrategy",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

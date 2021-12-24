@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/KittyPartyStateTransition.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> KittyPartyStateTransition.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/20</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/22</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: BSL
+pragma solidity ^0.8.0;
+&nbsp;
+// import "hardhat/console.sol";
+&nbsp;
+contract KittyPartyStateTransition {
+&nbsp;
+    enum KittyPartyStages {
+        InitialCollection,
+        Collection,
+        Staking,
+        Payout,
+        Completed,
+        Refund
+    }   
+    //Set of valid states for the kitty party contract
+    //InitialCollection: This collection is different because it is before start of the rounds
+    //Collection: Pre-Round verification completed, collection criteria can be checked for
+    //Staking: The colection has been completed successfully, the asset can now be staked on respective protocols, we open up for bids in this state
+    //Payout: The assets are withdrawn from the repective contracts, a winner is chosen at random
+    //Completed: The kitty-party is over
+    //Refund: Invalid state jump goto Refund -&gt; create a provision to exit system for all stakeholders and refund only allowed to transition from Initial Collection
+    KittyPartyStages public stage = KittyPartyStages.InitialCollection;
+    //initial state is verification state
+    uint256 public lastStageTime;
+    uint16 public durationInDays;
+    uint8 public currentRound;
+    uint8 public timeToCollection;
+    uint16 public numberOfRounds;
+&nbsp;
+    event Completed();
+    event StageTransition(uint prevStage, uint nextStage);
+    
+<span class="fstat-no" title="function not covered" >    modifier transitionAfter() {</span>
+        _;
+<span class="cstat-no" title="statement not covered" >        _nextStage(1)</span>;
+    }
+    
+<span class="fstat-no" title="function not covered" >    function getStage() external view returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >      return uint(stage);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function timeSinceChange() external view returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >        return block.timestamp - lastStageTime;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _atStage(KittyPartyStages _stage) internal view {</span>
+<span class="cstat-no" title="statement not covered" >        require(stage == _stage, "Not in the expected stage")</span>;
+    }
+    
+    //TODO: Change to days from hours/ minutes/ seconds before deployment
+<span class="fstat-no" title="function not covered" >    function _timedTransitions() internal {</span>
+<span class="cstat-no" title="statement not covered" >        if (stage == KittyPartyStages.InitialCollection &amp;&amp; (block.timestamp &gt;= (lastStageTime + (timeToCollection * 1 days)))) {</span>
+<span class="cstat-no" title="statement not covered" >           _nextStage(2)</span>;
+        }
+<span class="cstat-no" title="statement not covered" >        if (stage == KittyPartyStages.Collection &amp;&amp; block.timestamp &gt;= (lastStageTime + (3 * 1 hours))) {</span>
+<span class="cstat-no" title="statement not covered" >            _nextStage(1)</span>;
+        }
+<span class="cstat-no" title="statement not covered" >        if (stage == KittyPartyStages.Staking &amp;&amp; block.timestamp &gt;= (lastStageTime + (durationInDays * 1 days))) {</span>
+<span class="cstat-no" title="statement not covered" >            _nextStage(1)</span>;
+        }
+<span class="cstat-no" title="statement not covered" >        if (stage == KittyPartyStages.Payout &amp;&amp; block.timestamp &gt;= (lastStageTime + (8 * 1 hours)) &amp;&amp; (numberOfRounds &gt; currentRound)) {</span>
+<span class="cstat-no" title="statement not covered" >            stage = KittyPartyStages(1)</span>;
+            currentRound++;
+        }
+<span class="cstat-no" title="statement not covered" >        if (stage == KittyPartyStages.Payout &amp;&amp; block.timestamp &gt;= (lastStageTime + (8 * 1 hours)) &amp;&amp; (numberOfRounds &lt;= currentRound)) {</span>
+<span class="cstat-no" title="statement not covered" >           _nextStage(1)</span>;
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _nextStage(uint8 jumpTo) internal {</span>
+<span class="cstat-no" title="statement not covered" >        uint nextStageValue = uint(stage) + jumpTo;</span>
+<span class="cstat-no" title="statement not covered" >        emit StageTransition(uint(stage), nextStageValue);</span>
+<span class="cstat-no" title="statement not covered" >        stage = KittyPartyStages(nextStageValue)</span>;
+<span class="cstat-no" title="statement not covered" >        lastStageTime = block.timestamp</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _initState() internal {</span>
+<span class="cstat-no" title="statement not covered" >        require(stage ==  KittyPartyStages.InitialCollection, "Not in the InitialCollection stage")</span>;
+<span class="cstat-no" title="statement not covered" >        lastStageTime = block.timestamp</span>;
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 20 2021 19:11:10 GMT+0800 (Singapore Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

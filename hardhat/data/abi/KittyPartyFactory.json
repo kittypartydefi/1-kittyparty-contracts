@@ -1,0 +1,474 @@
+[
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tomCatContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "accountantContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "litterAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "daoTreasuryContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "daoAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyPartyFactoryArgs",
+        "name": "_kPFactory",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "kreator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "kitty",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "kittyPartyName",
+        "type": "bytes32"
+      }
+    ],
+    "name": "KittyLive",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "kreatorFeesInBasisPoints",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "daoFeesInBasisPoints",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "winningStrategy",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "timeToCollection",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maxKittens",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "durationInDays",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountInDAIPerRound",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "partyName",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "daiAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "yieldContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "winnerStrategy",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyInitiator",
+        "name": "_kittyInitiator",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "sellTokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "lpTokenAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyYieldArgs",
+        "name": "_kittyYieldArgs",
+        "type": "tuple"
+      }
+    ],
+    "name": "createKitty",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "kittyAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoFeesInBasisPoints",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "candidateAddress",
+        "type": "address"
+      }
+    ],
+    "name": "getMyKitties",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "kPFactory",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "tomCatContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "accountantContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "litterAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "daoTreasuryContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "daoAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "kreatorFeesInBasisPoints",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastData",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastFrom",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastOperator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastValue",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "myKitties",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_ids",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_values",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC1155BatchReceived",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC1155Received",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "_daoFeesInBasisPoints",
+        "type": "uint8"
+      }
+    ],
+    "name": "setDAOFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "_kreatorFeesInBasisPoints",
+        "type": "uint8"
+      }
+    ],
+    "name": "setKreatorFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_value",
+        "type": "bool"
+      }
+    ],
+    "name": "setShouldReject",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "shouldReject",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceID",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  }
+]

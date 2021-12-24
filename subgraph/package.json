@@ -1,0 +1,16 @@
+{
+  "name": "kittens-graph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --studio kitty-party --deploy-key XXXXXXX",
+    "create-local": "graph create --node http://localhost:8020/ cryptobugbear/kittens-graph",
+    "remove-local": "graph remove --node http://localhost:8020/ cryptobugbear/kittens-graph",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 cryptobugbear/kittens-graph"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.21.1",
+    "@graphprotocol/graph-ts": "0.20.0"
+  }
+}

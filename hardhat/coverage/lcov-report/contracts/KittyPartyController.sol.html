@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/KittyPartyController.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> KittyPartyController.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/88</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/48</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/94</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: BSL
+pragma solidity ^0.8.0;
+&nbsp;
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+&nbsp;
+import "./KittyPartyWinnerSelectStrategy.sol";
+import "./KittyPartyStateTransition.sol";
+import './interfaces/IKittyPartyInit.sol';
+&nbsp;
+/// @title Kitty Party Controller
+contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
+    bytes32 private inviteHash;
+&nbsp;
+    KittyPartyWinnerSelectStrategy kpWinnerSelectStrategy;
+    address accountantContract;
+    address yieldGeneratorAddress;
+    address kittyPartyDAOTreasury;
+    address oracleAddress;
+    address litterAddress;
+    uint256 kreatorStake;
+    bool vrfEnabled = true;
+    uint8 constant MIN_KITTENS = 1;
+    uint16 maxKittens;
+&nbsp;
+    address public kreator;
+    uint8 public initialState;
+    uint16 public localKittens;
+    uint256 public amountInDAIPerRound;
+    uint256 public kreatorFeesInBasisPoints = 1000; //10% to kreator
+    uint256 public daoFeesInBasisPoints = 100; //1% to DAO - both are out of profit and not principle
+&nbsp;
+    IERC20 public dai;
+&nbsp;
+    /****** MODIFIERS *******/
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier knownKitten(bytes32 _invitedHash) {</span>
+<span class="cstat-no" title="statement not covered" >        require(inviteHash == _invitedHash)</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier kittenExists(address _kitten) {</span>
+<span class="cstat-no" title="statement not covered" >        bytes memory checkExistsKitten = abi.encodeWithSignature("checkExists(address,address)", address(this), msg.sender);</span>
+<span class="cstat-no" title="statement not covered" >        (bool success, bytes memory returnData) = address(litterAddress).staticcall(checkExistsKitten);</span>
+<span class="cstat-no" title="statement not covered" >        require(success, "NE")</span>;
+<span class="cstat-no" title="statement not covered" >        (bool exists) = abi.decode(returnData, (bool));</span>
+<span class="cstat-no" title="statement not covered" >        require(exists == true, "NR")</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier minimumKittens(uint numberOfKittens) {</span>
+<span class="cstat-no" title="statement not covered" >        require(numberOfKittens &gt;= MIN_KITTENS)</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier onlyKreator(){</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == kreator)</span>;
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier onlyDAOAddress(){</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == kittyPartyDAOTreasury)</span>;
+        _;
+    }
+    
+<span class="fstat-no" title="function not covered" >    modifier onlyOracle(){</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == oracleAddress)</span>;
+        _;
+    }
+&nbsp;
+    /****** STATE MUTATING FUNCTIONS *******/
+    
+    ///@dev initialize the contract after deploying
+<span class="fstat-no" title="function not covered" >    function initialize(</span>
+        KittyInitiator calldata _kittyInitiator,
+        address _accountantContract,
+        address _kittyPartyDAOTreasury,
+        address _kreator,
+        address _oracleAddress,
+        address _litterAddress,
+        uint256 _kreatorStake
+    ) 
+        public 
+    {
+<span class="cstat-no" title="statement not covered" >        require(initialState == 0, "Already Initialized")</span>;
+<span class="cstat-no" title="statement not covered" >        initialState = 1</span>;
+<span class="cstat-no" title="statement not covered" >        durationInDays = _kittyInitiator.durationInDays</span>;
+<span class="cstat-no" title="statement not covered" >        amountInDAIPerRound = _kittyInitiator.amountInDAIPerRound</span>;
+<span class="cstat-no" title="statement not covered" >        kpWinnerSelectStrategy = new KittyPartyWinnerSelectStrategy(</span>
+            _kittyInitiator.winningStrategy,
+            _kittyInitiator.vrfEnabled
+        );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        accountantContract = _accountantContract</span>;
+<span class="cstat-no" title="statement not covered" >        yieldGeneratorAddress = _kittyInitiator.yieldContract</span>;
+<span class="cstat-no" title="statement not covered" >        kittyPartyDAOTreasury = _kittyPartyDAOTreasury</span>;
+<span class="cstat-no" title="statement not covered" >        oracleAddress = _oracleAddress</span>;
+<span class="cstat-no" title="statement not covered" >        litterAddress = _litterAddress</span>;
+<span class="cstat-no" title="statement not covered" >        timeToCollection = _kittyInitiator.timeToCollection</span>;
+<span class="cstat-no" title="statement not covered" >        maxKittens = _kittyInitiator.maxKittens</span>;
+<span class="cstat-no" title="statement not covered" >        dai = IERC20(_kittyInitiator.dai_address)</span>;
+<span class="cstat-no" title="statement not covered" >        kreator = _kreator</span>;
+<span class="cstat-no" title="statement not covered" >        kreatorStake = _kreatorStake</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        _initState()</span>;
+    }
+    
+    //TODO: DAO related updates should be at factory level
+<span class="fstat-no" title="function not covered" >    function setKreatorFees(uint8 _kreatorFeesInBasisPoints) external onlyDAOAddress {</span>
+<span class="cstat-no" title="statement not covered" >        kreatorFeesInBasisPoints = _kreatorFeesInBasisPoints</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setDAOFees(uint8 _daoFeesInBasisPoints) external onlyDAOAddress {</span>
+<span class="cstat-no" title="statement not covered" >        daoFeesInBasisPoints = _daoFeesInBasisPoints</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setActivityInterval(uint8 _timeToCollection) external onlyKreator {</span>
+<span class="cstat-no" title="statement not covered" >        timeToCollection = _timeToCollection</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setInviteHash(bytes32 _inviteHash) external onlyKreator {</span>
+<span class="cstat-no" title="statement not covered" >        inviteHash = _inviteHash</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function changeState() external returns (bool success) {</span>
+<span class="cstat-no" title="statement not covered" >        _timedTransitions()</span>;
+<span class="cstat-no" title="statement not covered" >        return true;</span>
+    }
+&nbsp;
+    ///@dev perform the actual value transfer and add Kitten to the party
+<span class="fstat-no" title="function not covered" >    function depositAndAddKittenToParty(bytes32 _inviteHash) </span>
+        external 
+        knownKitten(_inviteHash)
+        returns (bool)
+    {
+<span class="cstat-no" title="statement not covered" >        _timedTransitions()</span>;
+<span class="cstat-no" title="statement not covered" >        _atStage(KittyPartyStages.InitialCollection)</span>;
+<span class="cstat-no" title="statement not covered" >        require(msg.sender != kreator, "Kreator cannot join own party")</span>;
+<span class="cstat-no" title="statement not covered" >        uint256 daiBalance = dai.balanceOf(address(msg.sender));</span>
+<span class="cstat-no" title="statement not covered" >        require(daiBalance &gt;= amountInDAIPerRound, "Not enough balance")</span>;
+<span class="cstat-no" title="statement not covered" >        require(numberOfRounds == 0, "Rounds were already initiated")</span>;
+<span class="cstat-no" title="statement not covered" >        uint256 allowance = dai.allowance(msg.sender, address(this));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        require(allowance &gt;= amountInDAIPerRound, "Please approve")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        bytes memory addKitten = abi.encodeWithSignature("addKitten(address)", msg.sender);</span>
+<span class="cstat-no" title="statement not covered" >        (bool success,) = address(litterAddress).call(addKitten);</span>
+<span class="cstat-no" title="statement not covered" >        require(success, "NK")</span>;
+<span class="cstat-no" title="statement not covered" >        localKittens = localKittens + 1</span>;
+<span class="cstat-no" title="statement not covered" >        require(maxKittens &gt;= localKittens)</span>;
+    
+<span class="cstat-no" title="statement not covered" >        require(dai.transferFrom(address(msg.sender), address(yieldGeneratorAddress), amountInDAIPerRound), 'Transfer Failed')</span>;
+<span class="cstat-no" title="statement not covered" >        return true;</span>
+    }
+&nbsp;
+    ///@dev add deposits for each round
+    //TODO: Streamline this depositAndAddKittenToParty and above and reduce code.
+<span class="fstat-no" title="function not covered" >    function addRoundDeposits() </span>
+        external 
+        kittenExists(msg.sender) 
+        returns (bool)
+    {        
+<span class="cstat-no" title="statement not covered" >        _timedTransitions()</span>;
+<span class="cstat-no" title="statement not covered" >        _atStage(KittyPartyStages.Collection)</span>;
+<span class="cstat-no" title="statement not covered" >        uint256 daiBalance = dai.balanceOf(address(msg.sender)); </span>
+<span class="cstat-no" title="statement not covered" >        require(daiBalance &gt;= amountInDAIPerRound, "Not enough balance")</span>;
+<span class="cstat-no" title="statement not covered" >        uint256 allowance = dai.allowance(msg.sender, address(yieldGeneratorAddress));</span>
+<span class="cstat-no" title="statement not covered" >        require(allowance &gt;= amountInDAIPerRound, "Please approve amount")</span>;
+<span class="cstat-no" title="statement not covered" >        require(dai.transferFrom(address(msg.sender), address(yieldGeneratorAddress), amountInDAIPerRound), 'Transfer Failed')</span>;
+<span class="cstat-no" title="statement not covered" >        return true;</span>
+    }
+&nbsp;
+    ///@dev This is called by the kreator once the kreator verifies that all the kittens have deposited initial amount for the first round.
+<span class="fstat-no" title="function not covered" >    function applyInitialVerification() </span>
+        external  
+        onlyKreator()
+        minimumKittens(localKittens)
+    {
+        //We check whether the admin has kept stake, if the party is not fully covered it will only do single round
+        //TODO: split this logic so that there is more flexibility, that is keep no of rounds separate from no of Kittens
+        //TODO: create a refund state such that balance amount gets returned in case this is not called by kreator, signalling that they do not want to start
+<span class="cstat-no" title="statement not covered" >        _timedTransitions()</span>;
+<span class="cstat-no" title="statement not covered" >        _atStage(KittyPartyStages.InitialCollection)</span>;
+<span class="cstat-no" title="statement not covered" >        require(initialState == 1, "Rounds were already initiated")</span>;
+<span class="cstat-no" title="statement not covered" >        initialState = 2</span>;
+        
+<span class="cstat-no" title="statement not covered" >        if(kreatorStake &gt;= amountInDAIPerRound * maxKittens) {</span>
+            //Multiple Rounds
+<span class="cstat-no" title="statement not covered" >            numberOfRounds = localKittens</span>;
+        } else {
+            //only minimum stake so only single round
+<span class="cstat-no" title="statement not covered" >            numberOfRounds = 0</span>;
+        }
+    }
+&nbsp;
+    ///@dev This will be auto called by the oracle later for testing we keep it as public
+    ///@dev this is where the receipts are given to the winners to redeem the actual amount from the treasury contract
+    ///TODO: If state was never transition here and time passes, then how to give users payout
+<span class="fstat-no" title="function not covered" >    function applyWinnerStrategy() external {</span>
+<span class="cstat-no" title="statement not covered" >        _timedTransitions()</span>;
+<span class="cstat-no" title="statement not covered" >        _atStage(KittyPartyStages.Payout)</span>;
+<span class="cstat-no" title="statement not covered" >        kpWinnerSelectStrategy.initiateCheckWinner(localKittens)</span>;
+        //below for loop only required for winner address and also add kreator and the treasury contract
+        // bytes memory yieldGenerated = abi.encodeWithSignature("yieldGenerated()");
+        // (bool successYield, bytes memory returnData) = address(yieldGeneratorAddress).staticcall(yieldGenerated);
+        // require(successYield);
+<span class="cstat-no" title="statement not covered" >        (uint profit) = 20000000000000000000;</span>// abi.decode(returnData, (uint256)); //commented for testing
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        uint256 amountToSendKreator = profit * kreatorFeesInBasisPoints / 10000;</span>
+<span class="cstat-no" title="statement not covered" >        uint256 amountToSendDAO = profit * daoFeesInBasisPoints / 10000;</span>
+<span class="cstat-no" title="statement not covered" >        uint256 profitToSplitAmongstWinners = profit - (amountToSendKreator + amountToSendDAO);</span>
+<span class="cstat-no" title="statement not covered" >        mintTokens(kreator, amountToSendKreator, 0)</span>;
+<span class="cstat-no" title="statement not covered" >        mintTokens(kittyPartyDAOTreasury, amountToSendDAO, 0)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        uint  amountToSend = amountInDAIPerRound + (profitToSplitAmongstWinners / kpWinnerSelectStrategy.getLength());</span>
+<span class="cstat-no" title="statement not covered" >        uint[] memory winners = kpWinnerSelectStrategy.getWinners();</span>
+<span class="cstat-no" title="statement not covered" >        bytes memory payload = abi.encodeWithSignature(</span>
+            "mintToWinners(address,address,uint256[],uint256)", 
+            litterAddress,
+            address(this), 
+            winners, 
+            amountToSend
+        );
+<span class="cstat-no" title="statement not covered" >        (bool success,) = address(accountantContract).call(payload);</span>
+<span class="cstat-no" title="statement not covered" >        require(success)</span>;
+    }
+    
+    ///@dev This is to be called after party completion to mint the NFT's and tokens to the kittens and kreator
+<span class="fstat-no" title="function not covered" >    function applyCompleteParty() external {</span>
+<span class="cstat-no" title="statement not covered" >        _timedTransitions()</span>;
+<span class="cstat-no" title="statement not covered" >        _atStage(KittyPartyStages.Completed)</span>;
+<span class="cstat-no" title="statement not covered" >        require(initialState == 2)</span>;
+<span class="cstat-no" title="statement not covered" >        initialState = 3</span>;
+<span class="cstat-no" title="statement not covered" >        bytes memory payload = abi.encodeWithSignature(</span>
+            "transferBadgesOnCompletion(address,address)", 
+            litterAddress,
+            address(this)
+        );
+<span class="cstat-no" title="statement not covered" >        (bool success,) = address(accountantContract).call(payload);</span>
+<span class="cstat-no" title="statement not covered" >        require(success)</span>;
+&nbsp;
+        //Finally give the Kreator a kreator badge for completing the round and also return all the DAI tokens
+<span class="cstat-no" title="statement not covered" >        mintTokens(kreator, 1, 4)</span>;
+<span class="cstat-no" title="statement not covered" >        mintTokens(kreator, kreatorStake, 0)</span>;
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function mintTokens(</span>
+        address mintTo, 
+        uint256 amount, 
+        uint256 tokenType
+    ) 
+        private 
+    {
+<span class="cstat-no" title="statement not covered" >        bytes memory payload = abi.encodeWithSignature(</span>
+            "mint(address,uint256,uint256,bytes)", 
+            mintTo, 
+            tokenType, 
+            amount, 
+            ""
+        );
+        // for profit to be calculated we need to unwind the position succesfuly the profit - X% to kreator and Y% to contract becomes the winning
+<span class="cstat-no" title="statement not covered" >        (bool success,) = address(accountantContract).call(payload);</span>
+<span class="cstat-no" title="statement not covered" >        require(success)</span>;
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 20 2021 19:11:10 GMT+0800 (Singapore Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    # network: mumbai
+    network: matic
+    source:
+      address: "0x4D36E173e5898593e5aad4899b6123c52F1a83C4"
+      abi: Contract
+      # startBlock: 22477424
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - KittenAddedToParty
+        - KittenCreated
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: KittenAddedToParty(address,address)
+          handler: handleKittenAddedToParty
+        - event: KittenCreated(address)
+          handler: handleKittenCreated
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: KittyFactory
+    network: matic
+    # network: mainnet
+    source:
+      address: "0x78BFf1C461ab43b52DB8a8013A548a14be75542c"
+      abi: KittyPartyFactory
+      # startBlock: 22477424
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - KittyLive
+      abis:
+        - name: KittyPartyFactory
+          file: ./abis/KittyPartyFactory.json
+      eventHandlers:
+        - event: KittyLive(indexed address,address,bytes32)
+          handler: handleKittenLiveViaFactory
+      file: ./src/mapping.ts
+templates:
+  - kind: ethereum/contract
+    name: KittyPartyController
+    # network: mumbai
+    network: matic
+    source:
+      abi: KittyPartyController
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Completed
+        - StageTransition
+      abis:
+        - name: KittyPartyController
+          file: ./abis/KittyPartyController.json
+      eventHandlers:
+        - event: Completed()
+          handler: handleCompleted
+        - event: StageTransition(uint256,uint256)
+          handler: handleStageTransition
+      file: ./src/mapping.ts

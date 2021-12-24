@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/KittyPartyYieldGeneratorAave.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> KittyPartyYieldGeneratorAave.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/43</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/43</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: BSL
+pragma solidity ^0.8.0;
+&nbsp;
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+&nbsp;
+import "./interfaces/IKittyPartyYieldGenerator.sol";
+&nbsp;
+import "hardhat/console.sol";
+&nbsp;
+contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerator, OwnableUpgradeable {
+    address private _treasuryContract;
+    address payable public AaveContract;
+    address payable public AaveRewardContract;
+&nbsp;
+    uint256 public constant MAX = type(uint128).max;
+&nbsp;
+    mapping(address =&gt; IKittyPartyYieldGenerator.KittyPartyYieldInfo) public kittyPartyYieldInfo;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function __KittyPartyYieldGeneratorAave_init(address treasuryContractParam) public initializer {</span>
+<span class="cstat-no" title="statement not covered" >        _treasuryContract = treasuryContractParam</span>;
+<span class="cstat-no" title="statement not covered" >        __Ownable_init()</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setAllowanceDeposit() public onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        address sellToken = kittyPartyYieldInfo[msg.sender].sellTokenAddress;</span>
+<span class="cstat-no" title="statement not covered" >        require(IERC20Upgradeable(sellToken).approve(AaveContract, MAX), "Not able to set allowance")</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setAllowanceWithdraw() public onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        address lpTokenAddress = kittyPartyYieldInfo[msg.sender].lpTokenAddress;</span>
+<span class="cstat-no" title="statement not covered" >        require(IERC20Upgradeable(lpTokenAddress).approve(AaveContract, MAX), "Not able to set allowance")</span>;
+    }
+&nbsp;
+    /**
+     * @dev This function deposits DAI and receives equivalent amount of aTokens
+     */    
+<span class="fstat-no" title="function not covered" >    function createLockedValue(bytes calldata) </span>
+        external 
+        payable
+        override
+        onlyOwner
+        returns (uint256 vaultTokensRec)
+    {
+<span class="cstat-no" title="statement not covered" >        address sellToken = kittyPartyYieldInfo[msg.sender].sellTokenAddress;</span>
+<span class="cstat-no" title="statement not covered" >        address lpToken = kittyPartyYieldInfo[msg.sender].lpTokenAddress;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        require(IERC20Upgradeable(sellToken).approve(AaveContract, MAX), "Not enough allowance")</span>;
+<span class="cstat-no" title="statement not covered" >        uint daiBalance = IERC20Upgradeable(sellToken).balanceOf(address(this));</span>
+<span class="cstat-no" title="statement not covered" >        uint256 initialBalance = IERC20Upgradeable(lpToken).balanceOf(address(this));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        bytes memory payload = abi.encodeWithSignature("deposit(address,uint256,address,uint16)", sellToken, daiBalance, address(this), 0);</span>
+<span class="cstat-no" title="statement not covered" >        (bool success,) = address(AaveContract).call(payload);</span>
+<span class="cstat-no" title="statement not covered" >        require(success, 'Deposit Failed')</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        vaultTokensRec = IERC20Upgradeable(lpToken).balanceOf(address(this)) - initialBalance</span>;
+<span class="cstat-no" title="statement not covered" >        kittyPartyYieldInfo[msg.sender].lockedAmount = vaultTokensRec</span>;
+    }
+&nbsp;
+    /**
+     * @dev This function claims accrued rewards and withdraws the deposited tokens and sends them to the treasury contract
+     */
+<span class="fstat-no" title="function not covered" >    function unwindLockedValue(address kittyParty, bytes calldata) </span>
+        external 
+        override 
+        returns (uint256 tokensRec)
+    {
+        //Get funds back in the same token that we sold in  DAI, since for now the treasury only releases DAI
+<span class="cstat-no" title="statement not covered" >        require(IERC20Upgradeable(kittyPartyYieldInfo[kittyParty].sellTokenAddress).approve(AaveContract, MAX), "Not enough allowance")</span>;
+        // Check this contract's initial balance
+<span class="cstat-no" title="statement not covered" >        uint256 initialBalance = kittyPartyYieldInfo[kittyParty].sellTokenAddress == address(0)</span>
+        ? address(this).balance
+        : IERC20Upgradeable(kittyPartyYieldInfo[kittyParty].sellTokenAddress).balanceOf(address(this));
+<span class="cstat-no" title="statement not covered" >        uint lpTokenBalance = IERC20Upgradeable(kittyPartyYieldInfo[kittyParty].lpTokenAddress).balanceOf(address(this));</span>
+&nbsp;
+        // Create an array with lp token address
+<span class="cstat-no" title="statement not covered" >        address[] memory lpTokens = new address[](1);</span>
+<span class="cstat-no" title="statement not covered" >        lpTokens[0] = kittyPartyYieldInfo[kittyParty].lpTokenAddress</span>; 
+        // Check the balance of accrued rewards
+<span class="cstat-no" title="statement not covered" >        bytes memory payload = abi.encodeWithSignature("getRewardsBalance(address[],address)", lpTokens, address(this));</span>
+<span class="cstat-no" title="statement not covered" >        (bool success, bytes memory returnData) = address(AaveRewardContract).staticcall(payload);</span>
+<span class="cstat-no" title="statement not covered" >        require(success)</span>;
+<span class="cstat-no" title="statement not covered" >        (uint256 rewardTokenBalance) = abi.decode(returnData, (uint256));</span>
+&nbsp;
+        // Claim balance rewards
+<span class="cstat-no" title="statement not covered" >        payload = abi.encodeWithSignature("claimRewards(address[],uint256,address)", lpTokens, rewardTokenBalance, _treasuryContract)</span>;
+<span class="cstat-no" title="statement not covered" >        (success,) = address(AaveRewardContract).call(payload)</span>;
+<span class="cstat-no" title="statement not covered" >        require(success, 'Claiming rewards failed')</span>;
+&nbsp;
+        // Withdraws deposited DAI and burns aTokens
+<span class="cstat-no" title="statement not covered" >        payload = abi.encodeWithSignature("withdraw(address,uint256,address)", kittyPartyYieldInfo[kittyParty].sellTokenAddress, lpTokenBalance, _treasuryContract)</span>;
+<span class="cstat-no" title="statement not covered" >        (success,) = address(AaveContract).call(payload)</span>;
+<span class="cstat-no" title="statement not covered" >        require(success, 'Withdraw failed')</span>;
+<span class="cstat-no" title="statement not covered" >        uint256 finalBalance = kittyPartyYieldInfo[kittyParty].sellTokenAddress == address(0)</span>
+        ? address(this).balance
+        : IERC20Upgradeable(kittyPartyYieldInfo[kittyParty].sellTokenAddress).balanceOf(address(this));
+<span class="cstat-no" title="statement not covered" >        tokensRec = finalBalance - initialBalance</span>;
+<span class="cstat-no" title="statement not covered" >        kittyPartyYieldInfo[kittyParty].yieldGeneratedInLastRound = tokensRec</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function treasuryAddress() external view override returns (address treasuryContractAddress) {</span>
+<span class="cstat-no" title="statement not covered" >        return _treasuryContract;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function lockedAmount(address kittyParty) external view override returns (uint256 totalLockedValue) {</span>
+<span class="cstat-no" title="statement not covered" >        return kittyPartyYieldInfo[kittyParty].lockedAmount;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function yieldGenerated(address kittyParty) external view override returns (uint256 yieldGeneratedInLastRound) {</span>
+<span class="cstat-no" title="statement not covered" >        return kittyPartyYieldInfo[kittyParty].yieldGeneratedInLastRound;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function lockedPool(address kittyParty) external view override returns (address) {</span>
+<span class="cstat-no" title="statement not covered" >        return kittyPartyYieldInfo[kittyParty].poolAddress;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setPlatformDepositContractAddress(address payable _AaveContract) external override onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        AaveContract = _AaveContract</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setPlatformRewardContractAddress(address payable _AaveRewardContract) external override onlyOwner {</span>
+<span class="cstat-no" title="statement not covered" >        AaveRewardContract = _AaveRewardContract</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setPartyInfo(address _sellTokenAddress, address _lpTokenAddress ) external override {</span>
+        //TODO: here check that the party has not yet started to be able to set info for a party
+<span class="cstat-no" title="statement not covered" >        kittyPartyYieldInfo[msg.sender].sellTokenAddress = _sellTokenAddress</span>;
+<span class="cstat-no" title="statement not covered" >        kittyPartyYieldInfo[msg.sender].lpTokenAddress = _lpTokenAddress</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setPlatformWithdrawContractAddress(address payable) external override onlyOwner {</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function withdraw(</span>
+        IERC20Upgradeable token, 
+        address recipient, 
+        uint256 amount
+    ) 
+        public 
+        onlyOwner 
+    {
+<span class="cstat-no" title="statement not covered" >        token.transfer(recipient, amount)</span>;
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 20 2021 19:11:10 GMT+0800 (Singapore Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
