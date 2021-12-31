@@ -2,8 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/proxy/ClonesUpgradeable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Receiver.sol";
 
 import './KittyPartyController.sol';
 import './interfaces/IKittyPartyInit.sol';
@@ -38,6 +38,10 @@ contract KittyPartyFactory is IKittenPartyInit, IERC1155Receiver {
     constructor(
         KittyPartyFactoryArgs memory _kPFactory
     )   {
+        kPFactory = _kPFactory;
+    }
+
+    function setFactoryInits(KittyPartyFactoryArgs memory _kPFactory) external onlyDAOAddress {
         kPFactory = _kPFactory;
     }
     

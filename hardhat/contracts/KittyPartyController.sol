@@ -133,7 +133,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         returns (bool)
     {        
         _timedTransitions();
-        _atStage(KittyPartyStages.Collection);
+        _atStage(KittyPartyStages.Staking);
         depositForYield();
         IKittyPartyYieldGenerator(kittyInitiator.yieldContract).createLockedValue(calldataForLock);
         return true;
@@ -277,6 +277,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
             mintTokens(kittyPartyControllerVars.kreator, refund, 0);
             emit RefundRequested(refund);
         }
-        mintTokens(kittyPartyControllerVars.kreator, kittyPartyControllerVars.kreatorStake, 0);   
+        uint kreatorRefundedAmount = kittyPartyControllerVars.kreatorStake * kittyInitiator.daoFeesInBasisPoints / 100;
+        mintTokens(kittyPartyControllerVars.kreator, kreatorRefundedAmount, 0); 
     }
 }
