@@ -5,7 +5,6 @@ contract KittyPartyStateTransition {
 
     enum KittyPartyStages {
         InitialCollection,
-        Collection,
         Staking,
         Payout,
         Completed,
@@ -47,10 +46,10 @@ contract KittyPartyStateTransition {
     }
 
     function isTransitionRequired() external view returns(uint8) {
-        if ((stage == KittyPartyStages.InitialCollection && (block.timestamp >= (lastStageTime + (timeToCollection * 1 days)))) ||
-            (stage == KittyPartyStages.Staking && block.timestamp >= (lastStageTime + (durationInDays * 1 days))) ||
-            (stage == KittyPartyStages.Payout && block.timestamp >= (lastStageTime + (8 * 1 hours)) && (numberOfRounds > currentRound)) ||
-            (stage == KittyPartyStages.Payout && block.timestamp >= (lastStageTime + (8 * 1 hours)) && (numberOfRounds <= currentRound))) {
+        if ((stage == KittyPartyStages.InitialCollection && (block.timestamp >= (lastStageTime + (timeToCollection * 1 hours)))) ||
+            (stage == KittyPartyStages.Staking && (block.timestamp >= (lastStageTime + (durationInDays * 1 hours)))) ||
+            (stage == KittyPartyStages.Payout && (block.timestamp >= (lastStageTime + (8 * 1 hours))) && (numberOfRounds > currentRound)) ||
+            (stage == KittyPartyStages.Payout && (block.timestamp >= (lastStageTime + (8 * 1 hours))) && (numberOfRounds <= currentRound))) {
             return (uint8(stage) + (numberOfRounds > currentRound ? 0 : 1));
         } else {
             return (88);
@@ -59,13 +58,13 @@ contract KittyPartyStateTransition {
     
     function _timedTransitions() internal {
         if (stage == KittyPartyStages.InitialCollection && (block.timestamp >= (lastStageTime + (timeToCollection * 1 days)))) {
-           _nextStage(2);
+           _nextStage(1);
         }
         else if (stage == KittyPartyStages.Staking && block.timestamp >= (lastStageTime + (durationInDays * 1 days))) {
             _nextStage(1);
         }
         else if (stage == KittyPartyStages.Payout && block.timestamp >= (lastStageTime + (8 * 1 hours)) && (numberOfRounds > currentRound)) {
-            stage = KittyPartyStages(2);
+            stage = KittyPartyStages(1);
             currentRound++;
         }
         else if (stage == KittyPartyStages.Payout && block.timestamp >= (lastStageTime + (8 * 1 hours)) && (numberOfRounds <= currentRound)) {

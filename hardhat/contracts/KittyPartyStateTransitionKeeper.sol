@@ -8,15 +8,26 @@ interface KeeperCompatibleInterface {
     function performUpkeep(bytes calldata performData) external;
 }
 
+/// @title Kitty Party State Transition Keeper
 contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessControl {
+
+    //Array to store addresses of currently active kitty parties
     address[] kpControllers;
+
+    //Mapping to identify the current intermediate stage of the party within the Payout Stage
+    // 0 - Stop Staking
+    // 1 - Pay Organizer Fees
+    // 2 - Apply Winner Strategy
+    mapping(address => uint8) kpControllerPayoutStage;
+
     bytes32 public constant SETTER_ROLE = keccak256("SETTER_ROLE");
 
     constructor() {
-        grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        grantRole(SETTER_ROLE, msg.sender);
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(SETTER_ROLE, msg.sender);
     }
-
+    
+    ///@dev This function is used to add the address of a new party to the array of kitty party addresses 
     function addKPController(address kpController) external onlyRole(SETTER_ROLE) {
         kpControllers.push(kpController);
     }
@@ -30,9 +41,10 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
             bytes memory payload = abi.encodeWithSignature("isTransitionRequired()");
             (bool success, bytes memory returnData) = address(kpController).staticcall(payload);
             require(success);
-            (uint8 transitionStage) = abi.decode(returnData, (uint8));
-
-            if (transitionStage != 88) {
+            (uint8 transitionType) = abi.decode(returnData, (uint8));
+            
+            //Transition is required only if transitionType is not equal to 88
+            if (transitionType != 88) {
                 upkeepNeeded = true;
                 bytes memory transitionData = abi.encode(transitionStage, kpController);
                 return (upkeepNeeded, transitionData);
@@ -43,15 +55,31 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
     function performUpkeep(bytes calldata performData) external override {
         (uint8 transitionType, address kpController) = abi.decode(performData, (uint8, address));
 
-        if (transitionType == 0 || transitionType == 1 || transitionType == 3) {
-            bytes memory payload = abi.encodeWithSignature("changeState()");
+        if (transitionType == 0) {
+            bytes memory payload = abi.encodeWithSignature("applyInitialVerification()");
             (bool success,) = address(kpController).call(payload);
             require(success);
-        } else if (transitionType == 2) {
-            bytes memory payload = abi.encodeWithSignature("applyWinnerStrategy()");
+
+        } else if (transitionType == 1) {
+            bytes memory payload = abi.encodeWithSignature("stopStaking()");
             (bool success,) = address(kpController).call(payload);
-            require(success);            
-        } else if (transitionType == 4) {
+            require(success);
+            kpControllerPayoutStage[kpController] = 1;
+
+        } else if (transitionType == 3) {  
+            if (kpControllerState[kpController] == 1) {
+                bytes memory payload = abi.encodeWithSignature("payOrganizerFees()");
+                (bool success,) = address(kpController).call(payload);
+                require(success);
+                kpControllerState[kpController] = 2;
+            } else if (kpControllerState[kpController] == 2) {
+                bytes memory payload = abi.encodeWithSignature("applyWinnerStrategy()");
+                (bool success,) = address(kpController).call(payload);
+                require(success);
+                kpControllerState[kpController] = 0;
+            }      
+
+        } else if (transitionType == 3 && kpControllerState[kpController] == 0) {
             bytes memory payload = abi.encodeWithSignature("applyCompleteParty()");
             (bool success,) = address(kpController).call(payload);
             require(success);            
