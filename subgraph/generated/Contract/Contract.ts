@@ -315,7 +315,9 @@ export class Contract extends ethereum.SmartContract {
       [ethereum.Value.fromUnsignedBigInt(i)]
     );
 
-    return result[0].toTuple() as Contract__getAllValueAtResultValue0Struct;
+    return changetype<Contract__getAllValueAtResultValue0Struct>(
+      result[0].toTuple()
+    );
   }
 
   try_getAllValueAt(
@@ -331,7 +333,7 @@ export class Contract extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      value[0].toTuple() as Contract__getAllValueAtResultValue0Struct
+      changetype<Contract__getAllValueAtResultValue0Struct>(value[0].toTuple())
     );
   }
 
@@ -462,7 +464,9 @@ export class Contract extends ethereum.SmartContract {
       ]
     );
 
-    return result[0].toTuple() as Contract__getValueAtResultValue0Struct;
+    return changetype<Contract__getValueAtResultValue0Struct>(
+      result[0].toTuple()
+    );
   }
 
   try_getValueAt(
@@ -482,7 +486,7 @@ export class Contract extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      value[0].toTuple() as Contract__getValueAtResultValue0Struct
+      changetype<Contract__getValueAtResultValue0Struct>(value[0].toTuple())
     );
   }
 

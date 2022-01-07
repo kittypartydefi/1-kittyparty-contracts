@@ -6,7 +6,6 @@ import {
   Value,
   ValueKind,
   store,
-  Address,
   Bytes,
   BigInt,
   BigDecimal
@@ -20,22 +19,24 @@ export class SKitten extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save SKitten entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save SKitten entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("SKitten", id.toString(), this);
+    assert(id != null, "Cannot save SKitten entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SKitten entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SKitten", id.toString(), this);
+    }
   }
 
   static load(id: string): SKitten | null {
-    return store.get("SKitten", id) as SKitten | null;
+    return changetype<SKitten | null>(store.get("SKitten", id));
   }
 
   get id(): string {
     let value = this.get("id");
-    return value.toString();
+    return value!.toString();
   }
 
   set id(value: string) {
@@ -44,7 +45,7 @@ export class SKitten extends Entity {
 
   get KittyParties(): Array<string> {
     let value = this.get("KittyParties");
-    return value.toStringArray();
+    return value!.toStringArray();
   }
 
   set KittyParties(value: Array<string>) {
@@ -56,26 +57,35 @@ export class SKittyParty extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
+
+    this.set("partyName", Value.fromString(""));
+    this.set("members", Value.fromStringArray(new Array(0)));
+    this.set("allMembers", Value.fromStringArray(new Array(0)));
+    this.set("kreator", Value.fromString(""));
+    this.set("dateCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("stage", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save SKittyParty entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save SKittyParty entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("SKittyParty", id.toString(), this);
+    assert(id != null, "Cannot save SKittyParty entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SKittyParty entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SKittyParty", id.toString(), this);
+    }
   }
 
   static load(id: string): SKittyParty | null {
-    return store.get("SKittyParty", id) as SKittyParty | null;
+    return changetype<SKittyParty | null>(store.get("SKittyParty", id));
   }
 
   get id(): string {
     let value = this.get("id");
-    return value.toString();
+    return value!.toString();
   }
 
   set id(value: string) {
@@ -84,7 +94,7 @@ export class SKittyParty extends Entity {
 
   get partyName(): string {
     let value = this.get("partyName");
-    return value.toString();
+    return value!.toString();
   }
 
   set partyName(value: string) {
@@ -93,7 +103,7 @@ export class SKittyParty extends Entity {
 
   get members(): Array<string> {
     let value = this.get("members");
-    return value.toStringArray();
+    return value!.toStringArray();
   }
 
   set members(value: Array<string>) {
@@ -102,7 +112,7 @@ export class SKittyParty extends Entity {
 
   get allMembers(): Array<string> {
     let value = this.get("allMembers");
-    return value.toStringArray();
+    return value!.toStringArray();
   }
 
   set allMembers(value: Array<string>) {
@@ -111,7 +121,7 @@ export class SKittyParty extends Entity {
 
   get kreator(): string {
     let value = this.get("kreator");
-    return value.toString();
+    return value!.toString();
   }
 
   set kreator(value: string) {
@@ -120,7 +130,7 @@ export class SKittyParty extends Entity {
 
   get dateCreated(): BigInt {
     let value = this.get("dateCreated");
-    return value.toBigInt();
+    return value!.toBigInt();
   }
 
   set dateCreated(value: BigInt) {
@@ -129,7 +139,7 @@ export class SKittyParty extends Entity {
 
   get stage(): BigInt {
     let value = this.get("stage");
-    return value.toBigInt();
+    return value!.toBigInt();
   }
 
   set stage(value: BigInt) {

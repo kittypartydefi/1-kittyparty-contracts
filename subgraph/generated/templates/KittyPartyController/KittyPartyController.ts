@@ -943,15 +943,21 @@ export class InitializeCall__Inputs {
   }
 
   get _kittyInitiator(): InitializeCall_kittyInitiatorStruct {
-    return this._call.inputValues[0].value.toTuple() as InitializeCall_kittyInitiatorStruct;
+    return changetype<InitializeCall_kittyInitiatorStruct>(
+      this._call.inputValues[0].value.toTuple()
+    );
   }
 
   get _kittyYieldArgs(): InitializeCall_kittyYieldArgsStruct {
-    return this._call.inputValues[1].value.toTuple() as InitializeCall_kittyYieldArgsStruct;
+    return changetype<InitializeCall_kittyYieldArgsStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 
   get _kPFactory(): InitializeCall_kPFactoryStruct {
-    return this._call.inputValues[2].value.toTuple() as InitializeCall_kPFactoryStruct;
+    return changetype<InitializeCall_kPFactoryStruct>(
+      this._call.inputValues[2].value.toTuple()
+    );
   }
 
   get _kreator(): Address {
