@@ -82,8 +82,8 @@ const config: HardhatUserConfig =  {
       gasPrice: 30000000000
     },
     mumbai: {
-      url: `https://polygon-mumbai.infura.io/v3/${process.env.INFURA_API_KEY}`,
-      gasPrice: 1000000000,
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+      gasPrice: 30000000000,
       accounts,
     },
   },

@@ -134,11 +134,10 @@ contract KittyPartyYieldGeneratorZapper is Initializable, IKittyPartyYieldGenera
         ZapOutContract = _zapOutContract;
     }
 
-    function setPlatformRewardContractAddress(address payable) external override onlyOwner {
+    function setPlatformRewardContractAddress(address payable,address) external override onlyOwner {
     }
 
     function setPartyInfo(address _sellTokenAddress, address _lpTokenAddress ) external override {
-        //TODO: here check that the party has not yet started to be able to set info for a party
         kittyPartyYieldInfo[msg.sender].sellTokenAddress = _sellTokenAddress;
         kittyPartyYieldInfo[msg.sender].lpTokenAddress = _lpTokenAddress;
     }

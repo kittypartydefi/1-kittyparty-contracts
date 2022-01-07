@@ -9,7 +9,7 @@ import {
 } from '../src/types/index';
 
 
-describe('Kitty Party Guardian can guard the party verse', function () {
+describe.skip('Kitty Party Guardian can guard the party verse', function () {
   let wallet: Wallet, 
       other: Wallet, 
       kitten1: Wallet, 

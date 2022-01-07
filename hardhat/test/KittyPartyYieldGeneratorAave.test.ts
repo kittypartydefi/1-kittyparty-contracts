@@ -25,7 +25,7 @@ const aaveRewardTokenContractAddress = "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf12
 
 
 // Start test block
-describe('Kitty Party Aave Yield Generator can zap in and out', function () {
+describe.skip('Kitty Party Aave Yield Generator can zap in and out', function () {
 
 let polygon =  require("./PolygonAddresses.ts");
 

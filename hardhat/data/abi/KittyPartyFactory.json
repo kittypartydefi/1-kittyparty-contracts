@@ -1,41 +1,9 @@
 [
   {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "tomCatContract",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "accountantContract",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "litterAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "daoTreasuryContract",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "daoAddress",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct IKittenPartyInit.KittyPartyFactoryArgs",
-        "name": "_kPFactory",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "anonymous": false,
+    "inputs": [],
+    "name": "FactoryInitialized",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -157,6 +125,19 @@
   },
   {
     "inputs": [],
+    "name": "daoAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "daoFeesInBasisPoints",
     "outputs": [
       {
@@ -188,8 +169,21 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_daoAddress",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
-    "name": "kPFactory",
+    "name": "kpFactory",
     "outputs": [
       {
         "internalType": "address",
@@ -213,7 +207,7 @@
       },
       {
         "internalType": "address",
-        "name": "daoAddress",
+        "name": "keeperContractAddress",
         "type": "address"
       }
     ],
@@ -228,71 +222,6 @@
         "internalType": "uint8",
         "name": "",
         "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastData",
-    "outputs": [
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastFrom",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastId",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastOperator",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastValue",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -326,77 +255,31 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_operator",
+        "name": "",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "_ids",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "_values",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_data",
-        "type": "bytes"
       }
     ],
-    "name": "onERC1155BatchReceived",
+    "name": "myStrategies",
     "outputs": [
       {
-        "internalType": "bytes4",
+        "internalType": "bool",
         "name": "",
-        "type": "bytes4"
+        "type": "bool"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "_operator",
+        "name": "_strategy",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_value",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_data",
-        "type": "bytes"
       }
     ],
-    "name": "onERC1155Received",
-    "outputs": [
-      {
-        "internalType": "bytes4",
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
+    "name": "setApprovedStrategy",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -416,6 +299,46 @@
   {
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tomCatContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "accountantContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "litterAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "daoTreasuryContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "keeperContractAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyPartyFactoryArgs",
+        "name": "_kpFactory",
+        "type": "tuple"
+      }
+    ],
+    "name": "setFactoryInit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint8",
         "name": "_kreatorFeesInBasisPoints",
         "type": "uint8"
@@ -424,51 +347,6 @@
     "name": "setKreatorFees",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "_value",
-        "type": "bool"
-      }
-    ],
-    "name": "setShouldReject",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "shouldReject",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes4",
-        "name": "interfaceID",
-        "type": "bytes4"
-      }
-    ],
-    "name": "supportsInterface",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "pure",
     "type": "function"
   }
 ]

@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: BSL
-pragma solidity ^0.8.2;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 /// @title Kitty Party Types and options
 /// @notice Utilized by factory while deciding what party to start

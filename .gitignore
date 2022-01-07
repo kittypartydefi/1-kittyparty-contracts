@@ -1,3 +1,11 @@
+data/
+.openzeppelin
+
+#Hardhat files
+cache
+artifacts
+typechain
+
 node_modules
 
 #Hardhat files

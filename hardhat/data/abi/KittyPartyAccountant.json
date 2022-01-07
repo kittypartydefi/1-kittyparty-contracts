@@ -1,6 +1,12 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_daoAddress",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -46,6 +52,31 @@
       }
     ],
     "name": "CompletionBadgesMinted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "kitten",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "kittyparty",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountIssued",
+        "type": "uint256"
+      }
+    ],
+    "name": "KPReceiptIssued",
     "type": "event"
   },
   {
@@ -243,25 +274,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "kitten",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "kittyparty",
-        "type": "address"
-      }
-    ],
-    "name": "WinningKittenSelected",
-    "type": "event"
-  },
-  {
     "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
     "outputs": [
@@ -277,6 +289,19 @@
   {
     "inputs": [],
     "name": "GALACTIC",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "HARKONNENS",
     "outputs": [
       {
         "internalType": "uint256",
@@ -354,7 +379,7 @@
   },
   {
     "inputs": [],
-    "name": "STELLAR",
+    "name": "SPACINGGUILD",
     "outputs": [
       {
         "internalType": "uint256",
@@ -367,12 +392,12 @@
   },
   {
     "inputs": [],
-    "name": "TOMCAT_ROLE",
+    "name": "STELLAR",
     "outputs": [
       {
-        "internalType": "bytes32",
+        "internalType": "uint256",
         "name": "",
-        "type": "bytes32"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -496,6 +521,19 @@
     "name": "burnBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -656,11 +694,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "kreator",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "litterAddress",
         "type": "address"
       },
@@ -671,7 +704,7 @@
       },
       {
         "internalType": "uint256[]",
-        "name": "winnerIndexes",
+        "name": "kittenIndexes",
         "type": "uint256[]"
       },
       {
@@ -680,7 +713,7 @@
         "type": "uint256"
       }
     ],
-    "name": "mintToWinners",
+    "name": "mintToKittens",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -829,6 +862,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_factoryContract",
+        "type": "address"
+      }
+    ],
+    "name": "setFactory",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_treasuryContract",
         "type": "address"
       }
@@ -860,20 +906,13 @@
       }
     ],
     "name": "setupMinter",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "tomcat",
-        "type": "address"
+        "internalType": "bool",
+        "name": "minterSet",
+        "type": "bool"
       }
     ],
-    "name": "setupTomcatList",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },

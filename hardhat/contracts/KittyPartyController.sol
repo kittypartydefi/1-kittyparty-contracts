@@ -12,6 +12,7 @@ import "./interfaces/IKittyPartyYieldGenerator.sol";
 contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
     bytes32 private inviteHash;
     uint constant MIN_KITTENS = 2;
+    uint256[] public partyRoundKittens;
 
     IKittyPartyWinnerStrategy kpWinnerSelectStrategy;
 
@@ -22,6 +23,8 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
     IERC20 public dai;
     bytes public calldataForLock;
     bytes public callDataForUnwind;
+
+    /****** EVENTS *******/
 
     event RefundRequested(uint refund);
     event StopStaking(address party, uint amount);
@@ -92,6 +95,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         inviteHash = _inviteHash;
     }
 
+    ///@dev Calling this can change the state without checking conditions!!! Use cautiously!
     function changeState() external onlyKreator returns (bool success) {
         _timedTransitions();
         return true;
@@ -113,7 +117,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
        
         bytes memory addKitten = abi.encodeWithSignature("addKitten(address)", msg.sender);
         (bool success,) = address(kPFactory.litterAddress).call(addKitten);
-        require(success, "NK");
+        require(success, "Kitten not added");
         
         depositForYield();
         IKittyPartyYieldGenerator(kittyInitiator.yieldContract).createLockedValue(calldataForLock);
@@ -133,7 +137,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         returns (bool)
     {        
         _timedTransitions();
-        _atStage(KittyPartyStages.Staking);
+        _atStage(KittyPartyStages.Collection);
         depositForYield();
         IKittyPartyYieldGenerator(kittyInitiator.yieldContract).createLockedValue(calldataForLock);
         return true;
@@ -147,6 +151,12 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         uint256 allowance = dai.allowance(msg.sender, address(this));
         require(allowance >= kittyInitiator.amountInDAIPerRound, "Please approve amount");
         require(dai.transferFrom(address(msg.sender), address(kittyInitiator.yieldContract), kittyInitiator.amountInDAIPerRound), 'Transfer Failed');
+        
+        bytes memory getIndex = abi.encodeWithSignature("getIndex(address,address)",address(this),msg.sender);
+        (bool success, bytes memory kittenIndex) = address(kPFactory.litterAddress).call(getIndex);
+        require(success, "Kitten not added");
+        (uint256 index) = abi.decode(kittenIndex, (uint256));
+        partyRoundKittens.push(index);
     }
 
     ///@dev This is called by the kreator once the kreator verifies that all the kittens have deposited initial amount for the first round.
@@ -154,7 +164,6 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         external
         minimumKittens(kittyPartyControllerVars.localKittens)
     {
-        //TODO: split this logic so that there is more flexibility, that is keep no of rounds separate from no of Kittens
         _timedTransitions();
         _atStage(KittyPartyStages.Staking);
         require(kittyPartyControllerVars.internalState == 1, "Rounds were already initiated");
@@ -169,10 +178,27 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         }
     }
 
+    ///@dev This is used for changing state from Collection -> Staking
+    function startStakingMultiRound() external {
+        _atStage(KittyPartyStages.Collection);
+        require(partyRoundKittens.length == kittyPartyControllerVars.localKittens, "Kitten Missing!");
+        _timedTransitions();
+        _atStage(KittyPartyStages.Staking);
+    }
+
+    ///@dev This is used for changing state from Payout -> Collection for multiRound
+    function startNextRound() external {
+        _atStage(KittyPartyStages.Payout);
+        _timedTransitions();
+        _atStage(KittyPartyStages.Collection);
+    }
+
+
     ///@dev Stop the staking and push the yield generated for the specific kitty party to the treasury
     function stopStaking() external {
         _timedTransitions();
         _atStage(KittyPartyStages.Payout);
+        
         kpWinnerSelectStrategy.initiateCheckWinner(kittyPartyControllerVars.localKittens);
         IKittyPartyYieldGenerator(kittyInitiator.yieldContract).unwindLockedValue(callDataForUnwind);
         
@@ -181,7 +207,6 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         require(successYield, "YE1");
         (kittyPartyControllerVars.profit) = abi.decode(returnData, (uint256));
         emit StopStaking(address(this), kittyPartyControllerVars.profit);
-
     }
 
      /// @dev pay system and kreator fees
@@ -197,30 +222,21 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         emit PaidFees(address(this), amountToSendKreator + amountToSendDAO);
     }
 
-    ///@dev this is where the receipts are given to the winners to redeem the actual amount from the treasury contract
+    ///@notice send KPR to the winners to redeem the actual amount from the treasury contract
     function applyWinnerStrategy() external {
         _atStage(KittyPartyStages.Payout);
         require(kittyPartyControllerVars.profitToSplit > 0);
 
-        uint amountToSend =  (kittyPartyControllerVars.profitToSplit 
+        uint256 amountToSend = (kittyPartyControllerVars.profitToSplit 
                                 / kpWinnerSelectStrategy.getLength());
         kittyPartyControllerVars.profitToSplit = 0;
         uint[] memory winners = kpWinnerSelectStrategy.getWinners();
-        bytes memory payload = abi.encodeWithSignature(
-            "mintToWinners(address,address,address,uint256[],uint256)",
-            kittyPartyControllerVars.kreator,
-            kPFactory.litterAddress,
-            address(this), 
-            winners, 
-            amountToSend
-        );
-
-        (bool success,) = address(kPFactory.accountantContract).call(payload);
-        require(success, "YE2");
+        batchMintReceiptTokens(winners, amountToSend);
+        delete partyRoundKittens;//clear the current round participants
         emit WinnersDecided(address(this), winners);
     }
     
-    ///@dev This is to be called after party completion to mint the NFT's and tokens to the kittens and kreator
+    ///@notice This is to be called after party completion to mint the NFT's and tokens to the kittens and kreator
     function applyCompleteParty() external {
         _timedTransitions();
         _atStage(KittyPartyStages.Completed);
@@ -261,23 +277,43 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         require(success);
     }
 
+    function batchMintReceiptTokens(
+        uint256[] memory kittenIndexes,
+        uint256 amountToSend
+    )
+        private
+    {
+        bytes memory payload = abi.encodeWithSignature(
+            "mintToKittens(address,address,uint256[],uint256)",
+            kPFactory.litterAddress,
+            address(this), 
+            kittenIndexes, 
+            amountToSend
+        );
+
+        (bool success,) = address(kPFactory.accountantContract).call(payload);
+        require(success, "Batch receipt failed");
+    }
+
     /// @dev if the MIN_KITTENS have not joined in time, the kreator can seek refund before the internal state changes to party started
-    function checkRefund() 
+    function issueRefund() 
         external
         onlyKreator
     {
-        require(kittyPartyControllerVars.localKittens < MIN_KITTENS, "No refund possible");
-        require(kittyPartyControllerVars.internalState == 1, "No refund possible"); //as long as verification was not done
+        require(stage != KittyPartyStages.Payout, "Cannot refund in payout");
+        require(stage != KittyPartyStages.Completed, "Cannot refund in Completed");
+        require(kittyPartyControllerVars.internalState  != 3, "Cannot refund");
         kittyPartyControllerVars.internalState = 3; // set the party as finished
         _nextStage(5);
 
         if(kittyPartyControllerVars.localKittens > 0) {
-            uint refund = kittyPartyControllerVars.localKittens * kittyInitiator.amountInDAIPerRound;
             IKittyPartyYieldGenerator(kittyInitiator.yieldContract).unwindLockedValue(callDataForUnwind);
-            mintTokens(kittyPartyControllerVars.kreator, refund, 0);
-            emit RefundRequested(refund);
+            batchMintReceiptTokens(partyRoundKittens, kittyInitiator.amountInDAIPerRound);
+            delete partyRoundKittens;//clear the current round participants
         }
+        // The fees here are taking into account a sybil attack
         uint kreatorRefundedAmount = kittyPartyControllerVars.kreatorStake * kittyInitiator.daoFeesInBasisPoints / 100;
-        mintTokens(kittyPartyControllerVars.kreator, kreatorRefundedAmount, 0); 
+        mintTokens(kittyPartyControllerVars.kreator, kreatorRefundedAmount, 0);
+        emit RefundRequested(kreatorRefundedAmount);
     }
 }

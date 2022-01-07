@@ -13,7 +13,7 @@ import {
 
 // In each block deploy different options
 // Check that other types dont work either now or in future
-describe('Kitty Party Option of one winner works as intended', function () {
+describe.skip('Kitty Party Option of one winner works as intended', function () {
   let wallet: Wallet, 
       other: Wallet, 
       kitten1: Wallet, 

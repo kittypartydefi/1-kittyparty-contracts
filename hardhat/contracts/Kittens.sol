@@ -14,7 +14,6 @@ contract Kittens is IKittens, AccessControl {
     event KittenAddedToParty(address Kitten, address KittyParty);
     event KittenCreated(address Kitten);
 
-    //later we improve the kitten to be something where there is a DID that has verifiable claims as to their credit etc
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
@@ -23,8 +22,7 @@ contract Kittens is IKittens, AccessControl {
     mapping(address => Litter) myLitter; //the mapping of the kittens belonging to a kittyparty
 
     function addKitten(address value) external onlyRole(KITTYPARTY) {
-        //Add this kitten to the particular party
-        // Modify this to wait for Kitten to accept inviteKitten
+        // Add this kitten to the master list
         if (!masterLitter.exists[value]) {
             masterLitter.index[value] = masterLitter.kittenList.length;
             masterLitter.exists[value] = true;
