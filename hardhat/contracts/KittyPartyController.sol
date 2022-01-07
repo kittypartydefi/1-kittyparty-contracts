@@ -242,14 +242,6 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         _atStage(KittyPartyStages.Completed);
         require(kittyPartyControllerVars.internalState == 2);
         kittyPartyControllerVars.internalState = 3;
-        bytes memory payload = abi.encodeWithSignature(
-            "transferBadgesOnCompletion(address,address)", 
-            kPFactory.litterAddress,
-            address(this)
-        );
-        (bool success,) = address(kPFactory.accountantContract).call(payload);
-        require(success);
-
         //Finally give the Kreator a kreator badge for completing the round and also return all the DAI tokens
         mintTokens(kittyPartyControllerVars.kreator, 1, 4);
         mintTokens(kittyPartyControllerVars.kreator, kittyPartyControllerVars.kreatorStake, 0);

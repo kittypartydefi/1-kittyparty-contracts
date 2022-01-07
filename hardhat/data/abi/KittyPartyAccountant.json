@@ -936,24 +936,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "litterAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "kittyParty",
-        "type": "address"
-      }
-    ],
-    "name": "transferBadgesOnCompletion",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "treasuryContract",
     "outputs": [

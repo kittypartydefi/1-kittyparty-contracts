@@ -42,6 +42,10 @@ contract KittyPartyTreasury is Initializable {
         daoAddress = _daoAddress;
     }
 
+    function setAccountant(address _accountantContract) external onlyDAOAddress {
+        accountantContract = _accountantContract;
+    }
+
     function redeemTokens(uint256 redeemAmount) external {
         uint256 daiBalance = dai.balanceOf(address(this));
         require(daiBalance > redeemAmount, "Insufficient balance to transfer");

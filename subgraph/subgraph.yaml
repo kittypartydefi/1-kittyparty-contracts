@@ -76,6 +76,6 @@ templates:
       eventHandlers:
         - event: Completed()
           handler: handleCompleted
-        - event: StageTransition(uint256,uint256)
+        - event: StageTransition(address,uint256,uint256)
           handler: handleStageTransition
       file: ./src/mapping.ts

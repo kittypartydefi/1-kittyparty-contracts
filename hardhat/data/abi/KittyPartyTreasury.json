@@ -94,6 +94,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_accountantContract",
+        "type": "address"
+      }
+    ],
+    "name": "setAccountant",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_amountToReward",
         "type": "uint256"

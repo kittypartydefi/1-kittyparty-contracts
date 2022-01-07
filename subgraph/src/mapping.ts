@@ -62,7 +62,7 @@ export function handleKittenLiveViaFactory(event: KittyLive): void {
 
 export function handleStageTransition(event: StageTransition): void {
   // Save the next stage as the current stage in graph 
-  let KittyParty = SKittyParty.load(event.transaction.to.toHexString())
+  let KittyParty = SKittyParty.load(event.params.party())
   KittyParty.stage = event.params.nextStage;
   KittyParty.save();
 }

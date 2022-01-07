@@ -51,7 +51,7 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         require(!_initialized, "Initializable: contract is already initialized");
         factoryContract = _factoryContract;
         _setupRole(DEFAULT_ADMIN_ROLE, _factoryContract);
-        _mint(daoAddress, PLANETARY, 10**18, "");
+        _mint(daoAddress, PLANETARY, 10**18, "");// additional emissions on winning
         _mint(daoAddress, STELLAR, 10**12, "");
         _mint(daoAddress, GALACTIC, 10**9, "");
         _mint(daoAddress, HARKONNENS, 10**6, "");
@@ -72,34 +72,17 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         (bool success, bytes memory kittensList) = address(litterAddress).staticcall(getList);
         require(success, "GE");
         (IKittens.Kitten[] memory kittens_) = abi.decode(kittensList, (IKittens.Kitten[]));
-
-            for (uint i = 0; i < kittenIndexes.length; i++) {
-                IKittens.Kitten memory localKitten = kittens_[kittenIndexes[i]];
-                mint(localKitten.kitten, 0, amountToSent, "");
-                emit KPReceiptIssued(localKitten.kitten, kittyParty,amountToSent);
-            }
-    }
-
-    /**
-    @dev This is to be called by the Kitty party controller in order to safe transfer NFT badges to all the participants of a completed party
-    @notice This is the badge that says the kitten is an active citizen of that world
-    */
-    function transferBadgesOnCompletion(
-        address litterAddress, 
-        address kittyParty
-    ) 
-        external 
-        onlyRole(MINTER_ROLE)
-    {
-        bytes memory getList = abi.encodeWithSignature("getList(address)", kittyParty);
-        (bool success, bytes memory kittensList) = address(litterAddress).staticcall(getList);
-        require(success, "GE");
-        (IKittens.Kitten[] memory kittens_) = abi.decode(kittensList, (IKittens.Kitten[]));
-            for (uint i = 0; i < kittens_.length; i++) {
-                IKittens.Kitten memory localKitten = kittens_[i];
-                safeTransferFrom(factoryContract, localKitten.kitten, 1, 1, "0x0");
-                emit CompletionBadgesMinted(localKitten.kitten, kittyParty);
-            }
+        uint256[] memory tokenTypes;
+        uint256[] memory tokenAmounts;
+        tokenTypes[0] = 0;
+        tokenTypes[1] = 1;
+        tokenAmounts[0] = amountToSent;
+        tokenAmounts[1] = 1;
+        for (uint i = 0; i < kittenIndexes.length; i++) {
+            IKittens.Kitten memory localKitten = kittens_[kittenIndexes[i]];
+            mintBatch(localKitten.kitten, tokenTypes, tokenAmounts, ""); //receipt and planetary emissions
+            emit KPReceiptIssued(localKitten.kitten, kittyParty,amountToSent);
+        }
     }
 
     function setupMinter(address kittyParty)

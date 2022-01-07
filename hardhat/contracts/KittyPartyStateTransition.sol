@@ -27,7 +27,7 @@ contract KittyPartyStateTransition {
     uint16 public numberOfRounds;
 
     event Completed();
-    event StageTransition(uint prevStage, uint nextStage);
+    event StageTransition(address party, uint prevStage, uint nextStage);
     
     modifier transitionAfter() {
         _;
@@ -82,7 +82,7 @@ contract KittyPartyStateTransition {
         if(nextStageValue > 6){
             nextStageValue = 6;
         }
-        emit StageTransition(uint(stage), nextStageValue);
+        emit StageTransition(address(this), uint(stage), nextStageValue);
         stage = KittyPartyStages(nextStageValue);
         lastStageTime = block.timestamp;
     }

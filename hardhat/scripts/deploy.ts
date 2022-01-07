@@ -14,12 +14,12 @@ async function main() {
   const [deployer, kitten1, kitten2] = await ethers.getSigners();
   const KP_DAO_ADDRESS = "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e";
   console.log("The deployer address is " , deployer.address)
-  const sellTokenAddress = polygon.aave.sellTokenAddress;
-  const aaveContractAddress = polygon.aave.aaveContractAddress;
-  const aaveDaiContractAddress = polygon.aave.aaveDaiContractAddress;
-  const aaveRewardContractAddress = polygon.aave.aaveRewardContractAddress;
-  // const KittyPartyTreasury = "0x67114a33CAe81D819AC1aF7290952236f05535C7";
-  const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero ;
+  // const sellTokenAddress = polygon.aave.sellTokenAddress;
+  // const aaveContractAddress = polygon.aave.aaveContractAddress;
+  // const aaveDaiContractAddress = polygon.aave.aaveDaiContractAddress;
+  // const aaveRewardContractAddress = polygon.aave.aaveRewardContractAddress;
+  // // const KittyPartyTreasury = "0x67114a33CAe81D819AC1aF7290952236f05535C7";
+  // const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero ;
   
   // const yielderFactory = await ethers.getContractFactory('KittyPartyYieldGeneratorAave');
   // const kittyPartyYieldGeneratorAave = await yielderFactory.deploy();
@@ -29,7 +29,7 @@ async function main() {
   // const winnerStrategySingle = await WinnerStrategySingle.deploy();
   // console.log("Deploying winnerStrategySingle...", winnerStrategySingle.address);
 
-  //TODO : Remove in production run
+  // //TODO : Remove in production run
   // const _KittyPartyToken = await ethers.getContractFactory("KittyPartyToken");
   // const kittyPartyToken = await _KittyPartyToken.deploy();
   // const kptoken = await kittyPartyToken.deployed();
@@ -37,11 +37,11 @@ async function main() {
   // const KittyPartyController = await ethers.getContractFactory("KittyPartyController");
   // const kittyParty = await KittyPartyController.deploy();
   // console.log("Deploying KittyPartyController Master...", kittyParty.address);
-  // //For testing purposes deploy a local token and set it as DAI
-  // const Token = await ethers.getContractFactory("ERC20");
+  // // //For testing purposes deploy a local token and set it as DAI
+  // // const Token = await ethers.getContractFactory("ERC20");
   
   // const dai = {"address": polygon.aave.sellTokenAddress} 
-  // console.log("Deploying Token...", dai.address);
+  // // console.log("Deploying Token...", dai.address);
 
   // const _KittyPartyAccountant = await ethers.getContractFactory("KittyPartyAccountant");
   // const kittyPartyAccountant = await _KittyPartyAccountant.deploy(KP_DAO_ADDRESS);
@@ -61,19 +61,19 @@ async function main() {
   // await kittyPartyToken.grantRole(DEFAULT_ADMIN_ROLE, KP_DAO_ADDRESS);
   // await kittyPartyToken.grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", KP_DAO_ADDRESS);
   // // Deploy Keeper contract and set factory as SETTER_ROLE
-  // const KittyPartyStateTransitionKeeper = await ethers.getContractFactory('KittyPartyStateTransitionKeeper');
-  // const kittyPartyStateTransitionKeeper = await KittyPartyStateTransitionKeeper.deploy();
-  // console.log("Deploying StateTransitionKeeper...", kittyPartyStateTransitionKeeper.address);
-  // await kittyPartyStateTransitionKeeper.deployed();
+  // // const KittyPartyStateTransitionKeeper = await ethers.getContractFactory('KittyPartyStateTransitionKeeper');
+  // // const kittyPartyStateTransitionKeeper = await KittyPartyStateTransitionKeeper.deploy();
+  // // console.log("Deploying StateTransitionKeeper...", kittyPartyStateTransitionKeeper.address);
+  // // await kittyPartyStateTransitionKeeper.deployed();
   // const KittyPartyFactory = await ethers.getContractFactory("KittyPartyFactory");
   // const kittyPartyFactory = await KittyPartyFactory.deploy();
   // await kittyPartyFactory.initialize(KP_DAO_ADDRESS);
-  // await kittyPartyFactory.setFactoryInit([kittyParty.address, kittyPartyAccountant.address, kittens.address, KP_DAO_ADDRESS, kittyPartyStateTransitionKeeper.address]);
+  // await kittyPartyFactory.setFactoryInit([kittyParty.address, kittyPartyAccountant.address, kittens.address, KP_DAO_ADDRESS, "0xDA1eF38961f525Aa06910697cf50E6AcA8d9335B"]);
   // console.log("Deploying kittyPartyFactory...", kittyPartyFactory.address);
   
 
 
-  // await kittyPartyStateTransitionKeeper.grantRole("0x61c92169ef077349011ff0b1383c894d86c5f0b41d986366b58a6cf31e93beda", kittyPartyFactory.address);
+  // // await kittyPartyStateTransitionKeeper.grantRole("0x61c92169ef077349011ff0b1383c894d86c5f0b41d986366b58a6cf31e93beda", kittyPartyFactory.address);
   
   // //Transfer admin role to factory contract for accountant so that clones can be granted minter role
   // console.log("Transferring default admin role to factory", kittyPartyFactory.address, DEFAULT_ADMIN_ROLE);
@@ -96,14 +96,14 @@ async function main() {
 
   return {
     // 'kittyPartyYieldGeneratorAave':kittyPartyYieldGeneratorAave.address,
-          // 'winnerStrategySingle' : winnerStrategySingle.address,
-          // 'kittyPartyController':kittyParty.address,
-          // 'kittyPartyTreasury':kittyPartyTreasury.address,
-          // 'kittyPartyToken':kittyPartyToken.address,
-          // 'kittyPartyFactory':kittyPartyFactory.address,
-          // 'kittens':kittens.address,
-          // 'kittyPartyAccountant':kittyPartyAccountant.address, 
-          'kittyPartyStateTransitionKeeper':"0xDA1eF38961f525Aa06910697cf50E6AcA8d9335B",
+    //       'winnerStrategySingle' : winnerStrategySingle.address,
+          'kittyPartyController':"0x428644FeeA07197d3c08B89CEb11E1840888B890",
+    //       'kittyPartyTreasury':kittyPartyTreasury.address,
+    //       'kittyPartyToken':kittyPartyToken.address,
+    //       'kittyPartyFactory':kittyPartyFactory.address,
+    //       'kittens':kittens.address,
+    //       'kittyPartyAccountant':kittyPartyAccountant.address, 
+          // 'kittyPartyStateTransitionKeeper':kittyPartyStateTransitionKeeper.address,
           'deployer':deployer.address};
   
   // return {'kittyPartyYieldGeneratorAave':"0x7403b835b4501Df689A2f65c79142f6D3b21Ff5D",
@@ -146,12 +146,12 @@ function delay(ms: number) {
     // await verify(deployedData.kittyPartyYieldGeneratorAave); 
     // await verify(deployedData.winnerStrategySingle); 
     // await verify(deployedData.kittyPartyToken);
-    // await verify(deployedData.kittyPartyController);
+    await verify(deployedData.kittyPartyController);
     // await verify(deployedData.kittyPartyTreasury);
     // await verify(deployedData.kittens);
     // await verify(deployedData.kittyPartyFactory);
     // await verify(deployedData.kittyPartyAccountant, "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e");
-    await verify(deployedData.kittyPartyStateTransitionKeeper);
+    // await verify(deployedData.kittyPartyStateTransitionKeeper);
     process.exit(0)
   })
   .catch(error => {

@@ -37,12 +37,16 @@ export class StageTransition__Params {
     this._event = event;
   }
 
+  get party(): BigInt {
+    return this._event.parameters[0].value.toHexString();
+  }
+
   get prevStage(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get nextStage(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 

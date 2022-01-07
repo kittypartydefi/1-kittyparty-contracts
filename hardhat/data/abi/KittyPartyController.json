@@ -61,6 +61,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "party",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "prevStage",
         "type": "uint256"
