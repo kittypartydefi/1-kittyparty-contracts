@@ -5,14 +5,14 @@ dataSources:
   - kind: ethereum/contract
     name: Contract
     # network: mumbai
-    network: matic
+    network: mumbai
     source:
-      address: "0xd5E712dD0a304Ce6774285fc18099fA83a6BB7d1"
+      address: "0xCccddbF0C32a69d2Ac90080Da8c34006c83Af78c"
       abi: Contract
       # startBlock: 22477424
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - KittenAddedToParty
@@ -37,15 +37,15 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: KittyFactory
-    network: matic
+    network: mumbai
     # network: mainnet
     source:
-      address: "0x99a7d3965078ab54020D93B29D15b4B4D1b13a23"
+      address: "0x884D9ad451981efB982Fa8777FD8acC994BAdCF0"
       abi: KittyPartyFactory
       # startBlock: 22477424
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - KittyLive
@@ -60,12 +60,12 @@ templates:
   - kind: ethereum/contract
     name: KittyPartyController
     # network: mumbai
-    network: matic
+    network: mumbai
     source:
       abi: KittyPartyController
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Completed

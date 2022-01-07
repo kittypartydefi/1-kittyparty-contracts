@@ -24,6 +24,68 @@ export class Completed__Params {
   }
 }
 
+export class PaidFees extends ethereum.Event {
+  get params(): PaidFees__Params {
+    return new PaidFees__Params(this);
+  }
+}
+
+export class PaidFees__Params {
+  _event: PaidFees;
+
+  constructor(event: PaidFees) {
+    this._event = event;
+  }
+
+  get party(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get fees(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class PartyCompleted extends ethereum.Event {
+  get params(): PartyCompleted__Params {
+    return new PartyCompleted__Params(this);
+  }
+}
+
+export class PartyCompleted__Params {
+  _event: PartyCompleted;
+
+  constructor(event: PartyCompleted) {
+    this._event = event;
+  }
+
+  get party(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get internalState(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class RefundRequested extends ethereum.Event {
+  get params(): RefundRequested__Params {
+    return new RefundRequested__Params(this);
+  }
+}
+
+export class RefundRequested__Params {
+  _event: RefundRequested;
+
+  constructor(event: RefundRequested) {
+    this._event = event;
+  }
+
+  get refund(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
 export class StageTransition extends ethereum.Event {
   get params(): StageTransition__Params {
     return new StageTransition__Params(this);
@@ -37,8 +99,8 @@ export class StageTransition__Params {
     this._event = event;
   }
 
-  get party(): BigInt {
-    return this._event.parameters[0].value.toHexString();
+  get party(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
   get prevStage(): BigInt {
@@ -47,6 +109,198 @@ export class StageTransition__Params {
 
   get nextStage(): BigInt {
     return this._event.parameters[2].value.toBigInt();
+  }
+}
+
+export class StopStaking extends ethereum.Event {
+  get params(): StopStaking__Params {
+    return new StopStaking__Params(this);
+  }
+}
+
+export class StopStaking__Params {
+  _event: StopStaking;
+
+  constructor(event: StopStaking) {
+    this._event = event;
+  }
+
+  get party(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class WinnersDecided extends ethereum.Event {
+  get params(): WinnersDecided__Params {
+    return new WinnersDecided__Params(this);
+  }
+}
+
+export class WinnersDecided__Params {
+  _event: WinnersDecided;
+
+  constructor(event: WinnersDecided) {
+    this._event = event;
+  }
+
+  get party(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get winners(): Array<BigInt> {
+    return this._event.parameters[1].value.toBigIntArray();
+  }
+}
+
+export class KittyPartyController__kPFactoryResult {
+  value0: Address;
+  value1: Address;
+  value2: Address;
+  value3: Address;
+  value4: Address;
+
+  constructor(
+    value0: Address,
+    value1: Address,
+    value2: Address,
+    value3: Address,
+    value4: Address
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddress(this.value0));
+    map.set("value1", ethereum.Value.fromAddress(this.value1));
+    map.set("value2", ethereum.Value.fromAddress(this.value2));
+    map.set("value3", ethereum.Value.fromAddress(this.value3));
+    map.set("value4", ethereum.Value.fromAddress(this.value4));
+    return map;
+  }
+}
+
+export class KittyPartyController__kittyInitiatorResult {
+  value0: i32;
+  value1: i32;
+  value2: i32;
+  value3: i32;
+  value4: i32;
+  value5: i32;
+  value6: BigInt;
+  value7: Bytes;
+  value8: Address;
+  value9: Address;
+  value10: Address;
+
+  constructor(
+    value0: i32,
+    value1: i32,
+    value2: i32,
+    value3: i32,
+    value4: i32,
+    value5: i32,
+    value6: BigInt,
+    value7: Bytes,
+    value8: Address,
+    value9: Address,
+    value10: Address
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
+    this.value5 = value5;
+    this.value6 = value6;
+    this.value7 = value7;
+    this.value8 = value8;
+    this.value9 = value9;
+    this.value10 = value10;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set(
+      "value0",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value0))
+    );
+    map.set(
+      "value1",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value1))
+    );
+    map.set(
+      "value2",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value2))
+    );
+    map.set(
+      "value3",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value3))
+    );
+    map.set(
+      "value4",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value4))
+    );
+    map.set(
+      "value5",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value5))
+    );
+    map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
+    map.set("value7", ethereum.Value.fromFixedBytes(this.value7));
+    map.set("value8", ethereum.Value.fromAddress(this.value8));
+    map.set("value9", ethereum.Value.fromAddress(this.value9));
+    map.set("value10", ethereum.Value.fromAddress(this.value10));
+    return map;
+  }
+}
+
+export class KittyPartyController__kittyPartyControllerVarsResult {
+  value0: Address;
+  value1: BigInt;
+  value2: BigInt;
+  value3: BigInt;
+  value4: i32;
+  value5: i32;
+
+  constructor(
+    value0: Address,
+    value1: BigInt,
+    value2: BigInt,
+    value3: BigInt,
+    value4: i32,
+    value5: i32
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
+    this.value5 = value5;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddress(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
+    map.set(
+      "value4",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value4))
+    );
+    map.set(
+      "value5",
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value5))
+    );
+    return map;
   }
 }
 
@@ -78,27 +332,46 @@ export class KittyPartyController extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  amountInDAIPerRound(): BigInt {
+  callDataForUnwind(): Bytes {
     let result = super.call(
-      "amountInDAIPerRound",
-      "amountInDAIPerRound():(uint256)",
+      "callDataForUnwind",
+      "callDataForUnwind():(bytes)",
       []
     );
 
-    return result[0].toBigInt();
+    return result[0].toBytes();
   }
 
-  try_amountInDAIPerRound(): ethereum.CallResult<BigInt> {
+  try_callDataForUnwind(): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
-      "amountInDAIPerRound",
-      "amountInDAIPerRound():(uint256)",
+      "callDataForUnwind",
+      "callDataForUnwind():(bytes)",
       []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  calldataForLock(): Bytes {
+    let result = super.call("calldataForLock", "calldataForLock():(bytes)", []);
+
+    return result[0].toBytes();
+  }
+
+  try_calldataForLock(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "calldataForLock",
+      "calldataForLock():(bytes)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   changeState(): boolean {
@@ -144,29 +417,6 @@ export class KittyPartyController extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  daoFeesInBasisPoints(): BigInt {
-    let result = super.call(
-      "daoFeesInBasisPoints",
-      "daoFeesInBasisPoints():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_daoFeesInBasisPoints(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "daoFeesInBasisPoints",
-      "daoFeesInBasisPoints():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   depositAndAddKittenToParty(_inviteHash: Bytes): boolean {
@@ -228,14 +478,22 @@ export class KittyPartyController extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  internalState(): i32 {
-    let result = super.call("internalState", "internalState():(uint8)", []);
+  isTransitionRequired(): i32 {
+    let result = super.call(
+      "isTransitionRequired",
+      "isTransitionRequired():(uint8)",
+      []
+    );
 
     return result[0].toI32();
   }
 
-  try_internalState(): ethereum.CallResult<i32> {
-    let result = super.tryCall("internalState", "internalState():(uint8)", []);
+  try_isTransitionRequired(): ethereum.CallResult<i32> {
+    let result = super.tryCall(
+      "isTransitionRequired",
+      "isTransitionRequired():(uint8)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -243,42 +501,133 @@ export class KittyPartyController extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
-  kreator(): Address {
-    let result = super.call("kreator", "kreator():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_kreator(): ethereum.CallResult<Address> {
-    let result = super.tryCall("kreator", "kreator():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  kreatorFeesInBasisPoints(): BigInt {
+  kPFactory(): KittyPartyController__kPFactoryResult {
     let result = super.call(
-      "kreatorFeesInBasisPoints",
-      "kreatorFeesInBasisPoints():(uint256)",
+      "kPFactory",
+      "kPFactory():(address,address,address,address,address)",
       []
     );
 
-    return result[0].toBigInt();
+    return new KittyPartyController__kPFactoryResult(
+      result[0].toAddress(),
+      result[1].toAddress(),
+      result[2].toAddress(),
+      result[3].toAddress(),
+      result[4].toAddress()
+    );
   }
 
-  try_kreatorFeesInBasisPoints(): ethereum.CallResult<BigInt> {
+  try_kPFactory(): ethereum.CallResult<KittyPartyController__kPFactoryResult> {
     let result = super.tryCall(
-      "kreatorFeesInBasisPoints",
-      "kreatorFeesInBasisPoints():(uint256)",
+      "kPFactory",
+      "kPFactory():(address,address,address,address,address)",
       []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(
+      new KittyPartyController__kPFactoryResult(
+        value[0].toAddress(),
+        value[1].toAddress(),
+        value[2].toAddress(),
+        value[3].toAddress(),
+        value[4].toAddress()
+      )
+    );
+  }
+
+  kittyInitiator(): KittyPartyController__kittyInitiatorResult {
+    let result = super.call(
+      "kittyInitiator",
+      "kittyInitiator():(uint8,uint8,uint8,uint8,uint16,uint16,uint256,bytes32,address,address,address)",
+      []
+    );
+
+    return new KittyPartyController__kittyInitiatorResult(
+      result[0].toI32(),
+      result[1].toI32(),
+      result[2].toI32(),
+      result[3].toI32(),
+      result[4].toI32(),
+      result[5].toI32(),
+      result[6].toBigInt(),
+      result[7].toBytes(),
+      result[8].toAddress(),
+      result[9].toAddress(),
+      result[10].toAddress()
+    );
+  }
+
+  try_kittyInitiator(): ethereum.CallResult<
+    KittyPartyController__kittyInitiatorResult
+  > {
+    let result = super.tryCall(
+      "kittyInitiator",
+      "kittyInitiator():(uint8,uint8,uint8,uint8,uint16,uint16,uint256,bytes32,address,address,address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new KittyPartyController__kittyInitiatorResult(
+        value[0].toI32(),
+        value[1].toI32(),
+        value[2].toI32(),
+        value[3].toI32(),
+        value[4].toI32(),
+        value[5].toI32(),
+        value[6].toBigInt(),
+        value[7].toBytes(),
+        value[8].toAddress(),
+        value[9].toAddress(),
+        value[10].toAddress()
+      )
+    );
+  }
+
+  kittyPartyControllerVars(): KittyPartyController__kittyPartyControllerVarsResult {
+    let result = super.call(
+      "kittyPartyControllerVars",
+      "kittyPartyControllerVars():(address,uint256,uint256,uint256,uint8,uint8)",
+      []
+    );
+
+    return new KittyPartyController__kittyPartyControllerVarsResult(
+      result[0].toAddress(),
+      result[1].toBigInt(),
+      result[2].toBigInt(),
+      result[3].toBigInt(),
+      result[4].toI32(),
+      result[5].toI32()
+    );
+  }
+
+  try_kittyPartyControllerVars(): ethereum.CallResult<
+    KittyPartyController__kittyPartyControllerVarsResult
+  > {
+    let result = super.tryCall(
+      "kittyPartyControllerVars",
+      "kittyPartyControllerVars():(address,uint256,uint256,uint256,uint8,uint8)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new KittyPartyController__kittyPartyControllerVarsResult(
+        value[0].toAddress(),
+        value[1].toBigInt(),
+        value[2].toBigInt(),
+        value[3].toBigInt(),
+        value[4].toI32(),
+        value[5].toI32()
+      )
+    );
   }
 
   lastStageTime(): BigInt {
@@ -300,21 +649,6 @@ export class KittyPartyController extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  localKittens(): i32 {
-    let result = super.call("localKittens", "localKittens():(uint16)", []);
-
-    return result[0].toI32();
-  }
-
-  try_localKittens(): ethereum.CallResult<i32> {
-    let result = super.tryCall("localKittens", "localKittens():(uint16)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toI32());
-  }
-
   numberOfRounds(): i32 {
     let result = super.call("numberOfRounds", "numberOfRounds():(uint16)", []);
 
@@ -334,19 +668,27 @@ export class KittyPartyController extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
-  partyName(): Bytes {
-    let result = super.call("partyName", "partyName():(bytes32)", []);
+  partyRoundKittens(param0: BigInt): BigInt {
+    let result = super.call(
+      "partyRoundKittens",
+      "partyRoundKittens(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
 
-    return result[0].toBytes();
+    return result[0].toBigInt();
   }
 
-  try_partyName(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall("partyName", "partyName():(bytes32)", []);
+  try_partyRoundKittens(param0: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "partyRoundKittens",
+      "partyRoundKittens(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   stage(): i32 {
@@ -604,28 +946,20 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[0].value.toTuple() as InitializeCall_kittyInitiatorStruct;
   }
 
-  get _accountantContract(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get _kittyYieldArgs(): InitializeCall_kittyYieldArgsStruct {
+    return this._call.inputValues[1].value.toTuple() as InitializeCall_kittyYieldArgsStruct;
   }
 
-  get _kittyPartyDAOTreasury(): Address {
-    return this._call.inputValues[2].value.toAddress();
+  get _kPFactory(): InitializeCall_kPFactoryStruct {
+    return this._call.inputValues[2].value.toTuple() as InitializeCall_kPFactoryStruct;
   }
 
   get _kreator(): Address {
     return this._call.inputValues[3].value.toAddress();
   }
 
-  get _oracleAddress(): Address {
-    return this._call.inputValues[4].value.toAddress();
-  }
-
-  get _litterAddress(): Address {
-    return this._call.inputValues[5].value.toAddress();
-  }
-
   get _kreatorStake(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 }
 
@@ -638,20 +972,20 @@ export class InitializeCall__Outputs {
 }
 
 export class InitializeCall_kittyInitiatorStruct extends ethereum.Tuple {
-  get daiAddress(): Address {
-    return this[0].toAddress();
+  get kreatorFeesInBasisPoints(): i32 {
+    return this[0].toI32();
   }
 
-  get winningStrategy(): i32 {
+  get daoFeesInBasisPoints(): i32 {
     return this[1].toI32();
   }
 
-  get vrfEnabled(): boolean {
-    return this[2].toBoolean();
+  get winningStrategy(): i32 {
+    return this[2].toI32();
   }
 
-  get yieldContract(): Address {
-    return this[3].toAddress();
+  get timeToCollection(): i32 {
+    return this[3].toI32();
   }
 
   get maxKittens(): i32 {
@@ -662,16 +996,108 @@ export class InitializeCall_kittyInitiatorStruct extends ethereum.Tuple {
     return this[5].toI32();
   }
 
-  get timeToCollection(): i32 {
-    return this[6].toI32();
-  }
-
   get amountInDAIPerRound(): BigInt {
-    return this[7].toBigInt();
+    return this[6].toBigInt();
   }
 
   get partyName(): Bytes {
-    return this[8].toBytes();
+    return this[7].toBytes();
+  }
+
+  get daiAddress(): Address {
+    return this[8].toAddress();
+  }
+
+  get yieldContract(): Address {
+    return this[9].toAddress();
+  }
+
+  get winnerStrategy(): Address {
+    return this[10].toAddress();
+  }
+}
+
+export class InitializeCall_kittyYieldArgsStruct extends ethereum.Tuple {
+  get sellTokenAddress(): Address {
+    return this[0].toAddress();
+  }
+
+  get lpTokenAddress(): Address {
+    return this[1].toAddress();
+  }
+}
+
+export class InitializeCall_kPFactoryStruct extends ethereum.Tuple {
+  get tomCatContract(): Address {
+    return this[0].toAddress();
+  }
+
+  get accountantContract(): Address {
+    return this[1].toAddress();
+  }
+
+  get litterAddress(): Address {
+    return this[2].toAddress();
+  }
+
+  get daoTreasuryContract(): Address {
+    return this[3].toAddress();
+  }
+
+  get keeperContractAddress(): Address {
+    return this[4].toAddress();
+  }
+}
+
+export class IssueRefundCall extends ethereum.Call {
+  get inputs(): IssueRefundCall__Inputs {
+    return new IssueRefundCall__Inputs(this);
+  }
+
+  get outputs(): IssueRefundCall__Outputs {
+    return new IssueRefundCall__Outputs(this);
+  }
+}
+
+export class IssueRefundCall__Inputs {
+  _call: IssueRefundCall;
+
+  constructor(call: IssueRefundCall) {
+    this._call = call;
+  }
+}
+
+export class IssueRefundCall__Outputs {
+  _call: IssueRefundCall;
+
+  constructor(call: IssueRefundCall) {
+    this._call = call;
+  }
+}
+
+export class PayOrganizerFeesCall extends ethereum.Call {
+  get inputs(): PayOrganizerFeesCall__Inputs {
+    return new PayOrganizerFeesCall__Inputs(this);
+  }
+
+  get outputs(): PayOrganizerFeesCall__Outputs {
+    return new PayOrganizerFeesCall__Outputs(this);
+  }
+}
+
+export class PayOrganizerFeesCall__Inputs {
+  _call: PayOrganizerFeesCall;
+
+  constructor(call: PayOrganizerFeesCall) {
+    this._call = call;
+  }
+}
+
+export class PayOrganizerFeesCall__Outputs {
+  _call: PayOrganizerFeesCall;
+
+  constructor(call: PayOrganizerFeesCall) {
+    this._call = call;
   }
 }
 
@@ -705,32 +1131,36 @@ export class SetActivityIntervalCall__Outputs {
   }
 }
 
-export class SetDAOFeesCall extends ethereum.Call {
-  get inputs(): SetDAOFeesCall__Inputs {
-    return new SetDAOFeesCall__Inputs(this);
+export class SetCallDataForYieldCall extends ethereum.Call {
+  get inputs(): SetCallDataForYieldCall__Inputs {
+    return new SetCallDataForYieldCall__Inputs(this);
   }
 
-  get outputs(): SetDAOFeesCall__Outputs {
-    return new SetDAOFeesCall__Outputs(this);
+  get outputs(): SetCallDataForYieldCall__Outputs {
+    return new SetCallDataForYieldCall__Outputs(this);
   }
 }
 
-export class SetDAOFeesCall__Inputs {
-  _call: SetDAOFeesCall;
+export class SetCallDataForYieldCall__Inputs {
+  _call: SetCallDataForYieldCall;
 
-  constructor(call: SetDAOFeesCall) {
+  constructor(call: SetCallDataForYieldCall) {
     this._call = call;
   }
 
-  get _daoFeesInBasisPoints(): i32 {
-    return this._call.inputValues[0].value.toI32();
+  get _calldataForLock(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get _callDataForUnwind(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
   }
 }
 
-export class SetDAOFeesCall__Outputs {
-  _call: SetDAOFeesCall;
+export class SetCallDataForYieldCall__Outputs {
+  _call: SetCallDataForYieldCall;
 
-  constructor(call: SetDAOFeesCall) {
+  constructor(call: SetCallDataForYieldCall) {
     this._call = call;
   }
 }
@@ -765,32 +1195,80 @@ export class SetInviteHashCall__Outputs {
   }
 }
 
-export class SetKreatorFeesCall extends ethereum.Call {
-  get inputs(): SetKreatorFeesCall__Inputs {
-    return new SetKreatorFeesCall__Inputs(this);
+export class StartNextRoundCall extends ethereum.Call {
+  get inputs(): StartNextRoundCall__Inputs {
+    return new StartNextRoundCall__Inputs(this);
   }
 
-  get outputs(): SetKreatorFeesCall__Outputs {
-    return new SetKreatorFeesCall__Outputs(this);
+  get outputs(): StartNextRoundCall__Outputs {
+    return new StartNextRoundCall__Outputs(this);
   }
 }
 
-export class SetKreatorFeesCall__Inputs {
-  _call: SetKreatorFeesCall;
+export class StartNextRoundCall__Inputs {
+  _call: StartNextRoundCall;
 
-  constructor(call: SetKreatorFeesCall) {
+  constructor(call: StartNextRoundCall) {
     this._call = call;
   }
+}
 
-  get _kreatorFeesInBasisPoints(): i32 {
-    return this._call.inputValues[0].value.toI32();
+export class StartNextRoundCall__Outputs {
+  _call: StartNextRoundCall;
+
+  constructor(call: StartNextRoundCall) {
+    this._call = call;
   }
 }
 
-export class SetKreatorFeesCall__Outputs {
-  _call: SetKreatorFeesCall;
+export class StartStakingMultiRoundCall extends ethereum.Call {
+  get inputs(): StartStakingMultiRoundCall__Inputs {
+    return new StartStakingMultiRoundCall__Inputs(this);
+  }
 
-  constructor(call: SetKreatorFeesCall) {
+  get outputs(): StartStakingMultiRoundCall__Outputs {
+    return new StartStakingMultiRoundCall__Outputs(this);
+  }
+}
+
+export class StartStakingMultiRoundCall__Inputs {
+  _call: StartStakingMultiRoundCall;
+
+  constructor(call: StartStakingMultiRoundCall) {
+    this._call = call;
+  }
+}
+
+export class StartStakingMultiRoundCall__Outputs {
+  _call: StartStakingMultiRoundCall;
+
+  constructor(call: StartStakingMultiRoundCall) {
+    this._call = call;
+  }
+}
+
+export class StopStakingCall extends ethereum.Call {
+  get inputs(): StopStakingCall__Inputs {
+    return new StopStakingCall__Inputs(this);
+  }
+
+  get outputs(): StopStakingCall__Outputs {
+    return new StopStakingCall__Outputs(this);
+  }
+}
+
+export class StopStakingCall__Inputs {
+  _call: StopStakingCall;
+
+  constructor(call: StopStakingCall) {
+    this._call = call;
+  }
+}
+
+export class StopStakingCall__Outputs {
+  _call: StopStakingCall;
+
+  constructor(call: StopStakingCall) {
     this._call = call;
   }
 }

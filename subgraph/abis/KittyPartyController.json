@@ -10,6 +10,63 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "party",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fees",
+        "type": "uint256"
+      }
+    ],
+    "name": "PaidFees",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "party",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "internalState",
+        "type": "uint256"
+      }
+    ],
+    "name": "PartyCompleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "refund",
+        "type": "uint256"
+      }
+    ],
+    "name": "RefundRequested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "party",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "prevStage",
         "type": "uint256"
@@ -25,6 +82,44 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "party",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "StopStaking",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "party",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "winners",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "WinnersDecided",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "addRoundDeposits",
     "outputs": [
@@ -35,19 +130,6 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "amountInDAIPerRound",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -69,6 +151,32 @@
     "name": "applyWinnerStrategy",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "callDataForUnwind",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "calldataForLock",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -105,19 +213,6 @@
         "internalType": "contract IERC20",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "daoFeesInBasisPoints",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -173,9 +268,14 @@
       {
         "components": [
           {
-            "internalType": "address",
-            "name": "daiAddress",
-            "type": "address"
+            "internalType": "uint8",
+            "name": "kreatorFeesInBasisPoints",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "daoFeesInBasisPoints",
+            "type": "uint8"
           },
           {
             "internalType": "uint8",
@@ -183,14 +283,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "bool",
-            "name": "vrfEnabled",
-            "type": "bool"
-          },
-          {
-            "internalType": "address",
-            "name": "yieldContract",
-            "type": "address"
+            "internalType": "uint8",
+            "name": "timeToCollection",
+            "type": "uint8"
           },
           {
             "internalType": "uint16",
@@ -203,11 +298,6 @@
             "type": "uint16"
           },
           {
-            "internalType": "uint8",
-            "name": "timeToCollection",
-            "type": "uint8"
-          },
-          {
             "internalType": "uint256",
             "name": "amountInDAIPerRound",
             "type": "uint256"
@@ -216,6 +306,21 @@
             "internalType": "bytes32",
             "name": "partyName",
             "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "daiAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "yieldContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "winnerStrategy",
+            "type": "address"
           }
         ],
         "internalType": "struct IKittenPartyInit.KittyInitiator",
@@ -223,28 +328,57 @@
         "type": "tuple"
       },
       {
-        "internalType": "address",
-        "name": "_accountantContract",
-        "type": "address"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "sellTokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "lpTokenAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyYieldArgs",
+        "name": "_kittyYieldArgs",
+        "type": "tuple"
       },
       {
-        "internalType": "address",
-        "name": "_kittyPartyDAOTreasury",
-        "type": "address"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tomCatContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "accountantContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "litterAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "daoTreasuryContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "keeperContractAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyPartyFactoryArgs",
+        "name": "_kPFactory",
+        "type": "tuple"
       },
       {
         "internalType": "address",
         "name": "_kreator",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_oracleAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_litterAddress",
         "type": "address"
       },
       {
@@ -260,7 +394,7 @@
   },
   {
     "inputs": [],
-    "name": "internalState",
+    "name": "isTransitionRequired",
     "outputs": [
       {
         "internalType": "uint8",
@@ -273,11 +407,38 @@
   },
   {
     "inputs": [],
-    "name": "kreator",
+    "name": "issueRefund",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "kPFactory",
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "tomCatContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "accountantContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "litterAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "daoTreasuryContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "keeperContractAddress",
         "type": "address"
       }
     ],
@@ -286,12 +447,100 @@
   },
   {
     "inputs": [],
-    "name": "kreatorFeesInBasisPoints",
+    "name": "kittyInitiator",
     "outputs": [
       {
+        "internalType": "uint8",
+        "name": "kreatorFeesInBasisPoints",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "daoFeesInBasisPoints",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "winningStrategy",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "timeToCollection",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxKittens",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "durationInDays",
+        "type": "uint16"
+      },
+      {
         "internalType": "uint256",
-        "name": "",
+        "name": "amountInDAIPerRound",
         "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "partyName",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "daiAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "yieldContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "winnerStrategy",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "kittyPartyControllerVars",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "kreator",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "kreatorStake",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "profit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "profitToSplit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "localKittens",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "internalState",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -312,19 +561,6 @@
   },
   {
     "inputs": [],
-    "name": "localKittens",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "numberOfRounds",
     "outputs": [
       {
@@ -337,16 +573,29 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "partyName",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "partyRoundKittens",
     "outputs": [
       {
-        "internalType": "bytes32",
+        "internalType": "uint256",
         "name": "",
-        "type": "bytes32"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "payOrganizerFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -365,12 +614,17 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
-        "name": "_daoFeesInBasisPoints",
-        "type": "uint8"
+        "internalType": "bytes",
+        "name": "_calldataForLock",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_callDataForUnwind",
+        "type": "bytes"
       }
     ],
-    "name": "setDAOFees",
+    "name": "setCallDataForYield",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -389,19 +643,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "_kreatorFeesInBasisPoints",
-        "type": "uint8"
-      }
-    ],
-    "name": "setKreatorFees",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "stage",
     "outputs": [
@@ -412,6 +653,27 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startNextRound",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startStakingMultiRound",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stopStaking",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

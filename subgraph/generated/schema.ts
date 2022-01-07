@@ -91,21 +91,21 @@ export class SKittyParty extends Entity {
     this.set("partyName", Value.fromString(value));
   }
 
-  get members(): Array<string | null> {
+  get members(): Array<string> {
     let value = this.get("members");
     return value.toStringArray();
   }
 
-  set members(value: Array<string | null>) {
+  set members(value: Array<string>) {
     this.set("members", Value.fromStringArray(value));
   }
 
-  get allMembers(): Array<string | null> {
+  get allMembers(): Array<string> {
     let value = this.get("allMembers");
     return value.toStringArray();
   }
 
-  set allMembers(value: Array<string | null>) {
+  set allMembers(value: Array<string>) {
     this.set("allMembers", Value.fromStringArray(value));
   }
 
