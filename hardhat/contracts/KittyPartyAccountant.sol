@@ -72,8 +72,8 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         (bool success, bytes memory kittensList) = address(litterAddress).staticcall(getList);
         require(success, "GE");
         (IKittens.Kitten[] memory kittens_) = abi.decode(kittensList, (IKittens.Kitten[]));
-        uint256[] memory tokenTypes;
-        uint256[] memory tokenAmounts;
+        uint256[] memory tokenTypes = new uint256[](2);
+        uint256[] memory tokenAmounts = new uint256[](2);
         tokenTypes[0] = 0;
         tokenTypes[1] = 1;
         tokenAmounts[0] = amountToSent;

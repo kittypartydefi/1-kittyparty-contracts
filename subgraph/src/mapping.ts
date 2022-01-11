@@ -47,7 +47,7 @@ export function handleKittenLiveViaFactory(event: KittyLive): void {
   if (KittyParty == null) {
     KittyParty = new SKittyParty(event.params.kitty.toHexString())
   }
-  let allMemberArray:Array<string>
+  let allMemberArray:Array<string> = []
   KittyParty.dateCreated = event.block.timestamp
   //In the following create is where we link the factory created KittyParty
   KittyPartyController.create(event.params.kitty)

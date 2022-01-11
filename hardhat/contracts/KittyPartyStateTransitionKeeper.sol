@@ -28,9 +28,14 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         kpControllers.push(kpController);
     }
 
+    ///@dev Delete by setting the last element to the current index
     function removeKPController(uint256 index) external onlyRole(SETTER_ROLE) {
         kpControllers[index] = kpControllers[kpControllers.length - 1];
-        delete kpControllers[kpControllers.length - 1];
+        delete kpControllers[kpControllers.length-1];
+    }
+
+    function getLength() external view returns (uint256 length) {
+        return kpControllers.length;
     }
     
     function checkUpkeep(bytes calldata) external view override returns (bool upkeepNeeded, bytes memory performData) {
@@ -39,17 +44,20 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
 
         for (uint i = 0; i < numberOfParties; i++) {
             address kpController = kpControllers[i];
-            bytes memory payload = abi.encodeWithSignature("isTransitionRequired()");
-            (bool success, bytes memory returnData) = address(kpController).staticcall(payload);
-            require(success);
-            (uint8 transitionType) = abi.decode(returnData, (uint8));
-            
-            //Transition is required only if transitionType is not equal to 88
-            if (transitionType != 88 || kpControllerPayoutStage[kpController]!=0) {
-                upkeepNeeded = true;
-                bytes memory transitionData = abi.encode(transitionType, kpController);
-                return (upkeepNeeded, transitionData);
-            }           
+            if(kpController != address(0)){
+                bytes memory payload = abi.encodeWithSignature("isTransitionRequired()");
+                (bool success, bytes memory returnData) = address(kpController).staticcall(payload);
+                if(success){
+                    (uint8 transitionType) = abi.decode(returnData, (uint8));
+                    
+                    //Transition is required only if transitionType is not equal to 88 or if there is a pending withdrawal
+                    if (transitionType != 88 || kpControllerPayoutStage[kpController]!=0) {
+                        upkeepNeeded = true;
+                        bytes memory transitionData = abi.encode(transitionType, kpController);
+                        return (upkeepNeeded, transitionData);
+                    }
+                }
+            }      
         }
     }
 

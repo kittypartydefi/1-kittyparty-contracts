@@ -24,7 +24,7 @@ async function main() {
 
   let dai_address = polygon.aave.sellTokenAddress;
   let kp_factory = "0x884D9ad451981efB982Fa8777FD8acC994BAdCF0";
-  let yieldContract = "0x232C4C2cE4382ceA3F068688a06e8B1aBf639693";
+  let yieldContract = "0xc1572Cb747a7Ee639896efa38f24783ecbDB8f89";
   let winnerStrategyAddress = "0xFd0364b579568EBAB272b340767b1A421dE0E8C6";
 
   let kittyPartyFactory:KittyPartyFactory = await _KittyPartyFactory.attach(kp_factory) as KittyPartyFactory;
@@ -49,20 +49,20 @@ async function main() {
     sellTokenAddress: polygon.aave.sellTokenAddress,
     lpTokenAddress: polygon.aave.aaveDaiContractAddress
   };
-    await dai.connect(kreator).approve(kittyPartyFactory.address, (KittyInitiator.amountInDAIPerRound.div(10)).toString());
-    await delay(15000);
-    console.log("Approved DAI")
+    // await dai.connect(kreator).approve(kittyPartyFactory.address, (KittyInitiator.amountInDAIPerRound.div(10)).toString());
+    // await delay(15000);
+    // console.log("Approved DAI")
     let kpfactory ={
       "tomCatContract" : "0x428644FeeA07197d3c08B89CEb11E1840888B890",
-      "accountantContract" :  "0x4236930ac8E00F992d123479b4fE9FF5d507298C",
+      "accountantContract" :  "0xD24Cc1c2D6dCC4af08d89121DdC0ACAa13A4c4C4",
       "litterAddress" : "0xCccddbF0C32a69d2Ac90080Da8c34006c83Af78c",
       "daoTreasuryContract" : "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e", 
-      "keeperContractAddress" : "0xDA1eF38961f525Aa06910697cf50E6AcA8d9335B"
+      "keeperContractAddress" : "0xE6a8778c3c34242edC789C37A34387B66Bb30390"
     }
-  //   await kittyPartyFactory.setFactoryInit(kpfactory);
-  //   await delay(35000);
-  //   console.log("Kreator", kreator.address)
-  //   console.log("KittyInitiator", KittyInitiator, KittyYieldArgs)
+    await kittyPartyFactory.setFactoryInit(kpfactory);
+    await delay(35000);
+    console.log("Kreator", kreator.address)
+    console.log("KittyInitiator", KittyInitiator, KittyYieldArgs)
 
   //  await kittyPartyFactory.setApprovedStrategy(yieldContract);
   //   await delay(35000);
@@ -71,26 +71,27 @@ async function main() {
     // await delay(15000);
     // console.log("deployedKitty ...")
 
-    let deployedKitty = await kittyPartyFactory.connect(kreator).getMyKitties(kreator.address);
+    // let deployedKitty = await kittyPartyFactory.connect(kreator).getMyKitties(kreator.address);
     
-    // await delay(3000);
-    // console.log('deployedKitty[deployedKitty.length - 1]::',JSON.stringify(deployedKitty[deployedKitty.length - 1]));
-    const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
-    const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
-    let kittyPartyController = await _KittyPartyController.attach(kittyPartyDeployed);
+    // // await delay(3000);
+    // // console.log('deployedKitty[deployedKitty.length - 1]::',JSON.stringify(deployedKitty[deployedKitty.length - 1]));
+    // const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+    // const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+    // let kittyPartyController = await _KittyPartyController.attach(kittyPartyDeployed);
 
     // let stage = await kittyPartyController.getStage();
     // console.log('stage::', stage)
 
-      // comment below for round 2 call
-    await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+     // // comment below for round 2 call
+    // await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
     // await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
 
     // const yielderFactory = await ethers.getContractFactory('KittyPartyYieldGeneratorAave');
     // const kittyPartyYieldGeneratorAave = await yielderFactory.attach(yieldContract);
     // await delay(20000);
       
-    // await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+    // // await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+    // await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
     // await delay(20000);
     // console.log('depositAndAddKittenToParty::')
     
@@ -100,8 +101,8 @@ async function main() {
     // await kittyPartyController.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointhebarty"));
     // await delay(20000);
 
-    await kittyPartyController.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"));
-    console.log('depositAndAddKittenToParty 1/2..')
+    // await kittyPartyController.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"));
+    // console.log('depositAndAddKittenToParty 1/2..')
 
     // await kittyPartyController.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"), {"gasLimit": 6000000});
     // console.log('depositAndAddKittenToParty 2/2')
