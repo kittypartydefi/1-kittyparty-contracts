@@ -89,7 +89,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         //shift the last address to the current index
         //push the current to the end
         kpControllers[index] = kpControllers[kpControllers.length - 1];
-        kpControllers[kpControllers.length - 1] = kpControllers[kpController];
+        kpControllers[kpControllers.length - 1] = kpControllers[index];
         (bool success,) = address(kpController).call(payload);
         require(success);
     }
