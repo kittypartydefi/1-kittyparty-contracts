@@ -43,7 +43,9 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         uint256 numberOfParties = kpControllers.length;
         upkeepNeeded = false;
 
-        for (uint256 i = 0; i < numberOfParties; i++) {
+        if (numberOfParties > 0) {
+
+            uint i = block.number % numberOfParties;
             address kpController = kpControllers[i];
             if(kpController != address(0)){
                 bytes memory payload = abi.encodeWithSignature("isTransitionRequired()");
@@ -58,8 +60,8 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
                         return (upkeepNeeded, transitionData);
                     }
                 }
-            }      
-        }
+            }   
+        }   
     }
 
     function performUpkeep(bytes calldata performData) external override {
@@ -86,10 +88,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
             payload = abi.encodeWithSignature("applyCompleteParty()");
             removeKPController(index);
         }
-        //shift the last address to the current index
-        //push the current to the end
-        kpControllers[index] = kpControllers[kpControllers.length - 1];
-        kpControllers[kpControllers.length - 1] = kpControllers[index];
+        
         (bool success,) = address(kpController).call(payload);
         require(success);
     }
