@@ -3,14 +3,16 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@rari-capital/solmate/src/utils/ReentrancyGuard.sol";
+
 // import "hardhat/console.sol";
 
-contract KittyPartyTreasury is Initializable {
+contract KittyPartyTreasury is Initializable, ReentrancyGuard {
     IERC20 public dai;
     IERC20 public kpt;
-    address accountantContract;
-    uint256 bonusKPTPerToken;
-    address daoAddress;
+    address public accountantContract;
+    uint256 public bonusKPTPerToken;
+    address public daoAddress;
 
     event RedemptionRequested(address redeemer, uint256 amount, uint256 bonus);
     modifier onlyDAOAddress(){
@@ -46,7 +48,7 @@ contract KittyPartyTreasury is Initializable {
         accountantContract = _accountantContract;
     }
 
-    function redeemTokens(uint256 redeemAmount) external {
+    function redeemTokens(uint256 redeemAmount) external nonReentrant{
         uint256 daiBalance = dai.balanceOf(address(this));
         require(daiBalance > redeemAmount, "Insufficient balance to transfer");
 
@@ -62,7 +64,7 @@ contract KittyPartyTreasury is Initializable {
         }
     }
 
-    function withdraw(IERC20 token, address recipient, uint256 amount) public onlyDAOAddress {
+    function withdraw(IERC20 token, address recipient, uint256 amount) public nonReentrant onlyDAOAddress {
         token.transfer(recipient, amount);
     }
 }

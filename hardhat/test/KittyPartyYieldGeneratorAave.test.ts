@@ -25,18 +25,18 @@ const aaveRewardTokenContractAddress = "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf12
 
 
 // Start test block
-describe.skip('Kitty Party Aave Yield Generator can zap in and out', function () {
+describe('Kitty Party Aave Yield Generator can zap in and out', function () {
 
-let polygon =  require("./PolygonAddresses.ts");
+let addresses =  require("./ContractAddresses.ts");
 
 
 let kittyPartyTreasury: KittyPartyTreasury;
 
-const sellTokenAddress = polygon.aave.sellTokenAddress;
-const aaveContractAddress = polygon.aave.aaveContractAddress;
-const aaveDaiContractAddress = polygon.aave.aaveDaiContractAddress;
-const aaveRewardContractAddress = polygon.aave.aaveRewardContractAddress;
-const aaveRewardTokenContractAddress = polygon.aave.aaveRewardTokenContractAddress;
+const sellTokenAddress = addresses.polygon.sellTokenAddress;
+const aaveContractAddress = addresses.polygon.aaveContractAddress;
+const aaveDaiContractAddress = addresses.polygon.aaveDaiContractAddress;
+const aaveRewardContractAddress = addresses.polygon.aaveRewardContractAddress;
+const aaveRewardTokenContractAddress = addresses.polygon.aaveRewardTokenContractAddress;
 
 
 // Start test block
@@ -55,7 +55,7 @@ describe('Kitty Party Aave Yield Generator can deposit and withdraw', function (
     const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero ;
 
     //init the zapper contract and set the party etc...
-    await kittyPartyYieldGeneratorAave.__KittyPartyYieldGeneratorAave_init("0xf88e8857cd5BA7A3762f71acb12781DDD412d0E2");
+    await kittyPartyYieldGeneratorAave.__KittyPartyYieldGeneratorAave_init("0xc044871dBbdf65D708c2Db406DED02258f19A96B");
     //Transfer admin role to yielder contract for accountant so that clones can be granted minter role
     return kittyPartyYieldGeneratorAave;    
   }
@@ -82,15 +82,15 @@ it('can deposit money in', async function () {
  * we can also check if the v2 token amount has increased and dai amount has decreased
  * A. Can we deposit and can we withdraw
  */
-  const Token = await ethers.getContractFactory("DAI");
+  const Token = await ethers.getContractFactory("ERC20");
   daiFactory = await Token.attach(sellTokenAddress);
 
   await network.provider.request({
     method: "hardhat_impersonateAccount",
-    params: ["0xf88e8857cd5BA7A3762f71acb12781DDD412d0E2"],
+    params: ["0xc044871dBbdf65D708c2Db406DED02258f19A96B"],
   });
 
-  const real_wallet = await ethers.getSigner("0xf88e8857cd5BA7A3762f71acb12781DDD412d0E2");
+  const real_wallet = await ethers.getSigner("0xc044871dBbdf65D708c2Db406DED02258f19A96B");
   let myBalance = await daiFactory.balanceOf(real_wallet.address);
 
   const depositReceiptToken = await ethers.getContractFactory("ERC20");
@@ -105,7 +105,7 @@ it('can deposit money in', async function () {
   await kittyPartyYieldGeneratorAave.setPartyInfo(sellTokenAddress, aaveDaiContractAddress);
   await kittyPartyYieldGeneratorAave.setPlatformDepositContractAddress(aaveContractAddress);
   
-  await kittyPartyYieldGeneratorAave.setAllowanceDeposit();
+  await kittyPartyYieldGeneratorAave.setAllowanceDeposit(wallet.address);
 
   const allowance = await daiFactory.allowance(kittyPartyYieldGeneratorAave.address, aaveContractAddress);
   console.log("allowance kittyPartyYieldGeneratorAave - ", ethers.utils.formatEther(allowance) );
@@ -117,7 +117,7 @@ it('can deposit money in', async function () {
 
   console.log("ygBalance after - ",  ethers.utils.formatEther(ygBalance))
   
-  // expect(allowance.toString()).to.equal("0xf88e8857cd5BA7A3762f71acb12781DDD412d0E2");
+  // expect(allowance.toString()).to.equal("0xc044871dBbdf65D708c2Db406DED02258f19A96B");
   //once allowance is set lets put some DAI into it
 
   
@@ -125,15 +125,15 @@ it('can deposit money in', async function () {
 
     // Test case
   it('can do a withdraw', async function () {
-    const Token = await ethers.getContractFactory("DAI");
+    const Token = await ethers.getContractFactory("ERC20");
     daiFactory = await Token.attach(sellTokenAddress);
   
     await network.provider.request({
       method: "hardhat_impersonateAccount",
-      params: ["0xf88e8857cd5BA7A3762f71acb12781DDD412d0E2"],
+      params: ["0xc044871dBbdf65D708c2Db406DED02258f19A96B"],
     });
   
-    const real_wallet = await ethers.getSigner("0xf88e8857cd5BA7A3762f71acb12781DDD412d0E2");
+    const real_wallet = await ethers.getSigner("0xc044871dBbdf65D708c2Db406DED02258f19A96B");
 
     let myBalance = await daiFactory.balanceOf(real_wallet.address);
 
@@ -153,9 +153,9 @@ it('can deposit money in', async function () {
     console.log("Dai Balance - ",  ethers.utils.formatEther(myBalance))
   
     await kittyPartyYieldGeneratorAave.setPartyInfo(sellTokenAddress, aaveDaiContractAddress);
-    await kittyPartyYieldGeneratorAave.setPlatformRewardContractAddress(aaveRewardContractAddress);
+    await kittyPartyYieldGeneratorAave.setPlatformRewardContractAddress(aaveRewardContractAddress,sellTokenAddress);// here later replace sellTokenAddress with reward Token address
     await kittyPartyYieldGeneratorAave.setPlatformDepositContractAddress(aaveContractAddress);
-    await kittyPartyYieldGeneratorAave.setAllowanceDeposit();
+    await kittyPartyYieldGeneratorAave.setAllowanceDeposit(wallet.address);
   
     const allowance = await daiFactory.allowance(kittyPartyYieldGeneratorAave.address, aaveContractAddress);
 
@@ -175,12 +175,12 @@ it('can deposit money in', async function () {
 
 
     
-    // expect(allowance.toString()).to.equal("0xf88e8857cd5BA7A3762f71acb12781DDD412d0E2");
+    // expect(allowance.toString()).to.equal("0xc044871dBbdf65D708c2Db406DED02258f19A96B");
     //once allowance is set lets put some DAI into it
 
 
    await network.provider.send("evm_increaseTime", [6000*6000]);
-   await kittyPartyYieldGeneratorAave.unwindLockedValue(wallet.address, '0x00');
+   await kittyPartyYieldGeneratorAave.unwindLockedValue('0x00');
 
      
    ygBalance = await daiDepositReceiptToken.balanceOf(kittyPartyYieldGeneratorAave.address);

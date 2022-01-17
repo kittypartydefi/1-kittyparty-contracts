@@ -131,7 +131,7 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         return lpTokenBalance * kittyPartyYieldInfo[kittyParty].lockedAmount / totalLocked;
     }
 
-    function yieldGenerated(address kittyParty) external view override returns (uint256 yieldGenerated) {
+    function yieldGenerated(address kittyParty) external view override returns (uint256) {
         return kittyPartyYieldInfo[kittyParty].yieldGeneratedInLastRound;
     }
 

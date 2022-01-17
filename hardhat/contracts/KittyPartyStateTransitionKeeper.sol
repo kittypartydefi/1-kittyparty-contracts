@@ -9,6 +9,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
 
     //Array to store addresses of currently active kitty parties
     address[] public kpControllers;
+    uint counter;
 
     //Mapping to identify the current intermediate stage of the party within the Payout Stage
     // 0 - Stop Staking
@@ -29,7 +30,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
     }
 
     ///@dev Delete by setting the last element to the current index
-    function removeKPController(uint256 index) external onlyRole(SETTER_ROLE) {
+    function removeKPController(uint256 index) public onlyRole(SETTER_ROLE) {
         kpControllers[index] = kpControllers[kpControllers.length - 1];
         delete kpControllers[kpControllers.length-1];
     }
@@ -39,10 +40,10 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
     }
     
     function checkUpkeep(bytes calldata) external view override returns (bool upkeepNeeded, bytes memory performData) {
-        uint numberOfParties = kpControllers.length;
+        uint256 numberOfParties = kpControllers.length;
         upkeepNeeded = false;
 
-        for (uint i = 0; i < numberOfParties; i++) {
+        for (uint256 i = 0; i < numberOfParties; i++) {
             address kpController = kpControllers[i];
             if(kpController != address(0)){
                 bytes memory payload = abi.encodeWithSignature("isTransitionRequired()");
@@ -53,7 +54,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
                     //Transition is required only if transitionType is not equal to 88 or if there is a pending withdrawal
                     if (transitionType != 88 || kpControllerPayoutStage[kpController]!=0) {
                         upkeepNeeded = true;
-                        bytes memory transitionData = abi.encode(transitionType, kpController);
+                        bytes memory transitionData = abi.encode(transitionType,kpController,i);
                         return (upkeepNeeded, transitionData);
                     }
                 }
@@ -62,7 +63,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
     }
 
     function performUpkeep(bytes calldata performData) external override {
-        (uint8 transitionType, address kpController) = abi.decode(performData, (uint8, address));
+        (uint8 transitionType, address kpController, uint256 index) = abi.decode(performData, (uint8,address,uint256));
         bytes memory payload;
         if (transitionType == 0) {
             payload = abi.encodeWithSignature("applyInitialVerification()");            
@@ -82,8 +83,13 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         } else if (transitionType == 3) {
             payload = abi.encodeWithSignature("startNextRound()");           
         } else if (transitionType == 4) {
-            payload = abi.encodeWithSignature("applyCompleteParty()");           
+            payload = abi.encodeWithSignature("applyCompleteParty()");
+            removeKPController(index);
         }
+        //shift the last address to the current index
+        //push the current to the end
+        kpControllers[index] = kpControllers[kpControllers.length - 1];
+        kpControllers[kpControllers.length - 1] = kpControllers[kpController];
         (bool success,) = address(kpController).call(payload);
         require(success);
     }

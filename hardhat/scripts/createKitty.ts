@@ -51,7 +51,7 @@ async function main() {
   };
     // await dai.connect(kreator).approve(kittyPartyFactory.address, (KittyInitiator.amountInDAIPerRound.div(10)).toString());
     // await delay(15000);
-    // console.log("Approved DAI")
+    console.log("Approved DAI")
     let kpfactory ={
       "tomCatContract" : "0x428644FeeA07197d3c08B89CEb11E1840888B890",
       "accountantContract" :  "0xD24Cc1c2D6dCC4af08d89121DdC0ACAa13A4c4C4",
@@ -59,17 +59,18 @@ async function main() {
       "daoTreasuryContract" : "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e", 
       "keeperContractAddress" : "0xE6a8778c3c34242edC789C37A34387B66Bb30390"
     }
-    await kittyPartyFactory.setFactoryInit(kpfactory);
-    await delay(35000);
-    console.log("Kreator", kreator.address)
-    console.log("KittyInitiator", KittyInitiator, KittyYieldArgs)
-
+    // await kittyPartyFactory.setFactoryInit(kpfactory);
+    // await delay(35000);
+    // console.log("Kreator", kreator.address)
+    // console.log("KittyInitiator", KittyInitiator, KittyYieldArgs)
+  const kpfactory_ =   await kittyPartyFactory.kpFactory();
   //  await kittyPartyFactory.setApprovedStrategy(yieldContract);
   //   await delay(35000);
+    console.log("kittyPartyFactory", kpfactory_, kpfactory)
 
-    // const instance = await kittyPartyFactory.connect(kreator).createKitty(KittyInitiator, KittyYieldArgs);
-    // await delay(15000);
-    // console.log("deployedKitty ...")
+    const instance = await kittyPartyFactory.connect(kreator).createKitty(KittyInitiator, KittyYieldArgs, {gasLimit:6000000});
+    await delay(15000);
+    console.log("deployedKitty ...")
 
     // let deployedKitty = await kittyPartyFactory.connect(kreator).getMyKitties(kreator.address);
     

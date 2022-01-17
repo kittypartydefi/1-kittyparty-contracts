@@ -1,3 +1,6 @@
 {
-  "name": "hardhat-project"
+  "name": "hardhat-project",
+  "dependencies": {
+    "@rari-capital/solmate": "^6.2.0"
+  }
 }

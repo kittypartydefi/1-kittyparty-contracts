@@ -48,7 +48,7 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         external 
         onlyRole(DEFAULT_ADMIN_ROLE) 
     {
-        require(!_initialized, "Initializable: contract is already initialized");
+        require(!_initialized, "Contract is already initialized");
         factoryContract = _factoryContract;
         _setupRole(DEFAULT_ADMIN_ROLE, _factoryContract);
         _mint(daoAddress, PLANETARY, 10**18, "");// additional emissions on winning

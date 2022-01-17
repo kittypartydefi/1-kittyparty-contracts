@@ -30,7 +30,22 @@ task("accounts", "Prints the list of accounts", async (args, { ethers }) => {
  */
 const config: HardhatUserConfig =  {
   defaultNetwork: "hardhat",
-  solidity: "0.8.2",
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.11",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 800
+          }
+        }
+      },
+      {
+        version: "0.8.2",
+        settings: {},
+      },
+    ]},
   paths: {
     artifacts: '../frontend/artifacts',
   },
@@ -44,7 +59,7 @@ const config: HardhatUserConfig =  {
       forking: {
         enabled: true,
         url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-        blockNumber: 22897375
+        blockNumber: 23740202
       },
       mining: {
         auto: true,
@@ -62,6 +77,7 @@ const config: HardhatUserConfig =  {
     mainnet: {
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`, 
       accounts,
+      gasPrice:110000000000
     },
     ropsten: {
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`, 

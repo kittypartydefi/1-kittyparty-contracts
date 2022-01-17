@@ -54,8 +54,8 @@ contract KittyPartyFactory is IKittenPartyInit, Initializable {
         daoFeesInBasisPoints = _daoFeesInBasisPoints;
     }
     
-    /// @dev A factory that creates a Kitty Party, any user can create a PLANETARY factory
-    /// @notice Kitty Party is a community not a single pool so limit no of Kittens/pool
+    /// @dev Kitty Party is a community not a single pool so limit no of Kittens/pool
+    /// @notice Factory that creates a Kitty Party
     function createKitty(
          KittyInitiator calldata _kittyInitiator,
          KittyYieldArgs calldata _kittyYieldArgs
@@ -70,7 +70,7 @@ contract KittyPartyFactory is IKittenPartyInit, Initializable {
                     (_kittyInitiator.amountInDAIPerRound >= 1000 * DECIMALS) ? 2 : 1;
     
         require(myStrategies[_kittyInitiator.yieldContract] == true, "Strategy not approved");
-        //min requirements to be met
+        //min requirements
         require(_kittyInitiator.maxKittens <= 20, "Too many Kittens");
         require(allowance >= _kittyInitiator.amountInDAIPerRound / 10, "Min 10% req as stake");
         require(_kittyInitiator.amountInDAIPerRound >= 20 * DECIMALS, "Min $20 req as stake");
