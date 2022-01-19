@@ -26,6 +26,8 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
 
     /****** EVENTS *******/
 
+    event KreatorStaked(uint amount);
+    event KittenDeposited(uint amount);
     event RefundRequested(uint refund);
     event StopStaking(address party, uint amount);
     event PaidFees(address party, uint fees);
@@ -84,6 +86,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
             _kittyYieldArgs.lpTokenAddress);
         
         durationInDays = _kittyInitiator.durationInDays;
+        emit KreatorStaked(_kreatorStake);
         _initState(_kittyInitiator.timeToCollection);
     }
     
@@ -156,6 +159,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         (bool success, bytes memory kittenIndex) = address(kPFactory.litterAddress).call(getIndex);
         require(success, "Kitten not added");
         (uint256 index) = abi.decode(kittenIndex, (uint256));
+        emit KittenDeposited(kittyInitiator.amountInDAIPerRound);
         partyRoundKittens.push(index);
     }
 
