@@ -7,7 +7,7 @@ import * as hre from "hardhat";
 
 async function main() {
   const [deployer] = await ethers.getSigners();
-  const KP_DAO_ADDRESS = "0xD832235BcF4Faa22e5752a266737d1E82b84E6c3";
+  const KP_DAO_ADDRESS = "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e";
   console.log("The deployer address is " , deployer.address)
   const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero ;
   
@@ -39,21 +39,21 @@ function delay(ms: number) {
   return new Promise( resolve => setTimeout(resolve, ms) );
 }
 
-async function verifySingle(){
-  await verify("0x444f20A5d578862bf84B6d14EC3CA0c8Be8e555F"); 
+// async function verifySingle(){
+//   await verify("0x444f20A5d578862bf84B6d14EC3CA0c8Be8e555F"); 
 
-}
-verifySingle();
+// }
+// verifySingle();
 
 
 
-  // main()
-  // .then( async (deployedData) => {
-  //   await delay(50000);
-  //   await verify(deployedData.kittyPartyToken);
-  //   process.exit(0)
-  // })
-  // .catch(error => {
-  //   console.error(error);
-  //   process.exit(1);
-  // });
+  main()
+  .then( async (deployedData) => {
+    await delay(50000);
+    await verify(deployedData.kittyPartyToken);
+    process.exit(0)
+  })
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
+  });
