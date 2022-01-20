@@ -13,7 +13,7 @@ import {
 
 // In each block deploy different options
 // Check that other types dont work either now or in future
-describe('Kitty Party Option of one winner works as intended', function () {
+describe.skip('Kitty Party Option of one winner works as intended', function () {
   let wallet: Wallet, 
       other: Wallet, 
       kitten1: Wallet, 
@@ -45,70 +45,70 @@ describe('Kitty Party Option of one winner works as intended', function () {
   })
   // Test case
 
-  xit('cannot verify kitten if approval not given and throws error', async function () {
-    expect((await controller.internalState())).to.equal(false);
-    let initialOptionsForParty = {
-      partyName: 'og',
-      amountInDAIPerRound: 10,
-      daiAddress: daiFactory.address,
-      durationInDays: 1,
-      winningStrategy: 1,
-      vrfEnabled: false,
-      yieldContract: other.address,
-      timeToCollection: 1,
-      maxKittens: 400,
-    };
-    let initializedController = (
-      await controller.initialize(
-        initialOptionsForParty, 
-        kittyPartyAccountant.address, 
-        other.address, 
-        wallet.address, 
-        other.address, 
-        other.address, 
-        0
-      )
-    );
+  // xit('cannot verify kitten if approval not given and throws error', async function () {
+  //   expect((await controller.internalState())).to.equal(false);
+  //   let initialOptionsForParty = {
+  //     partyName: 'og',
+  //     amountInDAIPerRound: 10,
+  //     daiAddress: daiFactory.address,
+  //     durationInDays: 1,
+  //     winningStrategy: 1,
+  //     vrfEnabled: false,
+  //     yieldContract: other.address,
+  //     timeToCollection: 1,
+  //     maxKittens: 400,
+  //   };
+  //   let initializedController = (
+  //     await controller.initialize(
+  //       initialOptionsForParty, 
+  //       kittyPartyAccountant.address, 
+  //       other.address, 
+  //       wallet.address, 
+  //       other.address, 
+  //       other.address, 
+  //       0
+  //     )
+  //   );
 
-    expect((await controller.internalState())).to.equal(true);
-    await daiFactory.transfer(kitten1.address, ethers.utils.parseUnits("30"));
-    await daiFactory.transfer(kitten2.address, ethers.utils.parseUnits("30"));
-    let bal = await daiFactory.balanceOf(kitten2.address);
-    await controller.setInviteHash(ethers.utils.formatBytes32String("jointhebarty"));
+  //   expect((await controller.internalState())).to.equal(true);
+  //   await daiFactory.transfer(kitten1.address, ethers.utils.parseUnits("30"));
+  //   await daiFactory.transfer(kitten2.address, ethers.utils.parseUnits("30"));
+  //   let bal = await daiFactory.balanceOf(kitten2.address);
+  //   await controller.setInviteHash(ethers.utils.formatBytes32String("jointhebarty"));
     
-    await expect(
-      controller.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"))
-    ).to.be.revertedWith("Please approve the transfer amount");
-  });
+  //   await expect(
+  //     controller.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"))
+  //   ).to.be.revertedWith("Please approve the transfer amount");
+  // });
 
-  xit('can list all the kittens that belong to the party', async function () {
-    await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
-    let bal = await daiFactory.balanceOf(controller.address);
-    console.log(bal)
-  });
+  // xit('can list all the kittens that belong to the party', async function () {
+  //   await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
+  //   let bal = await daiFactory.balanceOf(controller.address);
+  //   console.log(bal)
+  // });
 
-  xit('can transition between all the rounds', async function () {
-    await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
-    let bal = await daiFactory.balanceOf(controller.address);
-    console.log(bal)
-  });
+  // xit('can transition between all the rounds', async function () {
+  //   await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
+  //   let bal = await daiFactory.balanceOf(controller.address);
+  //   console.log(bal)
+  // });
 
-  xit('can transition between all the rounds', async function () {
-    await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
-    let bal = await daiFactory.balanceOf(controller.address);
-    console.log(bal)
-  });
+  // xit('can transition between all the rounds', async function () {
+  //   await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
+  //   let bal = await daiFactory.balanceOf(controller.address);
+  //   console.log(bal)
+  // });
 
-  xit('will not accept kittens once rounds have started', async function () {
-    await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
-    let bal = await daiFactory.balanceOf(controller.address);
-    console.log(bal)
-  });
+  // xit('will not accept kittens once rounds have started', async function () {
+  //   await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
+  //   let bal = await daiFactory.balanceOf(controller.address);
+  //   console.log(bal)
+  // });
 
-  xit('will finish after X rounds', async function () {
-    await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
-    let bal = await daiFactory.balanceOf(controller.address);
-    console.log(bal)
-  });
+  // xit('will finish after X rounds', async function () {
+  //   await daiFactory.transfer(controller.address, ethers.utils.parseUnits("30000"));
+  //   let bal = await daiFactory.balanceOf(controller.address);
+  //   console.log(bal)
+  // });
 
 });

@@ -9,27 +9,24 @@ import {
 } from '../src/types/index';
 
 
-describe('Kitty Party Guardian can guard the party verse', function () {
+describe('Kitty Party Accountant Init', function () {
   let wallet: Wallet, 
-      other: Wallet, 
-      kitten1: Wallet, 
+      daoAddress: Wallet, 
+      factory: Wallet, 
       kitten2: Wallet;
   let kittyPartyAccountant: KittyPartyAccountant;
-  let daiFactory: any;
 
   const createFixtureLoader = waffle.createFixtureLoader;
   const fixture = async () => {
     const _KittyPartyAccountant = await ethers.getContractFactory("KittyPartyAccountant");
-    return (await _KittyPartyAccountant.deploy()) as KittyPartyAccountant;
+    return (await _KittyPartyAccountant.deploy(daoAddress.address)) as KittyPartyAccountant;
   }
 
   let loadFixture: ReturnType<typeof createFixtureLoader>;
 
   before('create fixture loader', async () => {
-    [wallet, other, kitten1, kitten2] = await (ethers as any).getSigners()
-    loadFixture = createFixtureLoader([wallet, other, kitten1, kitten2])
-    const Token = await ethers.getContractFactory("DAI");
-    daiFactory = await Token.deploy();
+    [wallet, daoAddress, factory, kitten2] = await (ethers as any).getSigners()
+    loadFixture = createFixtureLoader([wallet, daoAddress, factory, kitten2])
   })
 
   beforeEach('deploy kittyPartyAccountant', async () => {
@@ -37,6 +34,10 @@ describe('Kitty Party Guardian can guard the party verse', function () {
   })
   // Test case
 
-  xit('cannot verify kitten if approval not given and throws error', async function () {
+  it('can initialize the contract', async function () {
+    kittyPartyAccountant.__KittyPartyAccountant_init(factory.address)
+  });
+  it('cannot reinit the contract', async function () {
+    expect(kittyPartyAccountant.__KittyPartyAccountant_init(factory.address)).to.be.revertedWith("Contract is already initialized");
   });
 });

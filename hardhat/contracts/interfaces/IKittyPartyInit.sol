@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BSL
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
 interface IKittenPartyInit {
@@ -26,7 +26,7 @@ interface IKittenPartyInit {
         address accountantContract;
         address litterAddress;
         address daoTreasuryContract;
-        address daoAddress;
+        address keeperContractAddress;
     }
 
     struct KittyPartyControllerVars {

@@ -28,7 +28,7 @@ const zapContractAddress = "0xF231be40d73a9E73d859955344A4fF74f448dF34";
 
 
 // Start test block
-describe('Kitty Party Zapper Yield Generator can zap in and out', function () {
+describe.skip('Kitty Party Zapper Yield Generator can zap in and out', function () {
   let wallet: Wallet, 
       other: Wallet, 
       kitten1: Wallet, 

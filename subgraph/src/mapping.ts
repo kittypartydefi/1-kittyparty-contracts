@@ -19,7 +19,7 @@ export function handleKittenAddedToParty(event: KittenAddedToParty): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
   let KittyParty = SKittyParty.load(event.params.KittyParty.toHexString())
-
+  if(KittyParty){
   let memberArray:Array<string> = KittyParty.members
   let allMemberArray:Array<string> = KittyParty.allMembers
 
@@ -29,6 +29,7 @@ export function handleKittenAddedToParty(event: KittenAddedToParty): void {
   KittyParty.members = memberArray
   KittyParty.allMembers = allMemberArray
   KittyParty.save()
+  }
 }
 
 export function handleKittenCreated(event: KittenCreated): void {
@@ -46,7 +47,7 @@ export function handleKittenLiveViaFactory(event: KittyLive): void {
   if (KittyParty == null) {
     KittyParty = new SKittyParty(event.params.kitty.toHexString())
   }
-  let allMemberArray:Array<string>
+  let allMemberArray:Array<string> = []
   KittyParty.dateCreated = event.block.timestamp
   //In the following create is where we link the factory created KittyParty
   KittyPartyController.create(event.params.kitty)
@@ -62,9 +63,11 @@ export function handleKittenLiveViaFactory(event: KittyLive): void {
 
 export function handleStageTransition(event: StageTransition): void {
   // Save the next stage as the current stage in graph 
-  let KittyParty = SKittyParty.load(event.transaction.to.toHexString())
-  KittyParty.stage = event.params.nextStage;
-  KittyParty.save();
+  let KittyParty = SKittyParty.load(event.params.party.toHexString())
+  if(KittyParty){
+    KittyParty.stage = event.params.nextStage;
+    KittyParty.save();
+  }
 }
 
 export function handleRoleAdminChanged(event: RoleAdminChanged): void {}

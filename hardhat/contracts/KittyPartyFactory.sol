@@ -2,55 +2,60 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/proxy/ClonesUpgradeable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import './KittyPartyController.sol';
 import './interfaces/IKittyPartyInit.sol';
+import './interfaces/IKittyPartyAccountant.sol';
+import './interfaces/IKittyPartyKeeper.sol';
 
-contract KittyPartyFactory is IKittenPartyInit, IERC1155Receiver {
+contract KittyPartyFactory is IKittenPartyInit, Initializable {
 
-    KittyPartyFactoryArgs public kPFactory;
+    KittyPartyFactoryArgs public kpFactory;
 
     mapping(address => address[]) public myKitties;
+    mapping(address => bool) public myStrategies;
 
-    bool public shouldReject;
+    uint8 public kreatorFeesInBasisPoints;
+    uint8 public daoFeesInBasisPoints;
+    address public daoAddress;
 
-    bytes public lastData;
-    address public lastOperator;
-    address public lastFrom;
-    uint256 public lastId;
-    uint256 public lastValue;
-
-    uint8 public kreatorFeesInBasisPoints = 100;
-    uint8 public daoFeesInBasisPoints = 100;
-   
-    bytes4 constant internal ERC1155_ACCEPTED = 0xf23a6e61;
-    bytes4 constant internal ERC1155_BATCH_ACCEPTED = 0xbc197c81;
-
+    uint256 constant DECIMALS = 10 ** 18;
+    
     event KittyLive(address indexed kreator, address kitty, bytes32 kittyPartyName);
+    event FactoryInitialized();
     
     modifier onlyDAOAddress(){
-        require(msg.sender == kPFactory.daoAddress);
+        require(msg.sender == daoAddress);
         _;
     }
 
-    constructor(
-        KittyPartyFactoryArgs memory _kPFactory
-    )   {
-        kPFactory = _kPFactory;
+    function initialize(address _daoAddress) external initializer {
+        daoAddress = _daoAddress;
+        kreatorFeesInBasisPoints = 100;
+        daoFeesInBasisPoints = 100;
+    }
+
+    function setFactoryInit(KittyPartyFactoryArgs memory _kpFactory) external onlyDAOAddress {
+        kpFactory = _kpFactory;
+        emit FactoryInitialized();
     }
     
     function setKreatorFees(uint8 _kreatorFeesInBasisPoints) external onlyDAOAddress {
         kreatorFeesInBasisPoints = _kreatorFeesInBasisPoints;
     }
 
+    function setApprovedStrategy(address _strategy) external onlyDAOAddress {
+        myStrategies[_strategy] = true;
+    }
+
     function setDAOFees(uint8 _daoFeesInBasisPoints) external onlyDAOAddress {
         daoFeesInBasisPoints = _daoFeesInBasisPoints;
     }
     
-    /// @dev A factory that creates a Kitty Party, any user can create a PLANETARY factory
-    /// @notice Kitty Party is a community not a single pool so limit no of Kittens/pool
+    /// @dev Kitty Party is a community not a single pool so limit no of Kittens/pool
+    /// @notice Factory that creates a Kitty Party
     function createKitty(
          KittyInitiator calldata _kittyInitiator,
          KittyYieldArgs calldata _kittyYieldArgs
@@ -58,25 +63,29 @@ contract KittyPartyFactory is IKittenPartyInit, IERC1155Receiver {
         external
         returns (address kittyAddress)
     {
-        address kitty = ClonesUpgradeable.clone(kPFactory.tomCatContract);
-        (bool success,) = address(kPFactory.accountantContract).call(abi.encodeWithSignature("setupMinter(address)", kitty));
-        require(success, "Not able to set minter");
-        require(_kittyInitiator.maxKittens <= 20, "Too many Kittens");
-        
+        address kitty = ClonesUpgradeable.clone(kpFactory.tomCatContract);   
         IERC20 dai = IERC20(_kittyInitiator.daiAddress);
         uint256 allowance = dai.allowance(msg.sender, address(this));
-
-        //require minimum stake from kreator
-        require(allowance >= _kittyInitiator.amountInDAIPerRound / 10, "Min 10% req as Stake");
-        require(_kittyInitiator.amountInDAIPerRound >= 20 * 10 ** 18, "Min $20 req as Stake");
+        uint badgeType = (_kittyInitiator.amountInDAIPerRound >= 1000000 * DECIMALS) ? 3 : 
+                    (_kittyInitiator.amountInDAIPerRound >= 1000 * DECIMALS) ? 2 : 1;
+    
+        require(myStrategies[_kittyInitiator.yieldContract] == true, "Strategy not approved");
+        //min requirements
+        require(_kittyInitiator.maxKittens <= 20, "Too many Kittens");
+        require(allowance >= _kittyInitiator.amountInDAIPerRound / 10, "Min 10% req as stake");
+        require(_kittyInitiator.amountInDAIPerRound >= 20 * DECIMALS, "Min $20 req as stake");
         require(dai.transferFrom(msg.sender, address(_kittyInitiator.yieldContract), allowance), "Kreator stake fail");
-        require(_kittyInitiator.kreatorFeesInBasisPoints <= kreatorFeesInBasisPoints);// you cannot charge more fees than guidance
-        require(_kittyInitiator.daoFeesInBasisPoints <= daoFeesInBasisPoints);
-        
+        require(_kittyInitiator.kreatorFeesInBasisPoints <= kreatorFeesInBasisPoints, "Fees too low");
+        require(_kittyInitiator.daoFeesInBasisPoints <= daoFeesInBasisPoints, "Dao fees too low");
+        //check kreators permissions        
+        require(IKittyPartyAccountant(kpFactory.accountantContract).balanceOf(msg.sender, badgeType) > 0, "Kreator not permitted");
+        require(IKittyPartyAccountant(kpFactory.accountantContract).balanceOf(msg.sender, 5) == 0, "HARKONNEN");
+        require(IKittyPartyAccountant(kpFactory.accountantContract).setupMinter(kitty), "Not able to set minter");
+   
         KittyPartyController(kitty).initialize(
             _kittyInitiator,
             _kittyYieldArgs,
-            kPFactory,
+            kpFactory,
             msg.sender, 
             allowance
         );
@@ -85,77 +94,15 @@ contract KittyPartyFactory is IKittenPartyInit, IERC1155Receiver {
         myKitties[msg.sender].push(kitty);
         emit KittyLive(msg.sender, kitty, _kittyInitiator.partyName);
 
-        (bool successLitter,) = address(kPFactory.litterAddress).call(abi.encodeWithSignature("setupKittyParty(address)", kitty));
+        (bool successLitter,) = address(kpFactory.litterAddress).call(abi.encodeWithSignature("setupKittyParty(address)", kitty));
         require(successLitter, "Not able to set KittyParty role!");
+        //automate the cron jobs via keepers
+        IKittyPartyKeeper(kpFactory.keeperContractAddress).addKPController(kitty);
         
         return kitty;
     }
      
     function getMyKitties(address candidateAddress) external view returns (address[] memory) {
         return myKitties[candidateAddress];
-    }
-
-    function setShouldReject(bool _value) public {
-        shouldReject = _value;
-    }
-
-    function onERC1155Received(
-        address _operator, 
-        address _from, 
-        uint256 _id, 
-        uint256 _value, 
-        bytes calldata _data
-    ) 
-        external 
-        override
-        returns (bytes4) 
-    {
-        lastOperator = _operator;
-        lastFrom = _from;
-        lastId = _id;
-        lastValue = _value;
-        lastData = _data;
-        if (shouldReject == true) {
-            revert("onERC1155Received: transfer not accepted");
-        } else {
-            return ERC1155_ACCEPTED;
-        }
-    }
-
-    function onERC1155BatchReceived(
-        address _operator, 
-        address _from, 
-        uint256[] calldata _ids, 
-        uint256[] calldata _values, 
-        bytes calldata _data
-    ) 
-        external 
-        override
-        returns (bytes4) 
-    {
-        lastOperator = _operator;
-        lastFrom = _from;
-        lastId = _ids[0];
-        lastValue = _values[0];
-        lastData = _data;
-        if (shouldReject == true) {
-            revert("onERC1155BatchReceived: transfer not accepted");
-        } else {
-            return ERC1155_BATCH_ACCEPTED;
-        }
-    }
-
-    // ERC165 interface support
-    function supportsInterface(bytes4 interfaceID) 
-        external 
-        pure 
-        override 
-        returns (bool) 
-    {
-        return  interfaceID == 0x01ffc9a7 ||    // ERC165
-                interfaceID == 0x4e2312e0;      // ERC1155_ACCEPTED ^ ERC1155_BATCH_ACCEPTED;
-    }
-
-
-    
+    }    
 }

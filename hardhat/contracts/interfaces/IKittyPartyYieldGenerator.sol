@@ -46,7 +46,7 @@ interface IKittyPartyYieldGenerator {
     /**
      * @dev Returns the pool in which the kitty party tokens were staked
      */
-    function setPlatformRewardContractAddress(address payable) external;
+    function setPlatformRewardContractAddress(address payable,address) external;
     function setPlatformDepositContractAddress(address payable) external;
     function setPlatformWithdrawContractAddress(address payable) external;
     function setPartyInfo(address, address) external;

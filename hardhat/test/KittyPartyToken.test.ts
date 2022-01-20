@@ -37,7 +37,7 @@ describe('Kitty Party Token works as intended', function () {
   })
   
   it('should have correct name, symbol, decimal and cap', async function () {
-    expect(await kittyPartyToken.name()).to.equal("KittyPartyToken");
+    expect(await kittyPartyToken.name()).to.equal("Kitty Party Reward Token");
     expect(await kittyPartyToken.symbol()).to.equal("KPT");
     expect((await kittyPartyToken.decimals()).toString()).to.equal("18");
     const tokenCap = await kittyPartyToken.cap();

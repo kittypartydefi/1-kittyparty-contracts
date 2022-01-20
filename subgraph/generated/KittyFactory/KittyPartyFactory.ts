@@ -535,7 +535,9 @@ export class CreateKittyCall__Inputs {
   }
 
   get _kittyInitiator(): CreateKittyCall_kittyInitiatorStruct {
-    return this._call.inputValues[0].value.toTuple() as CreateKittyCall_kittyInitiatorStruct;
+    return changetype<CreateKittyCall_kittyInitiatorStruct>(
+      this._call.inputValues[0].value.toTuple()
+    );
   }
 }
 

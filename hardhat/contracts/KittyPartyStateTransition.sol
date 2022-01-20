@@ -27,7 +27,7 @@ contract KittyPartyStateTransition {
     uint16 public numberOfRounds;
 
     event Completed();
-    event StageTransition(uint prevStage, uint nextStage);
+    event StageTransition(address party, uint prevStage, uint nextStage);
     
     modifier transitionAfter() {
         _;
@@ -47,25 +47,25 @@ contract KittyPartyStateTransition {
     }
 
     function isTransitionRequired() external view returns(uint8) {
-        if ((stage == KittyPartyStages.InitialCollection && (block.timestamp >= (lastStageTime + (timeToCollection * 1 days)))) ||
-            (stage == KittyPartyStages.Collection && block.timestamp >= (lastStageTime + (3 * 1 hours))) ||
-            (stage == KittyPartyStages.Staking && block.timestamp >= (lastStageTime + (durationInDays * 1 days))) ||
+        if ((stage == KittyPartyStages.InitialCollection && (block.timestamp >= (lastStageTime + (timeToCollection * 1 hours)))) ||
+            (stage == KittyPartyStages.Collection && block.timestamp >= (lastStageTime + (24 * 1 hours))) ||
+            (stage == KittyPartyStages.Staking && block.timestamp >= (lastStageTime + (durationInDays * 1 hours))) ||
             (stage == KittyPartyStages.Payout && block.timestamp >= (lastStageTime + (8 * 1 hours)) && (numberOfRounds > currentRound)) ||
             (stage == KittyPartyStages.Payout && block.timestamp >= (lastStageTime + (8 * 1 hours)) && (numberOfRounds <= currentRound))) {
-            return (uint8(stage) + (numberOfRounds > currentRound ? 0 : 1));
+            return (uint8(stage) + (uint8(stage) <= 2 ? 0:(numberOfRounds > currentRound ? 0 : 1)));
         } else {
             return (88);
         }
     }
     
     function _timedTransitions() internal {
-        if (stage == KittyPartyStages.InitialCollection && (block.timestamp >= (lastStageTime + (timeToCollection * 1 days)))) {
+        if (stage == KittyPartyStages.InitialCollection && (block.timestamp >= (lastStageTime + (timeToCollection * 1 hours)))) {
            _nextStage(2);
         }
-        else if (stage == KittyPartyStages.Collection && block.timestamp >= (lastStageTime + (3 * 1 hours))) {
+        else if (stage == KittyPartyStages.Collection && block.timestamp >= (lastStageTime + (24 * 1 hours))) {
             _nextStage(1);
         }
-        else if (stage == KittyPartyStages.Staking && block.timestamp >= (lastStageTime + (durationInDays * 1 days))) {
+        else if (stage == KittyPartyStages.Staking && block.timestamp >= (lastStageTime + (durationInDays * 1 hours))) {
             _nextStage(1);
         }
         else if (stage == KittyPartyStages.Payout && block.timestamp >= (lastStageTime + (8 * 1 hours)) && (numberOfRounds > currentRound)) {
@@ -82,7 +82,7 @@ contract KittyPartyStateTransition {
         if(nextStageValue > 6){
             nextStageValue = 6;
         }
-        emit StageTransition(uint(stage), nextStageValue);
+        emit StageTransition(address(this), uint(stage), nextStageValue);
         stage = KittyPartyStages(nextStageValue);
         lastStageTime = block.timestamp;
     }

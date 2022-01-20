@@ -13,11 +13,11 @@ import { KittyPartyFactory, ERC20} from '../src/types/index';
 let timeParameter = 60 * 60;
 async function main() {
   const [deployer, kreator, kitten1, kitten2] = await ethers.getSigners();
-  const kittyparty = '0xD2F767c6c4025A2807f209610BaA6d97e60f6f44';
-  const kittyPartyTreasuryAddress = '0x93eC43E9A0362331c9Af5F48F9a6f3D34fcC018c';
+  const kittyparty = '0x800484C796249EB75F91e5438741C586EBaA2092';
+  const kittyPartyTreasuryAddress = '0x1430DAffe56EaE08f25eEf5B9885a3Ac4FD77DC4';
   // const inviteHash = '0x647942707769507670796569446f7474347a3235546100000000000000000000';
   const Token = await ethers.getContractFactory("ERC20");
-  let dai_address = "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063";
+  let dai_address = "0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F";
 
   // let kittyPartyFactory:KittyPartyFactory = await _KittyPartyFactory.attach(kp_factory) as KittyPartyFactory;
   let dai:ERC20 = await Token.attach(dai_address) as ERC20;
@@ -29,9 +29,9 @@ async function main() {
     const _KittyPartyTreasury = await ethers.getContractFactory("KittyPartyTreasury");
     let kittyPartyTreasuryD = await _KittyPartyTreasury.attach(kittyPartyTreasuryAddress);
     const _KittyPartyAccountant = await ethers.getContractFactory("KittyPartyAccountant");
-    const kittyPartyAccountant = await _KittyPartyAccountant.attach("0x844aB20607874CAdF741E291811A5eE238E8B34B");
+    const kittyPartyAccountant = await _KittyPartyAccountant.attach("0xD24Cc1c2D6dCC4af08d89121DdC0ACAa13A4c4C4");
     const yielderFactory = await ethers.getContractFactory('KittyPartyYieldGeneratorAave');
-    const kittyPartyYieldGeneratorAave = await yielderFactory.attach("0xC1e9a3d2a6419A7eAcde2ae1cA1c6d0fc7bb3526");
+    const kittyPartyYieldGeneratorAave = await yielderFactory.attach("0xc1572Cb747a7Ee639896efa38f24783ecbDB8f89");
 
 console.log("deployer -- ", deployer.address);
 /**
@@ -48,7 +48,7 @@ console.log("deployer -- ", deployer.address);
 switch(step)
 {
   case 0:{
-    await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyController.address);
+    // await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyController.address);
     await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyController.address);
     // await dai.connect(kitten1).approve(kittyparty,ethers.utils.parseUnits("20"));
     // console.log('approved');
@@ -61,6 +61,8 @@ switch(step)
     console.log('internalState::', getInternalStage)
     let stage = await kittyPartyController.getStage();
     console.log('stage::', stage);
+    let transition = await kittyPartyController.isTransitionRequired();
+    console.log('transition::', transition);
     break;
 
   }
@@ -71,14 +73,14 @@ switch(step)
     let duration = await kittyPartyController.durationInDays();
     
     console.log('stage::lastStageTime, duration', stage,  lastStageTime, duration);
-    await kittyPartyController.stopStaking();
-    await delay(50000);
-    console.log('stopStaking completed')
+    // await kittyPartyController.stopStaking();
+    // await delay(50000);
+    // console.log('stopStaking completed')
 
 
-    await kittyPartyController.payOrganizerFees();
-    await delay(50000);
-    console.log('payOrganizerFees completed')
+    // await kittyPartyController.payOrganizerFees();
+    // await delay(50000);
+    // console.log('payOrganizerFees completed')
     
     await kittyPartyController.applyWinnerStrategy({gasLimit: 5000000});
     console.log('applyWinnerStrategy completed')
@@ -106,17 +108,20 @@ switch(step)
     console.log("Before myBalance01- ", myBalance01);
     let myBalance02 = await kittyPartyAccountant.balanceOf(kitten2.address, 0);
     console.log("Before myBalance02- ", myBalance02);
-      await kittyPartyAccountant.connect(kitten1).setApprovalForAll(kittyPartyTreasuryAddress, true);
-      await kittyPartyAccountant.connect(kitten2).setApprovalForAll(kittyPartyTreasuryAddress, true);
-      await delay(50000);
-     let approve1 =  await kittyPartyAccountant.connect(kitten1).isApprovedForAll(kitten1.address, kittyPartyTreasuryAddress);
-     let approve2 =  await kittyPartyAccountant.connect(kitten2).isApprovedForAll(kitten2.address, kittyPartyTreasuryAddress);
-     console.log("approve1 1- ", approve1);
-     console.log("approve2 2- ", approve2);
+      // await kittyPartyAccountant.connect(kitten1).setApprovalForAll(kittyPartyTreasuryAddress, true);
+      // await kittyPartyAccountant.connect(kitten2).setApprovalForAll(kittyPartyTreasuryAddress, true);
+      // await delay(50000);
+    //  let approve1 =  await kittyPartyAccountant.connect(kitten1).isApprovedForAll(kitten1.address, kittyPartyTreasuryAddress);
+    //  let approve2 =  await kittyPartyAccountant.connect(kitten2).isApprovedForAll(kitten2.address, kittyPartyTreasuryAddress);
+    //  console.log("approve1 1- ", approve1);
+    //  console.log("approve2 2- ", approve2);
+    //20580172625563659985
+    //20000000000000000000
 
 
-    await kittyPartyTreasuryD.connect(kitten1).redeemTokens(ethers.utils.parseUnits("20"));
-    await kittyPartyTreasuryD.connect(kitten2).redeemTokens(ethers.utils.parseUnits("20"));
+
+    await kittyPartyTreasuryD.connect(kitten1).redeemTokens(ethers.utils.parseUnits("18"));
+    await kittyPartyTreasuryD.connect(kitten2).redeemTokens(ethers.utils.parseUnits("18"));
     myBalance = await dai.balanceOf(kitten1.address);
     console.log("After 1- ", myBalance);
     myBalance2 = await dai.balanceOf(kitten2.address);
@@ -137,7 +142,7 @@ switch(step)
   case 5:{
     console.log("Attempting Refunds ....");
     
-    await kittyPartyController.connect(kreator).checkRefund();
+    await kittyPartyController.connect(kreator).issueRefund();
 
     let myBalance = await dai.balanceOf(kreator.address);
     console.log("Before 1- ", myBalance);
@@ -146,7 +151,7 @@ switch(step)
     let myBalance01 = await kittyPartyAccountant.balanceOf(kreator.address, 0);
     console.log("Before myBalance01- ", myBalance01);
    
-      await kittyPartyAccountant.connect(kreator).setApprovalForAll(kittyPartyTreasuryAddress, true);
+    await kittyPartyAccountant.connect(kreator).setApprovalForAll(kittyPartyTreasuryAddress, true);
       
      let approve1 =  await kittyPartyAccountant.connect(kreator).isApprovedForAll(kreator.address, kittyPartyTreasuryAddress);
      
@@ -172,6 +177,18 @@ switch(step)
     console.log("Before myBalance02- ", myBalance02);
     let myBalance = await dai.balanceOf(kreator.address);
     console.log("Before 1- ", myBalance);
+    break;
+  }
+  case 7:{
+
+    let Planetary = await kittyPartyAccountant.balanceOf(kreator.address, 1);
+    console.log("Planetary 1- ", Planetary);
+    break;
+  }
+  case 8:{
+
+    await kittyPartyController.connect(kreator).issueRefund();
+
     break;
   }
   default: { 

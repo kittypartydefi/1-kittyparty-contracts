@@ -8,14 +8,19 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 import "../interfaces/IKittyPartyYieldGenerator.sol";
 
 contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerator, OwnableUpgradeable {
-    address private _treasuryContract;
+    address _treasuryContract;
     address payable public AaveContract;
     address payable public AaveRewardContract;
+    address public rewardTokenAddress;
 
-    uint256 public constant MAX = type(uint128).max;
-    uint256 totalLocked;
+    uint256 public constant MAX = type(uint256).max;
+    uint256 public totalLocked;
 
     mapping(address => IKittyPartyYieldGenerator.KittyPartyYieldInfo) public kittyPartyYieldInfo;
+
+    event YieldCreated(uint256 lpTokens, uint256 sellTokens);
+    event RewardsClaimed(bool rewardsClaimed,uint256 rewardTokenBalance);
+    event YieldClaimed(uint256 lpTokens);
 
     function __KittyPartyYieldGeneratorAave_init(address treasuryContractParam) public initializer {
         _treasuryContract = treasuryContractParam;
@@ -28,8 +33,9 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
     }
 
     function setAllowanceWithdraw(address _kittyParty) public {
-        address lpTokenAddress = kittyPartyYieldInfo[_kittyParty].lpTokenAddress;
+        address lpTokenAddress = kittyPartyYieldInfo[_kittyParty].lpTokenAddress;               
         require(IERC20Upgradeable(lpTokenAddress).approve(AaveContract, MAX), "Not able to set allowance");
+        IERC20Upgradeable(rewardTokenAddress).approve(AaveRewardContract, MAX);
     }
 
     /**
@@ -45,16 +51,21 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         address lpToken = kittyPartyYieldInfo[msg.sender].lpTokenAddress;
 
         require(IERC20Upgradeable(sellToken).approve(AaveContract, MAX), "Not enough allowance");
-        uint daiBalance = IERC20Upgradeable(sellToken).balanceOf(address(this));
+        uint256 daiBalance = IERC20Upgradeable(sellToken).balanceOf(address(this));
         uint256 initialBalance = IERC20Upgradeable(lpToken).balanceOf(address(this));
 
-        bytes memory payload = abi.encodeWithSignature("deposit(address,uint256,address,uint16)", sellToken, daiBalance, address(this), 0);
+        bytes memory payload = abi.encodeWithSignature("deposit(address,uint256,address,uint16)",
+                                                       sellToken,
+                                                       daiBalance,
+                                                       address(this),
+                                                       0);
         (bool success,) = address(AaveContract).call(payload);
         require(success, 'Deposit Failed');
         
         vaultTokensRec = IERC20Upgradeable(lpToken).balanceOf(address(this)) - initialBalance;
         kittyPartyYieldInfo[msg.sender].lockedAmount += vaultTokensRec;
         totalLocked += vaultTokensRec;
+        emit YieldCreated(vaultTokensRec, daiBalance);
     }
 
     /**
@@ -65,35 +76,46 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         override 
         returns (uint256 tokensRec)
     {
+        IKittyPartyYieldGenerator.KittyPartyYieldInfo storage kpInfo = kittyPartyYieldInfo[msg.sender];
         // Get funds back in the same token that we sold in  DAI, since for now the treasury only releases DAI
-        require(IERC20Upgradeable(kittyPartyYieldInfo[msg.sender].sellTokenAddress).approve(AaveContract, MAX), "Not enough allowance");
-
-        uint lpTokenBalance = IERC20Upgradeable(kittyPartyYieldInfo[msg.sender].lpTokenAddress).balanceOf(address(this));
-
-        // Create an array with lp token address
-        address[] memory lpTokens = new address[](1);
-        lpTokens[0] = kittyPartyYieldInfo[msg.sender].lpTokenAddress; 
-        // Check the balance of accrued rewards
-        bytes memory payload = abi.encodeWithSignature("getRewardsBalance(address[],address)", lpTokens, address(this));
-        (bool success, bytes memory returnData) = address(AaveRewardContract).staticcall(payload);
-        
+        require(IERC20Upgradeable(kpInfo.sellTokenAddress).approve(AaveContract, MAX), "Not enough allowance");
         uint256 rewardTokenBalance = 0;
+        uint256 lpTokenBalance = IERC20Upgradeable(kpInfo.lpTokenAddress).balanceOf(address(this));
 
-        if(success == true) {
+        //set party yield as a portion of claimable pool
+        kpInfo.yieldGeneratedInLastRound = lpTokenBalance * kpInfo.lockedAmount / totalLocked;
+        totalLocked -= kpInfo.lockedAmount;
+
+        // Create an array with lp token address for checking rewards
+        address[] memory lpTokens = new address[](1);
+        lpTokens[0] = kpInfo.lpTokenAddress; 
+        // Check the balance of accrued rewards
+        bytes memory payload = abi.encodeWithSignature("getRewardsBalance(address[],address)",
+                                                        lpTokens,
+                                                        address(this));
+        (bool rewardsExists, bytes memory returnData) = address(AaveRewardContract).staticcall(payload);
+
+        if(rewardsExists == true) {
             (rewardTokenBalance) = abi.decode(returnData, (uint256));
-            // Claim balance rewards
-            payload = abi.encodeWithSignature("claimRewards(address[],uint256,address)", lpTokens, rewardTokenBalance, _treasuryContract);
-            (success,) = address(AaveRewardContract).call(payload);
+            // Claim balance rewards and sent to treasury
+            payload = abi.encodeWithSignature("claimRewards(address[],uint256,address)",
+                                              lpTokens,
+                                              rewardTokenBalance,
+                                              _treasuryContract);
+            (bool rewardsClaimed,) = address(AaveRewardContract).call(payload);
+            emit RewardsClaimed(rewardsClaimed, rewardTokenBalance);
         }
 
-        kittyPartyYieldInfo[msg.sender].yieldGeneratedInLastRound =  lpTokenBalance * (kittyPartyYieldInfo[msg.sender].lockedAmount / totalLocked);
-        totalLocked -= kittyPartyYieldInfo[msg.sender].lockedAmount;
-
         // Withdraws deposited DAI and burns atokens
-        payload = abi.encodeWithSignature("withdraw(address,uint256,address)",kittyPartyYieldInfo[msg.sender].sellTokenAddress,kittyPartyYieldInfo[msg.sender].yieldGeneratedInLastRound,_treasuryContract);
-        (success,) = address(AaveContract).call(payload);
+        payload = abi.encodeWithSignature("withdraw(address,uint256,address)",
+                                          kpInfo.sellTokenAddress,
+                                          kpInfo.yieldGeneratedInLastRound,
+                                          _treasuryContract);
+        (bool success,) = address(AaveContract).call(payload);
         require(success, 'Withdraw failed');
-        return  kittyPartyYieldInfo[msg.sender].yieldGeneratedInLastRound;
+        emit YieldClaimed(kpInfo.yieldGeneratedInLastRound);
+
+        return  kpInfo.yieldGeneratedInLastRound;
     }
 
     function treasuryAddress() external view override returns (address treasuryContractAddress) {
@@ -104,7 +126,12 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         return kittyPartyYieldInfo[kittyParty].lockedAmount;
     }
 
-    function yieldGenerated(address kittyParty) external view override returns (uint256 yieldGeneratedInLastRound) {
+    function yieldCurrent(address kittyParty) external view returns (uint256 yieldToBeGeneratedInCurrentRound) {
+        uint256 lpTokenBalance = IERC20Upgradeable(kittyPartyYieldInfo[kittyParty].lpTokenAddress).balanceOf(address(this));
+        return lpTokenBalance * kittyPartyYieldInfo[kittyParty].lockedAmount / totalLocked;
+    }
+
+    function yieldGenerated(address kittyParty) external view override returns (uint256) {
         return kittyPartyYieldInfo[kittyParty].yieldGeneratedInLastRound;
     }
 
@@ -116,10 +143,12 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         AaveContract = _AaveContract;
     }
 
-    function setPlatformRewardContractAddress(address payable _AaveRewardContract) external override onlyOwner {
+    function setPlatformRewardContractAddress(address payable _AaveRewardContract, address _rewardTokenAddress) external override onlyOwner {
         AaveRewardContract = _AaveRewardContract;
+        rewardTokenAddress = _rewardTokenAddress;
     }
 
+    //@dev allow party to set their own pair of addresses for yield
     function setPartyInfo(address _sellTokenAddress, address _lpTokenAddress) external override {
         kittyPartyYieldInfo[msg.sender].sellTokenAddress = _sellTokenAddress;
         kittyPartyYieldInfo[msg.sender].lpTokenAddress = _lpTokenAddress;

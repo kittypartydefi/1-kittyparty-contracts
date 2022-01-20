@@ -10,6 +10,32 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "KittenDeposited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "KreatorStaked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "party",
         "type": "address"
@@ -59,6 +85,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "party",
+        "type": "address"
+      },
       {
         "indexed": false,
         "internalType": "uint256",
@@ -183,13 +215,6 @@
         "type": "bool"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "checkRefund",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -369,7 +394,7 @@
           },
           {
             "internalType": "address",
-            "name": "daoAddress",
+            "name": "keeperContractAddress",
             "type": "address"
           }
         ],
@@ -408,6 +433,13 @@
   },
   {
     "inputs": [],
+    "name": "issueRefund",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "kPFactory",
     "outputs": [
       {
@@ -432,7 +464,7 @@
       },
       {
         "internalType": "address",
-        "name": "daoAddress",
+        "name": "keeperContractAddress",
         "type": "address"
       }
     ],
@@ -567,6 +599,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "partyRoundKittens",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "payOrganizerFees",
     "outputs": [],
@@ -628,6 +679,20 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startNextRound",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startStakingMultiRound",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
