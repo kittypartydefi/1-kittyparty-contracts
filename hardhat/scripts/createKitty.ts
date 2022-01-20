@@ -6,26 +6,26 @@
 import  { config, ethers, network } from "hardhat";
 import { Contract } from 'ethers';
 import fs from 'fs';
-let polygon =  require("../test/PolygonAddresses.ts");
+let  contractAddresses =  require("../test/ContractAddresses.ts");
 
 import * as hre from "hardhat";
 import { KittyPartyFactory, ERC20} from '../src/types/index';
 
 
 async function main() {
-  const [deployer, kreator, kitten1, kitten2] = await ethers.getSigners();
+  const [deployer] = await ethers.getSigners();
 
-  console.log("The deployer is -", deployer.address, kreator.address, kitten1.address, kitten2.address);
+  // console.log("The deployer is -", deployer.address, kreator.address, kitten1.address, kitten2.address);
 
   // Deploy example contract addresses for development and testing purposes, comment out before testnet deployment
   // Or use your own addressess
   const _KittyPartyFactory = await ethers.getContractFactory("KittyPartyFactory");
   const Token = await ethers.getContractFactory("ERC20");
 
-  let dai_address = polygon.aave.sellTokenAddress;
-  let kp_factory = "0x884D9ad451981efB982Fa8777FD8acC994BAdCF0";
-  let yieldContract = "0xc1572Cb747a7Ee639896efa38f24783ecbDB8f89";
-  let winnerStrategyAddress = "0xFd0364b579568EBAB272b340767b1A421dE0E8C6";
+  let dai_address = contractAddresses.mumbai.sellTokenAddress;
+  let kp_factory = "0xdd1c0a7caA9da0c3920703db75b30E52d9561386";
+  let yieldContract = "0x3Fb4c0b809D581089e151Dedfb1a51771374C16a";
+  let winnerStrategyAddress = "0x4fDed948F85074F9648C5C31675075748eb86c35";
 
   let kittyPartyFactory:KittyPartyFactory = await _KittyPartyFactory.attach(kp_factory) as KittyPartyFactory;
   let dai:ERC20 = await Token.attach(dai_address) as ERC20;
@@ -46,21 +46,21 @@ async function main() {
   };
 
   let KittyYieldArgs = {
-    sellTokenAddress: polygon.aave.sellTokenAddress,
-    lpTokenAddress: polygon.aave.aaveDaiContractAddress
+    sellTokenAddress: contractAddresses.mumbai.sellTokenAddress,
+    lpTokenAddress: contractAddresses.mumbai.aaveDaiContractAddress
   };
     // await dai.connect(kreator).approve(kittyPartyFactory.address, (KittyInitiator.amountInDAIPerRound.div(10)).toString());
     // await delay(15000);
     console.log("Approved DAI")
     let kpfactory ={
-      "tomCatContract" : "0x428644FeeA07197d3c08B89CEb11E1840888B890",
-      "accountantContract" :  "0xD24Cc1c2D6dCC4af08d89121DdC0ACAa13A4c4C4",
-      "litterAddress" : "0xCccddbF0C32a69d2Ac90080Da8c34006c83Af78c",
-      "daoTreasuryContract" : "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e", 
-      "keeperContractAddress" : "0xE6a8778c3c34242edC789C37A34387B66Bb30390"
+      "tomCatContract" : "0x501563189CEf578Cfb747dA23e4589B32c2b3E1c",
+      "accountantContract" :  "0x06c219c50C73B674b193080f86e9716B83F79194",
+      "litterAddress" : "0xA5b904634A2eB8C87D8c9a3D8A8798C5FA1cDEe8",
+      "daoTreasuryContract" : "0xCeC37C32A270bCcE22FccdBd89D41d4205f4Dd57", 
+      "keeperContractAddress" : "0x87Cb7f2513b1693DAA02dAF24ee00AdAeC43bF14"
     }
-    // await kittyPartyFactory.setFactoryInit(kpfactory);
-    // await delay(35000);
+    await kittyPartyFactory.setFactoryInit(kpfactory);
+    await delay(35000);
     // console.log("Kreator", kreator.address)
     // console.log("KittyInitiator", KittyInitiator, KittyYieldArgs)
   const kpfactory_ =   await kittyPartyFactory.kpFactory();
@@ -68,7 +68,7 @@ async function main() {
   //   await delay(35000);
     console.log("kittyPartyFactory", kpfactory_, kpfactory)
 
-    const instance = await kittyPartyFactory.connect(kreator).createKitty(KittyInitiator, KittyYieldArgs, {gasLimit:6000000});
+    // const instance = await kittyPartyFactory.connect(kreator).createKitty(KittyInitiator, KittyYieldArgs, {gasLimit:6000000});
     await delay(15000);
     console.log("deployedKitty ...")
 
