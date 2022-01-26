@@ -6,8 +6,10 @@ import './interfaces/IKeeper.sol';
 
 /// @title Kitty Party State Transition Keeper
 contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessControl {
-
-    uint blockInterval;
+    
+    //Number of blocks in between two consecutive turns of the upkeep; 20 in case of polygon
+    uint8 blockInterval = 20;
+    //Block number in which first upkeep is performed
     uint initiatingBlock;
     //Array to store addresses of currently active kitty parties
     address[] public kpControllers;
@@ -25,7 +27,8 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         _setupRole(SETTER_ROLE, msg.sender);
     }
 
-    function setBlockInterval(uint _blockInterval) external onlyRole(SETTER_ROLE) {
+    ///@dev This function can be used to set or change the blockinterval
+    function setBlockInterval(uint8 _blockInterval) external onlyRole(SETTER_ROLE) {
         blockInterval = _blockInterval;
     }
     
@@ -44,18 +47,27 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         return kpControllers.length;
     }
     
-    function checkUpkeep(bytes calldata) external view override returns (bool upkeepNeeded, bytes memory performData) {
-        uint256 numberOfParties = kpControllers.length;
+    function checkUpkeep(bytes calldata) 
+        external 
+        view 
+        override 
+        returns (bool upkeepNeeded, bytes memory performData) 
+    {
+        uint numberOfParties = kpControllers.length;
         upkeepNeeded = false;
 
         if (numberOfParties > 0) {
             uint i;
+
+            /*If initiatingBlock has not been set, transition check is done for the party at index 0
+             and when upkeep is performed, the value of initiatingBlock is set */
             if (initiatingBlock == 0) {
                 i = 0;
             } else {
                 i = ((block.number - initiatingBlock) / blockInterval) % numberOfParties;
             }
             address kpController = kpControllers[i];
+
             if(kpController != address(0)) {
                 bytes memory payload = abi.encodeWithSignature("isTransitionRequired()");
                 (bool success, bytes memory returnData) = address(kpController).staticcall(payload);
@@ -75,9 +87,12 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
 
     function performUpkeep(bytes calldata performData) external override {
         (uint8 transitionType, address kpController, uint256 index) = abi.decode(performData, (uint8,address,uint256));
+        
+        //Sets the value of initiatingBlock when the first upkeep is performed
         if (initiatingBlock == 0) {
             initiatingBlock = block.number;
         }
+
         bytes memory payload;
         if (transitionType == 0) {
             payload = abi.encodeWithSignature("applyInitialVerification()");            

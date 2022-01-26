@@ -14,8 +14,8 @@ import { KittyPartyFactory, KittyPartyAccountant, ERC20} from '../src/types/inde
 
 async function main() {
   const [deployer, kreator, kitten1, kitten2] = await ethers.getSigners();
-
-  // console.log("The deployer is -", deployer.address, kreator.address, kitten1.address, kitten2.address);
+  
+  console.log("The deployer is -", deployer.address, kreator.address, kitten1.address, kitten2.address);
 
   // Deploy example contract addresses for development and testing purposes, comment out before testnet deployment
   // Or use your own addressess
@@ -24,10 +24,10 @@ async function main() {
   const Token = await ethers.getContractFactory("ERC20");
 
   let dai_address = contractAddresses.mumbai.sellTokenAddress;
-  let kp_factory = "0x1c6606B4cd8877a8ec83A2a2c2CC7D523DddC532";
-  let yieldContract = "0x254B6DB4A0E016F0DB63fd45e215D1209C6800F1";
-  let winnerStrategyAddress = "0x09337703Dbb60cC6871837CF6740b47f51Bf7bc2";
-  let kp_accountant = "0xDAd7BaFf3C5e52e6619fEE03869c4E6678F2dea5";
+  let kp_factory = "0x452db226523E9fa10013f2b397EDAb3a88189dE8";
+  let yieldContract = "0x1e1A72ABfEA72980B8F1b81eB32671D732C4F7fe";
+  let winnerStrategyAddress = "0xB01904f8cDf0551814db1aA0799Eff75fbA4cC2B";
+  let kp_accountant = "0x5885b0A4404fec61889CB56f5ac74bb3cF8C6879";
 
   let kittyPartyFactory:KittyPartyFactory = await _KittyPartyFactory.attach(kp_factory) as KittyPartyFactory;
   let kittyPartyAccountant:KittyPartyAccountant = await _KittyPartyAccountant.attach(kp_accountant) as KittyPartyAccountant;
@@ -52,80 +52,81 @@ async function main() {
     sellTokenAddress: contractAddresses.mumbai.sellTokenAddress,
     lpTokenAddress: contractAddresses.mumbai.aaveDaiContractAddress
   };
-    // await dai.connect(kreator).approve(kittyPartyFactory.address, (KittyInitiator.amountInDAIPerRound.div(10)).toString());
-    // await delay(15000);
-    // console.log("Approved DAI")
-    // let kpfactory ={
-    //   "tomCatContract" : "0x633A670D65271CE622d7eCB5E8B0e45FE571d650",
-    //   "accountantContract" :  "0xDAd7BaFf3C5e52e6619fEE03869c4E6678F2dea5",
-    //   "litterAddress" : "0xe0Fa3e52b26872c5361a6Cf49fd1ff63AF7eecD3",
-    //   "daoTreasuryContract" : "0x18B9bCE8aB31b927B11b0A1fA0dA528b45967EE6", 
-    //   "keeperContractAddress" : "0xeA67d996F6c2BF48D820cdC859E45F51C4A1eEBD"
-    // }
-    // await kittyPartyFactory.setFactoryInit(kpfactory);
-    // await delay(35000);
-    // console.log("Kreator", kreator.address)
-    // console.log("KittyInitiator", KittyInitiator, KittyYieldArgs)
-  // const kpfactory_ =   await kittyPartyFactory.kpFactory();
-  //  await kittyPartyFactory.setApprovedStrategy(yieldContract);
-  //   await delay(35000);
-  //   console.log("kittyPartyFactory", kpfactory_, kpfactory)
 
-  // await kittyPartyAccountant.mint(kreator.address, 1, 10, "0x");
-  // await delay(10000);
-  // const planetary_balance = await kittyPartyAccountant.balanceOf(kreator.address, 1);
-  // console.log("Planetary balance:", planetary_balance.toString());
+  await dai.connect(kreator).approve(kittyPartyFactory.address, (KittyInitiator.amountInDAIPerRound.div(10)).toString());
+  await delay(15000);
+  console.log("Approved DAI");
+
+  let kpfactory ={
+    "tomCatContract" : "0x633A670D65271CE622d7eCB5E8B0e45FE571d650",
+    "accountantContract" :  "0xDAd7BaFf3C5e52e6619fEE03869c4E6678F2dea5",
+    "litterAddress" : "0xe0Fa3e52b26872c5361a6Cf49fd1ff63AF7eecD3",
+    "daoTreasuryContract" : "0x18B9bCE8aB31b927B11b0A1fA0dA528b45967EE6", 
+    "keeperContractAddress" : "0xeA67d996F6c2BF48D820cdC859E45F51C4A1eEBD"
+  }
+
+  await kittyPartyFactory.setFactoryInit(kpfactory);
+  await delay(35000);
+  console.log("Kreator", kreator.address)
+  console.log("KittyInitiator", KittyInitiator, KittyYieldArgs)
+  const kpfactory_ =   await kittyPartyFactory.kpFactory();
+  await kittyPartyFactory.setApprovedStrategy(yieldContract);
+  await delay(35000);
+  console.log("kittyPartyFactory", kpfactory_);
+
+  await kittyPartyAccountant.mint(kreator.address, 1, 10, "0x");
+  await delay(10000);
+  const planetary_balance = await kittyPartyAccountant.balanceOf(kreator.address, 1);
+  console.log("Planetary balance of keartor:", planetary_balance.toString());
 
 
-    // const instance = await kittyPartyFactory.connect(kreator).createKitty(KittyInitiator, KittyYieldArgs, {gasLimit:6000000});
-    // await delay(15000);
-    // console.log("deployedKitty ...");
+  const instance = await kittyPartyFactory.connect(kreator).createKitty(KittyInitiator, KittyYieldArgs, {gasLimit:6000000});
+  await delay(15000);
+  console.log("deployedKitty ...");
 
-    let deployedKitty = await kittyPartyFactory.connect(kreator).getMyKitties(kreator.address);
+  let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
     
-    // await delay(3000);
-    // console.log('deployedKitty[deployedKitty.length - 1]::',JSON.stringify(deployedKitty[deployedKitty.length - 1]));
-    const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
-    const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
-    let kittyPartyController = await _KittyPartyController.attach(kittyPartyDeployed);
+  await delay(3000);
+  console.log('deployedKitty[deployedKitty.length - 1]::',JSON.stringify(deployedKitty[deployedKitty.length - 1]));
+  const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+  const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+  let kittyPartyController = await _KittyPartyController.attach(kittyPartyDeployed);
 
-    await kittyPartyController.connect(kreator).issueRefund();
+  // let stage = await kittyPartyController.getStage();
+  // console.log('stage::', stage.toString());
 
-    // let stage = await kittyPartyController.getStage();
-    // console.log('stage::', stage.toString());
+    // comment below for round 2 call
+  // await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+  // await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
 
-     // comment below for round 2 call
-    // await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
-    // await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
-
-    // const yielderFactory = await ethers.getContractFactory('KittyPartyYieldGeneratorAave');
-    // const kittyPartyYieldGeneratorAave = await yielderFactory.attach(yieldContract);
-    // await delay(20000);
-      
-    // await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
-    // await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
-    // await delay(20000);
-    // console.log('depositAndAddKittenToParty::');
+  // const yielderFactory = await ethers.getContractFactory('KittyPartyYieldGeneratorAave');
+  // const kittyPartyYieldGeneratorAave = await yielderFactory.attach(yieldContract);
+  // await delay(20000);
     
-    //    // end comment below for round2 call
-    // //comment below for round 1 call
+  // await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+  // await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+  // await delay(20000);
+    
+    
+  //    // end comment below for round2 call
+  // //comment below for round 1 call
+  // console.log('depositAndAddKittenToParty::');
+  // await kittyPartyController.connect(kreator2).setInviteHash(ethers.utils.formatBytes32String("jointhebarty"));
+  // await delay(20000);
 
-    // await kittyPartyController.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointhebarty"));
-    // await delay(20000);
+  // await kittyPartyController.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"));
+  // console.log('depositAndAddKittenToParty 1/2..');
 
-    // await kittyPartyController.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"));
-    // console.log('depositAndAddKittenToParty 1/2..');
+  // await kittyPartyController.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"), {"gasLimit": 6000000});
+  // console.log('depositAndAddKittenToParty 2/2');
 
-    // await kittyPartyController.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointhebarty"), {"gasLimit": 6000000});
-    // console.log('depositAndAddKittenToParty 2/2');
+  // let controllerVars = await kittyPartyController.kittyPartyControllerVars();
 
-    let controllerVars = await kittyPartyController.kittyPartyControllerVars();
+  // // // await network.provider.send("evm_increaseTime", [1*24*3600]);
+  // let stage = await kittyPartyController.getStage();
+  // console.log('stage::', stage.toString(), controllerVars.internalState);
 
-    // await network.provider.send("evm_increaseTime", [1*24*3600]);
-    let stage = await kittyPartyController.getStage();
-    console.log('stage::', stage.toString(), controllerVars.internalState);
-
-    // console.log('applyInitialVerification started..');
+  // console.log('applyInitialVerification started..');
 
     // //initiate the party
     // await delay(20000);
