@@ -7,9 +7,10 @@ import './interfaces/IKeeper.sol';
 /// @title Kitty Party State Transition Keeper
 contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessControl {
 
+    uint blockInterval;
+    uint initiatingBlock;
     //Array to store addresses of currently active kitty parties
     address[] public kpControllers;
-    uint counter;
 
     //Mapping to identify the current intermediate stage of the party within the Payout Stage
     // 0 - Stop Staking
@@ -23,6 +24,10 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(SETTER_ROLE, msg.sender);
     }
+
+    function setBlockInterval(uint _blockInterval) external onlyRole(SETTER_ROLE) {
+        blockInterval = _blockInterval;
+    }
     
     ///@dev This function is used to add the address of a new party to the array of kitty party addresses 
     function addKPController(address kpController) external onlyRole(SETTER_ROLE) {
@@ -32,7 +37,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
     ///@dev Delete by setting the last element to the current index
     function removeKPController(uint256 index) public onlyRole(SETTER_ROLE) {
         kpControllers[index] = kpControllers[kpControllers.length - 1];
-        delete kpControllers[kpControllers.length-1];
+        kpControllers.pop();
     }
 
     function getLength() external view returns (uint256 length) {
@@ -44,10 +49,14 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         upkeepNeeded = false;
 
         if (numberOfParties > 0) {
-
-            uint i = block.number % numberOfParties;
+            uint i;
+            if (initiatingBlock == 0) {
+                i = 0;
+            } else {
+                i = ((block.number - initiatingBlock) / blockInterval) % numberOfParties;
+            }
             address kpController = kpControllers[i];
-            if(kpController != address(0)){
+            if(kpController != address(0)) {
                 bytes memory payload = abi.encodeWithSignature("isTransitionRequired()");
                 (bool success, bytes memory returnData) = address(kpController).staticcall(payload);
                 if(success){
@@ -66,6 +75,9 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
 
     function performUpkeep(bytes calldata performData) external override {
         (uint8 transitionType, address kpController, uint256 index) = abi.decode(performData, (uint8,address,uint256));
+        if (initiatingBlock == 0) {
+            initiatingBlock = block.number;
+        }
         bytes memory payload;
         if (transitionType == 0) {
             payload = abi.encodeWithSignature("applyInitialVerification()");            
