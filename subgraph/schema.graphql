@@ -7,7 +7,7 @@ type SKittyParty @entity {
   id: ID!
   partyName: String!
   members: [SKitten!]! #using member instead of kitten to be more readable
-  
+  allMembers: [String!]!
   kreator: String!
   dateCreated: BigInt!
   stage: BigInt!
