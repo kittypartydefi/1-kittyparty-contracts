@@ -19,6 +19,57 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "rewardsClaimed",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "rewardTokenBalance",
+        "type": "uint256"
+      }
+    ],
+    "name": "RewardsClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "lpTokens",
+        "type": "uint256"
+      }
+    ],
+    "name": "YieldClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "lpTokens",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "sellTokens",
+        "type": "uint256"
+      }
+    ],
+    "name": "YieldCreated",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "AaveContract",
     "outputs": [
@@ -188,13 +239,38 @@
   },
   {
     "inputs": [],
+    "name": "rewardTokenAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_kittyParty",
+        "type": "address"
+      }
+    ],
     "name": "setAllowanceDeposit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_kittyParty",
+        "type": "address"
+      }
+    ],
     "name": "setAllowanceWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -237,6 +313,11 @@
         "internalType": "address payable",
         "name": "_AaveRewardContract",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_rewardTokenAddress",
+        "type": "address"
       }
     ],
     "name": "setPlatformRewardContractAddress",
@@ -255,6 +336,19 @@
     "name": "setPlatformWithdrawContractAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalLocked",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -285,11 +379,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "kittyParty",
-        "type": "address"
-      },
       {
         "internalType": "bytes",
         "name": "",
@@ -338,11 +427,30 @@
         "type": "address"
       }
     ],
+    "name": "yieldCurrent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "yieldToBeGeneratedInCurrentRound",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "kittyParty",
+        "type": "address"
+      }
+    ],
     "name": "yieldGenerated",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "yieldGeneratedInLastRound",
+        "name": "",
         "type": "uint256"
       }
     ],

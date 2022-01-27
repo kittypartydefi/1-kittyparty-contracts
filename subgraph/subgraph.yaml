@@ -5,9 +5,9 @@ dataSources:
   - kind: ethereum/contract
     name: Contract
     # network: mumbai
-    network: mumbai
+    network: matic
     source:
-      address: "0x04C2D089FC402876CE5482448e4b38Db78056654"
+      address: "0x229A6C7CA91a710493016651d0FE221EbE5F5287"
       abi: Contract
       # startBlock: 22477424
     mapping:
@@ -37,10 +37,10 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: KittyFactory
-    network: mumbai
+    network: matic
     # network: mainnet
     source:
-      address: "0x24f7997749eaFcA1FA500B575bDAD56B541E9fFf"
+      address: "0x76D18b4173bB1d34FF6Ebe555439c75D57299D70"
       abi: KittyPartyFactory
       # startBlock: 22477424
     mapping:

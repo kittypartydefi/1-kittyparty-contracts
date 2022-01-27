@@ -3,17 +3,17 @@
     "inputs": [
       {
         "internalType": "contract IERC20",
-        "name": "token",
+        "name": "token_",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "beneficiary",
+        "name": "beneficiary_",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "releaseTime",
+        "name": "releaseTime_",
         "type": "uint256"
       }
     ],

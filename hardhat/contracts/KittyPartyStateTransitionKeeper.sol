@@ -37,8 +37,12 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
         kpControllers.push(kpController);
     }
 
-    ///@dev Delete by setting the last element to the current index
     function removeKPController(uint256 index) public onlyRole(SETTER_ROLE) {
+        _removeKPController(index);
+    }
+
+    ///@dev Delete by setting the last element to the current index
+    function _removeKPController(uint256 index) private {
         if (kpControllers.length > 1) {
             kpControllers[index] = kpControllers[kpControllers.length - 1];
         }
@@ -115,7 +119,7 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
             payload = abi.encodeWithSignature("startNextRound()");           
         } else if (transitionType == 4) {
             payload = abi.encodeWithSignature("applyCompleteParty()");
-            removeKPController(index);
+            _removeKPController(index);
         }
         
         (bool success,) = address(kpController).call(payload);

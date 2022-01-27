@@ -3,71 +3,109 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "redeemer",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "spender",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "value",
         "type": "uint256"
+      }
+    ],
+    "name": "Approval",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "bonus",
+        "name": "value",
         "type": "uint256"
       }
     ],
-    "name": "RedemptionRequested",
+    "name": "Transfer",
     "type": "event"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "_dai_address",
+        "name": "owner",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_kpt_address",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_daoAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_accountantContract",
+        "name": "spender",
         "type": "address"
       }
     ],
-    "name": "__KittyPartyTreasury_init",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "accountantContract",
+    "name": "allowance",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "bonusKPTPerToken",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "approve",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
     "outputs": [
       {
         "internalType": "uint256",
@@ -80,12 +118,12 @@
   },
   {
     "inputs": [],
-    "name": "dai",
+    "name": "decimals",
     "outputs": [
       {
-        "internalType": "contract IERC20",
+        "internalType": "uint8",
         "name": "",
-        "type": "address"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -93,12 +131,12 @@
   },
   {
     "inputs": [],
-    "name": "daoAddress",
+    "name": "name",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "",
-        "type": "address"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -106,12 +144,25 @@
   },
   {
     "inputs": [],
-    "name": "kpt",
+    "name": "symbol",
     "outputs": [
       {
-        "internalType": "contract IERC20",
+        "internalType": "string",
         "name": "",
-        "type": "address"
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -120,13 +171,24 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
-        "name": "redeemAmount",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "name": "redeemTokens",
-    "outputs": [],
+    "name": "transfer",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -134,46 +196,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_accountantContract",
-        "type": "address"
-      }
-    ],
-    "name": "setAccountant",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_amountToReward",
-        "type": "uint256"
-      }
-    ],
-    "name": "setBonusKPT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_daoAddress",
-        "type": "address"
-      }
-    ],
-    "name": "setDAOAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "token",
+        "name": "sender",
         "type": "address"
       },
       {
@@ -187,8 +210,14 @@
         "type": "uint256"
       }
     ],
-    "name": "withdraw",
-    "outputs": [],
+    "name": "transferFrom",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   }

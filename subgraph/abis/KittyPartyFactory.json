@@ -1,34 +1,9 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_tomCatContract",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_accountantContract",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_litterAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_daoTreasuryContract",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_oracleAddress",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "anonymous": false,
+    "inputs": [],
+    "name": "FactoryInitialized",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -56,26 +31,18 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "accountantContract",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "components": [
           {
-            "internalType": "address",
-            "name": "daiAddress",
-            "type": "address"
+            "internalType": "uint8",
+            "name": "kreatorFeesInBasisPoints",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "daoFeesInBasisPoints",
+            "type": "uint8"
           },
           {
             "internalType": "uint8",
@@ -83,14 +50,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "bool",
-            "name": "vrfEnabled",
-            "type": "bool"
-          },
-          {
-            "internalType": "address",
-            "name": "yieldContract",
-            "type": "address"
+            "internalType": "uint8",
+            "name": "timeToCollection",
+            "type": "uint8"
           },
           {
             "internalType": "uint16",
@@ -103,11 +65,6 @@
             "type": "uint16"
           },
           {
-            "internalType": "uint8",
-            "name": "timeToCollection",
-            "type": "uint8"
-          },
-          {
             "internalType": "uint256",
             "name": "amountInDAIPerRound",
             "type": "uint256"
@@ -116,10 +73,42 @@
             "internalType": "bytes32",
             "name": "partyName",
             "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "daiAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "yieldContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "winnerStrategy",
+            "type": "address"
           }
         ],
         "internalType": "struct IKittenPartyInit.KittyInitiator",
         "name": "_kittyInitiator",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "sellTokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "lpTokenAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyYieldArgs",
+        "name": "_kittyYieldArgs",
         "type": "tuple"
       }
     ],
@@ -136,12 +125,25 @@
   },
   {
     "inputs": [],
-    "name": "daoTreasuryContract",
+    "name": "daoAddress",
     "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoFeesInBasisPoints",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -167,25 +169,45 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "lastData",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
+        "internalType": "address",
+        "name": "_daoAddress",
+        "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "lastFrom",
+    "name": "kpFactory",
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "tomCatContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "accountantContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "litterAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "daoTreasuryContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "keeperContractAddress",
         "type": "address"
       }
     ],
@@ -194,51 +216,12 @@
   },
   {
     "inputs": [],
-    "name": "lastId",
+    "name": "kreatorFeesInBasisPoints",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastOperator",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastValue",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "litterAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -272,88 +255,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_operator",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "_ids",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "_values",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_data",
-        "type": "bytes"
-      }
-    ],
-    "name": "onERC1155BatchReceived",
-    "outputs": [
-      {
-        "internalType": "bytes4",
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_operator",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_value",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_data",
-        "type": "bytes"
-      }
-    ],
-    "name": "onERC1155Received",
-    "outputs": [
-      {
-        "internalType": "bytes4",
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "oracleAddress",
-    "outputs": [
-      {
-        "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "name": "myStrategies",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -362,59 +273,80 @@
   {
     "inputs": [
       {
-        "internalType": "bool",
-        "name": "_value",
-        "type": "bool"
+        "internalType": "address",
+        "name": "_strategy",
+        "type": "address"
       }
     ],
-    "name": "setShouldReject",
+    "name": "setApprovedStrategy",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "shouldReject",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
+        "internalType": "uint8",
+        "name": "_daoFeesInBasisPoints",
+        "type": "uint8"
       }
     ],
-    "stateMutability": "view",
+    "name": "setDAOFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "bytes4",
-        "name": "interfaceID",
-        "type": "bytes4"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tomCatContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "accountantContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "litterAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "daoTreasuryContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "keeperContractAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IKittenPartyInit.KittyPartyFactoryArgs",
+        "name": "_kpFactory",
+        "type": "tuple"
       }
     ],
-    "name": "supportsInterface",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "pure",
+    "name": "setFactoryInit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "tomCatContract",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        "internalType": "uint8",
+        "name": "_kreatorFeesInBasisPoints",
+        "type": "uint8"
       }
     ],
-    "stateMutability": "view",
+    "name": "setKreatorFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

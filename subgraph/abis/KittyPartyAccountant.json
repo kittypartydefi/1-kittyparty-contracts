@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_kittyPartyTokenAddress",
+        "name": "_daoAddress",
         "type": "address"
       }
     ],
@@ -52,6 +52,31 @@
       }
     ],
     "name": "CompletionBadgesMinted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "kitten",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "kittyparty",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountIssued",
+        "type": "uint256"
+      }
+    ],
+    "name": "KPReceiptIssued",
     "type": "event"
   },
   {
@@ -249,25 +274,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "kitten",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "kittyparty",
-        "type": "address"
-      }
-    ],
-    "name": "WinningKittenSelected",
-    "type": "event"
-  },
-  {
     "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
     "outputs": [
@@ -295,25 +301,12 @@
   },
   {
     "inputs": [],
-    "name": "GUARDIAN_CONTRACT_SETTER_ROLE",
+    "name": "HARKONNENS",
     "outputs": [
       {
-        "internalType": "bytes32",
+        "internalType": "uint256",
         "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "GUARDIAN_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -374,6 +367,19 @@
   {
     "inputs": [],
     "name": "PLANETARY",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "SPACINGGUILD",
     "outputs": [
       {
         "internalType": "uint256",
@@ -519,6 +525,19 @@
   },
   {
     "inputs": [],
+    "name": "daoAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "factoryContract",
     "outputs": [
       {
@@ -616,19 +635,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "kittyPartyToken",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -698,7 +704,7 @@
       },
       {
         "internalType": "uint256[]",
-        "name": "winnerIndexes",
+        "name": "kittenIndexes",
         "type": "uint256[]"
       },
       {
@@ -707,7 +713,7 @@
         "type": "uint256"
       }
     ],
-    "name": "mintToWinners",
+    "name": "mintToKittens",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -856,6 +862,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_factoryContract",
+        "type": "address"
+      }
+    ],
+    "name": "setFactory",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_treasuryContract",
         "type": "address"
       }
@@ -882,25 +901,18 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "guardianNFTContract",
-        "type": "address"
-      }
-    ],
-    "name": "setupGuardian",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "kittyParty",
         "type": "address"
       }
     ],
     "name": "setupMinter",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "minterSet",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -921,24 +933,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "litterAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "kittyParty",
-        "type": "address"
-      }
-    ],
-    "name": "transferBadgesOnCompletion",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

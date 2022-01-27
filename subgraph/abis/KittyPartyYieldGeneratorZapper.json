@@ -256,6 +256,11 @@
         "internalType": "address payable",
         "name": "",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "name": "setPlatformRewardContractAddress",
@@ -304,11 +309,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "kittyParty",
-        "type": "address"
-      },
       {
         "internalType": "bytes",
         "name": "zapCallData",
