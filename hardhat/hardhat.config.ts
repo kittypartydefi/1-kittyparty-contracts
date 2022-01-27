@@ -100,7 +100,7 @@ const config: HardhatUserConfig =  {
     mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
       gasPrice: 30000000000,
-      accounts:[""],
+      accounts,
     },
   },
   preprocess: {

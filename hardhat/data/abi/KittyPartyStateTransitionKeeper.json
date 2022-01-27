@@ -300,6 +300,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint8",
+        "name": "_blockInterval",
+        "type": "uint8"
+      }
+    ],
+    "name": "setBlockInterval",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes4",
         "name": "interfaceId",
         "type": "bytes4"
