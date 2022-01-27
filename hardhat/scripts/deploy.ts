@@ -13,9 +13,10 @@ import {
 import * as hre from "hardhat";
 
 //Select network to deploy contracts
-const deployNetwork = "mumbai";
+const deployNetwork = hre.network.name;
 
-const KP_DAO_ADDRESS = "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e";
+
+const KP_DAO_ADDRESS = "0xc044871dBbdf65D708c2Db406DED02258f19A96B"; //later handover to 0x56322a77E3fD213fA0aB3165C5078a9f197204C4
 const sellTokenAddress = contractAddresses[deployNetwork].sellTokenAddress;
 const aaveContractAddress = contractAddresses[deployNetwork].aaveContractAddress;
 const aaveDaiContractAddress = contractAddresses[deployNetwork].aaveDaiContractAddress;
@@ -27,7 +28,7 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("The deployer address is " , deployer.address);
   
-  const KPTTOKENADDRESS = "0x736034D46A8155D3cE699161156261917ca6cCD2";
+  const KPTTOKENADDRESS = "0x7d369731e3d7f86417aa86ef4be26e309080bd2f";
   const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero ;
   
   const yielderFactory = await ethers.getContractFactory('KittyPartyYieldGeneratorAave');
@@ -45,7 +46,7 @@ async function main() {
   const dai = {"address": sellTokenAddress}; 
 
   const _KittyPartyAccountant = await ethers.getContractFactory("KittyPartyAccountant");
-  const kittyPartyAccountant = await _KittyPartyAccountant.deploy(KP_DAO_ADDRESS);
+  const kittyPartyAccountant = await _KittyPartyAccountant.deploy("0x56322a77E3fD213fA0aB3165C5078a9f197204C4");
   await kittyPartyAccountant.deployed();  
   
   const _Kittens = await ethers.getContractFactory("Kittens");
@@ -55,7 +56,7 @@ async function main() {
   const _KittyPartyTreasury = await ethers.getContractFactory("KittyPartyTreasury");
   const kittyPartyTreasury = await _KittyPartyTreasury.deploy();
   await kittyPartyTreasury.deployed();
-  await kittyPartyTreasury.__KittyPartyTreasury_init(dai.address,KPTTOKENADDRESS, KP_DAO_ADDRESS, kittyPartyAccountant.address);
+  await kittyPartyTreasury.__KittyPartyTreasury_init(dai.address, KPTTOKENADDRESS, KP_DAO_ADDRESS, kittyPartyAccountant.address);
 
   // Deploy Keeper contract and set factory as SETTER_ROLE
   const KittyPartyStateTransitionKeeper = await ethers.getContractFactory('KittyPartyStateTransitionKeeper');
@@ -92,9 +93,12 @@ async function main() {
   console.log("kittyPartyAccountant", kittyPartyAccountant.address);
 
   await kittyPartyYieldGeneratorAave.__KittyPartyYieldGeneratorAave_init(kittyPartyTreasury.address);
+  await kittyPartyFactory.setApprovedStrategy(kittyPartyYieldGeneratorAave.address);
+  console.log("setApprovedStrategy");
   
   await kittyPartyYieldGeneratorAave.setPlatformDepositContractAddress(aaveContractAddress);
   await kittyPartyYieldGeneratorAave.setPlatformRewardContractAddress(aaveRewardContractAddress, aaveRewardTokenContractAddress);
+  console.log("setPlatformRewardContractAddress");
 
   return {
     'kittyPartyYieldGeneratorAave':kittyPartyYieldGeneratorAave.address,
@@ -152,7 +156,7 @@ function delay(ms: number) {
     await verify(deployedData.kittyPartyTreasury);
     await verify(deployedData.kittens);
     await verify(deployedData.kittyPartyFactory);
-    await verify(deployedData.kittyPartyAccountant, KP_DAO_ADDRESS);
+    await verify(deployedData.kittyPartyAccountant, "0x56322a77E3fD213fA0aB3165C5078a9f197204C4");
     await verify(deployedData.kittyPartyStateTransitionKeeper);
     process.exit(0)
   })

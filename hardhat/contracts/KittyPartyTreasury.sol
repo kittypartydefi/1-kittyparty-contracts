@@ -5,8 +5,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@rari-capital/solmate/src/utils/ReentrancyGuard.sol";
 
-// import "hardhat/console.sol";
-
 contract KittyPartyTreasury is Initializable, ReentrancyGuard {
     IERC20 public dai;
     IERC20 public kpt;
@@ -33,7 +31,7 @@ contract KittyPartyTreasury is Initializable, ReentrancyGuard {
         daoAddress = _daoAddress;   
         dai = IERC20(_dai_address);
         kpt = IERC20(_kpt_address);
-        bonusKPTPerToken = 1;
+        bonusKPTPerToken = 0;
     }
 
     function setBonusKPT(uint _amountToReward) external onlyDAOAddress {

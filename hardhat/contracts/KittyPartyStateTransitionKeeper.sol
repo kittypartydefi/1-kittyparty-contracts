@@ -8,7 +8,7 @@ import './interfaces/IKeeper.sol';
 contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessControl {
     
     //Number of blocks in between two consecutive turns of the upkeep; 20 in case of polygon
-    uint8 blockInterval = 20;
+    uint blockInterval = 20;
     //Block number in which first upkeep is performed
     uint initiatingBlock;
     //Array to store addresses of currently active kitty parties
@@ -39,7 +39,9 @@ contract KittyPartyStateTransitionKeeper is KeeperCompatibleInterface, AccessCon
 
     ///@dev Delete by setting the last element to the current index
     function removeKPController(uint256 index) public onlyRole(SETTER_ROLE) {
-        kpControllers[index] = kpControllers[kpControllers.length - 1];
+        if (kpControllers.length > 1) {
+            kpControllers[index] = kpControllers[kpControllers.length - 1];
+        }
         kpControllers.pop();
     }
 

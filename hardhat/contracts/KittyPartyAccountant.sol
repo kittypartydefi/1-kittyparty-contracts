@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSL
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -51,6 +51,7 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         require(!_initialized, "Contract is already initialized");
         factoryContract = _factoryContract;
         _setupRole(DEFAULT_ADMIN_ROLE, _factoryContract);
+        _mint(msg.sender, PLANETARY, 20, "");// one to the deployer
         _mint(daoAddress, PLANETARY, 10**18, "");// additional emissions on winning
         _mint(daoAddress, STELLAR, 10**12, "");
         _mint(daoAddress, GALACTIC, 10**9, "");

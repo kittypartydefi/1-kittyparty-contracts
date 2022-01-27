@@ -268,7 +268,8 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
             amount, 
             ""
         );
-        // for kittyPartyControllerVars.profit to be calculated we need to unwind the position succesfuly the kittyPartyControllerVarsprofit - X% to kreator and Y% to contract becomes the winning
+        // for kittyPartyControllerVars.profit to be calculated we need to unwind the position succesfuly 
+        // the kittyPartyControllerVarsprofit - X% to kreator and Y% to contract becomes the winning
         (bool success,) = address(kPFactory.accountantContract).call(payload);
         require(success);
     }

@@ -40,11 +40,7 @@ const config: HardhatUserConfig =  {
             runs: 800
           }
         }
-      },
-      {
-        version: "0.8.2",
-        settings: {},
-      },
+      }
     ]},
   paths: {
     artifacts: '../frontend/artifacts',
@@ -95,7 +91,7 @@ const config: HardhatUserConfig =  {
     matic: {
       url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
       accounts,
-      gasPrice: 30000000000
+      gasPrice: 31000000000
     },
     mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSL
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 

@@ -1,5 +1,5 @@
 const addresses = {
-    "polygon": {
+    "matic": {
         "sellTokenAddress": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
         "aaveContractAddress": "0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf",
         "aaveDaiContractAddress": "0x27f8d03b3a2196956ed754badc28d73be8830a6e",
