@@ -7,7 +7,7 @@ dataSources:
     # network: mumbai
     network: mumbai
     source:
-      address: "0xA5b904634A2eB8C87D8c9a3D8A8798C5FA1cDEe8"
+      address: "0x04C2D089FC402876CE5482448e4b38Db78056654"
       abi: Contract
       # startBlock: 22477424
     mapping:
@@ -40,7 +40,7 @@ dataSources:
     network: mumbai
     # network: mainnet
     source:
-      address: "0xdd1c0a7caA9da0c3920703db75b30E52d9561386"
+      address: "0x24f7997749eaFcA1FA500B575bDAD56B541E9fFf"
       abi: KittyPartyFactory
       # startBlock: 22477424
     mapping:
