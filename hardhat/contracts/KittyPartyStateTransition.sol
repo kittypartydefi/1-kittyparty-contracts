@@ -79,8 +79,8 @@ contract KittyPartyStateTransition {
 
     function _nextStage(uint8 jumpTo) internal {
         uint nextStageValue = uint(stage) + jumpTo;
-        if(nextStageValue > 6){
-            nextStageValue = 6;
+        if (nextStageValue > 5){
+            nextStageValue = 5;
         }
         emit StageTransition(address(this), uint(stage), nextStageValue);
         stage = KittyPartyStages(nextStageValue);
