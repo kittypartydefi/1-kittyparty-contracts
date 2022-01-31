@@ -297,6 +297,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         external
         onlyKreator
     {
+        require(stage != KittyPartyStages.Staking, "Cannot refund in staking");
         require(stage != KittyPartyStages.Payout, "Cannot refund in payout");
         require(stage != KittyPartyStages.Completed, "Cannot refund in Completed");
         require(kittyPartyControllerVars.internalState  != 3, "Cannot refund");
