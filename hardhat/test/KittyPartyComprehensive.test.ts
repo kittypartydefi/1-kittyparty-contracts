@@ -34,6 +34,7 @@ describe("KittyParty contracts comprehensive test", function() {
       kreator: Wallet, 
       kitten1: Wallet, 
       kitten2: Wallet;
+
     let dai: ERC20;
     let kittens: Kittens;
     let kittyPartyToken: KittyPartyToken;
@@ -231,7 +232,7 @@ describe("KittyParty contracts comprehensive test", function() {
       let stage = await kittyParty.getStage();
       expect(stage).to.be.equal(0);
       
-      await network.provider.send("evm_increaseTime", [1*61*60]);
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
       await kittyParty.applyInitialVerification();
 
       stage = await kittyParty.getStage();
@@ -256,18 +257,20 @@ describe("KittyParty contracts comprehensive test", function() {
       await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
       await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
       
-      await network.provider.send("evm_increaseTime", [1*61*60]);
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
       await kittyParty.applyInitialVerification();
 
-      await network.provider.send("evm_increaseTime", [1*61*60]);
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
       await kittyParty.stopStaking();
 
       let stage = await kittyParty.getStage();
       expect(stage).to.be.equal(3);
 
       await kittyParty.payOrganizerFees();
+
       const kreatorBalance = await kittyPartyAccountant.balanceOf(kreator.address, 0);
       expect(parseFloat(ethers.utils.formatEther(kreatorBalance.toString()))).to.be.above(0);
+
       await kittyParty.applyWinnerStrategy();
 
       const kitten1Balance = await kittyPartyAccountant.balanceOf(kitten1.address, 0);
@@ -292,10 +295,10 @@ describe("KittyParty contracts comprehensive test", function() {
       await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
       await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
       
-      await network.provider.send("evm_increaseTime", [1*61*60]);
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
       await kittyParty.applyInitialVerification();
 
-      await network.provider.send("evm_increaseTime", [1*61*60]);
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
       await kittyParty.stopStaking();
       await kittyParty.payOrganizerFees();
       await kittyParty.applyWinnerStrategy();
@@ -309,19 +312,30 @@ describe("KittyParty contracts comprehensive test", function() {
       let controllerVars = await kittyParty.kittyPartyControllerVars();
       expect(controllerVars.internalState).to.be.equal(3);
 
+      const kreatorBalance = await kittyPartyAccountant.balanceOf(kreator.address, 0);
       const kitten1ReceiptBalance = await kittyPartyAccountant.balanceOf(kitten1.address, 0);
       const kitten2ReceiptBalance = await kittyPartyAccountant.balanceOf(kitten2.address, 0);
+
+      const kreatorInitial = await dai.balanceOf(kreator.address);
       const kitten1Initial = await dai.balanceOf(kitten1.address);
       const kitten2Initial = await dai.balanceOf(kitten2.address);
 
+      await kittyPartyAccountant.connect(kreator).setApprovalForAll(kittyPartyTreasury.address, true);
       await kittyPartyAccountant.connect(kitten1).setApprovalForAll(kittyPartyTreasury.address, true);
       await kittyPartyAccountant.connect(kitten2).setApprovalForAll(kittyPartyTreasury.address, true);
 
+      await kittyPartyTreasury.connect(kreator).redeemTokens(kreatorBalance);
       await kittyPartyTreasury.connect(kitten1).redeemTokens(kitten1ReceiptBalance);
       await kittyPartyTreasury.connect(kitten2).redeemTokens(kitten2ReceiptBalance);
 
+      const kreatorFinal = await dai.balanceOf(kreator.address);
       const kitten1Final = await dai.balanceOf(kitten1.address);
       const kitten2Final = await dai.balanceOf(kitten2.address);
+
+      expect(
+        parseFloat(ethers.utils.formatEther(kreatorFinal.toString())) - 
+        parseFloat(ethers.utils.formatEther(kreatorInitial.toString()))
+      ).to.be.above(Math.floor(parseFloat(ethers.utils.formatEther(kreatorBalance.toString()))));
 
       expect(
         parseFloat(ethers.utils.formatEther(kitten1Final.toString())) - 
@@ -350,7 +364,7 @@ describe("KittyParty contracts comprehensive test", function() {
       await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
       await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
 
-      await network.provider.send("evm_increaseTime", [1*61*60]);
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
       await kittyParty.applyInitialVerification();
 
       await kittyParty.connect(kreator).issueRefund();

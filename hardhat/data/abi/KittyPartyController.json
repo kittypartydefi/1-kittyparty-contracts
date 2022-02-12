@@ -559,6 +559,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "yieldWithPrincipal",
+        "type": "uint256"
+      },
+      {
         "internalType": "uint8",
         "name": "localKittens",
         "type": "uint8"

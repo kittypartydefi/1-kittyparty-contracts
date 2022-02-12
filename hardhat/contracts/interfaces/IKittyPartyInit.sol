@@ -34,6 +34,7 @@ interface IKittenPartyInit {
         uint256 kreatorStake;
         uint profit;
         uint profitToSplit;
+        uint yieldWithPrincipal;
         // The number of kittens inside that party
         uint8 localKittens;
         // A state representing whether the party has started and completed

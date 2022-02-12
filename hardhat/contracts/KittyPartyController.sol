@@ -209,7 +209,8 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         bytes memory yieldGenerated = abi.encodeWithSignature("yieldGenerated(address)",address(this));
         (bool successYield, bytes memory returnData) = address(kittyInitiator.yieldContract).staticcall(yieldGenerated);
         require(successYield, "YE1");
-        (kittyPartyControllerVars.profit) = abi.decode(returnData, (uint256));
+        (kittyPartyControllerVars.yieldWithPrincipal) = abi.decode(returnData, (uint256));
+        kittyPartyControllerVars.profit = kittyPartyControllerVars.yieldWithPrincipal - kittyInitiator.amountInDAIPerRound * kittyPartyControllerVars.localKittens;
         emit StopStaking(address(this), kittyPartyControllerVars.profit);
     }
 
@@ -219,7 +220,7 @@ contract KittyPartyController is KittyPartyStateTransition, IKittenPartyInit {
         require(kittyPartyControllerVars.profit > 0);
         uint256 amountToSendKreator = kittyPartyControllerVars.profit * kittyInitiator.kreatorFeesInBasisPoints / 10000;
         uint256 amountToSendDAO = kittyPartyControllerVars.profit * kittyInitiator.daoFeesInBasisPoints / 10000;
-        kittyPartyControllerVars.profitToSplit = kittyPartyControllerVars.profit - (amountToSendKreator + amountToSendDAO);
+        kittyPartyControllerVars.profitToSplit = kittyPartyControllerVars.yieldWithPrincipal - (amountToSendKreator + amountToSendDAO);
         kittyPartyControllerVars.profit = 0;
         mintTokens(kittyPartyControllerVars.kreator, amountToSendKreator, 0);
         mintTokens(kPFactory.daoTreasuryContract, amountToSendDAO, 0);

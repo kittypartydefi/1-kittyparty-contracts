@@ -5,6 +5,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 
+import '../interfaces/IKittyPartyInit.sol';
 import "../interfaces/IKittyPartyYieldGenerator.sol";
 
 contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerator, OwnableUpgradeable {
@@ -77,26 +78,31 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         returns (uint256 tokensRec)
     {
         IKittyPartyYieldGenerator.KittyPartyYieldInfo storage kpInfo = kittyPartyYieldInfo[msg.sender];
+        
+        bytes memory payload = abi.encodeWithSignature("kittyInitiator()");
+        (bool success, bytes memory returnData) = address(msg.sender).staticcall(payload);
+        
+        IKittenPartyInit.KittyInitiator memory kittyInitiator = abi.decode(returnData, (IKittenPartyInit.KittyInitiator));
         // Get funds back in the same token that we sold in  DAI, since for now the treasury only releases DAI
         require(IERC20Upgradeable(kpInfo.sellTokenAddress).approve(AaveContract, MAX), "Not enough allowance");
         uint256 rewardTokenBalance = 0;
         uint256 lpTokenBalance = IERC20Upgradeable(kpInfo.lpTokenAddress).balanceOf(address(this));
 
         //set party yield as a portion of claimable pool
-        kpInfo.yieldGeneratedInLastRound = lpTokenBalance * kpInfo.lockedAmount / totalLocked;
+        kpInfo.yieldGeneratedInLastRound = (lpTokenBalance * kpInfo.lockedAmount / totalLocked) - (kittyInitiator.amountInDAIPerRound / 10);
         totalLocked -= kpInfo.lockedAmount;
 
         // Create an array with lp token address for checking rewards
         address[] memory lpTokens = new address[](1);
         lpTokens[0] = kpInfo.lpTokenAddress; 
         // Check the balance of accrued rewards
-        bytes memory payload = abi.encodeWithSignature("getRewardsBalance(address[],address)",
+        payload = abi.encodeWithSignature("getRewardsBalance(address[],address)",
                                                         lpTokens,
                                                         address(this));
-        (bool rewardsExists, bytes memory returnData) = address(AaveRewardContract).staticcall(payload);
+        (bool rewardsExists, bytes memory return_Data) = address(AaveRewardContract).staticcall(payload);
 
         if(rewardsExists == true) {
-            (rewardTokenBalance) = abi.decode(returnData, (uint256));
+            (rewardTokenBalance) = abi.decode(return_Data, (uint256));
             // Claim balance rewards and sent to treasury
             payload = abi.encodeWithSignature("claimRewards(address[],uint256,address)",
                                               lpTokens,
@@ -109,10 +115,11 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         // Withdraws deposited DAI and burns atokens
         payload = abi.encodeWithSignature("withdraw(address,uint256,address)",
                                           kpInfo.sellTokenAddress,
-                                          kpInfo.yieldGeneratedInLastRound,
+                                          kpInfo.yieldGeneratedInLastRound + (kittyInitiator.amountInDAIPerRound / 10),
                                           _treasuryContract);
-        (bool success,) = address(AaveContract).call(payload);
+        (success,) = address(AaveContract).call(payload);
         require(success, 'Withdraw failed');
+
         emit YieldClaimed(kpInfo.yieldGeneratedInLastRound);
 
         return  kpInfo.yieldGeneratedInLastRound;
