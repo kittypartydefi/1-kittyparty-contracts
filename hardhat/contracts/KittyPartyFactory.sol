@@ -10,6 +10,8 @@ import './interfaces/IKittyPartyInit.sol';
 import './interfaces/IKittyPartyAccountant.sol';
 import './interfaces/IKittyPartyKeeper.sol';
 
+import "hardhat/console.sol";
+
 contract KittyPartyFactory is IKittenPartyInit, Initializable {
 
     KittyPartyFactoryArgs public kpFactory;
@@ -63,12 +65,12 @@ contract KittyPartyFactory is IKittenPartyInit, Initializable {
         external
         returns (address kittyAddress)
     {
-        address kitty = ClonesUpgradeable.clone(kpFactory.tomCatContract);   
+        address kitty = ClonesUpgradeable.clone(kpFactory.tomCatContract);
         IERC20 dai = IERC20(_kittyInitiator.daiAddress);
-        uint256 allowance = dai.allowance(msg.sender, address(this));
+        uint allowance = dai.allowance(msg.sender, address(this));
         uint badgeType = (_kittyInitiator.amountInDAIPerRound >= 1000000 * DECIMALS) ? 3 : 
                     (_kittyInitiator.amountInDAIPerRound >= 1000 * DECIMALS) ? 2 : 1;
-    
+
         require(myStrategies[_kittyInitiator.yieldContract] == true, "Strategy not approved");
         //min requirements
         require(_kittyInitiator.maxKittens <= 20, "Too many Kittens");
