@@ -3,18 +3,21 @@
 These are the main contracts for Kitty Party Project.
 
 ## Duration related information
+```
 lastStageTime --> checked in every stage, it is updated at each stage
 timeToCollection --> Relevant to collection only from initial start
 durationInDays --> Relevant to staking period only
+```
 
 ### Stages
+```
 InitialCollection : 0
 Collection : 1
 Staking : 2
 Payout : 3
 Completed : 4
 Refund : 5
-
+```
 ## Installation
 
 ####  Clone the repository
