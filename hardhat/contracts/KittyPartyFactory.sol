@@ -75,7 +75,7 @@ contract KittyPartyFactory is IKittenPartyInit, Initializable {
         //min requirements
         require(_kittyInitiator.maxKittens <= 20, "Too many Kittens");
         require(allowance >= _kittyInitiator.amountInDAIPerRound / 10, "Min 10% req as stake");
-        require(_kittyInitiator.amountInDAIPerRound >= 20 * DECIMALS, "Min $20 req as stake");
+        require(_kittyInitiator.amountInDAIPerRound >= 5 * DECIMALS, "Min $20 req as stake");
         require(dai.transferFrom(msg.sender, address(_kittyInitiator.yieldContract), allowance), "Kreator stake fail");
         require(_kittyInitiator.kreatorFeesInBasisPoints <= kreatorFeesInBasisPoints, "Fees too low");
         require(_kittyInitiator.daoFeesInBasisPoints <= daoFeesInBasisPoints, "Dao fees too low");
