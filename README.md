@@ -23,7 +23,7 @@ Refund : 5
 ####  Clone the repository
 
 ```
- git clone https://github.com/chiliagons/1-kittyparty-contracts.git
+ git clone git@github.com:kittypartydefi/1-kittyparty-contracts.git
 ```
 
 #### Install dependencies
