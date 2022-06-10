@@ -67,15 +67,15 @@ contract KittyPartyFactory is IKittenPartyInit, Initializable {
     {
         address kitty = ClonesUpgradeable.clone(kpFactory.tomCatContract);
         IERC20 dai = IERC20(_kittyInitiator.daiAddress);
-        uint allowance = dai.allowance(msg.sender, address(this));
-        uint badgeType = (_kittyInitiator.amountInDAIPerRound >= 1000000 * DECIMALS) ? 3 : 
+        uint256 allowance = dai.allowance(msg.sender, address(this));
+        uint8 badgeType = (_kittyInitiator.amountInDAIPerRound >= 1000000 * DECIMALS) ? 3 : 
                     (_kittyInitiator.amountInDAIPerRound >= 1000 * DECIMALS) ? 2 : 1;
 
         require(myStrategies[_kittyInitiator.yieldContract] == true, "Strategy not approved");
         //min requirements
         require(_kittyInitiator.maxKittens <= 20, "Too many Kittens");
         require(allowance >= _kittyInitiator.amountInDAIPerRound / 10, "Min 10% req as stake");
-        require(_kittyInitiator.amountInDAIPerRound >= 5 * DECIMALS, "Min $20 req as stake");
+        require(_kittyInitiator.amountInDAIPerRound >= 20 * DECIMALS, "Min $20 req as stake");
         require(dai.transferFrom(msg.sender, address(_kittyInitiator.yieldContract), allowance), "Kreator stake fail");
         require(_kittyInitiator.kreatorFeesInBasisPoints <= kreatorFeesInBasisPoints, "Fees too low");
         require(_kittyInitiator.daoFeesInBasisPoints <= daoFeesInBasisPoints, "Dao fees too low");
