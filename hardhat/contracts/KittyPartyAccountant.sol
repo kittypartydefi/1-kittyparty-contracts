@@ -162,6 +162,11 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         whenNotPaused
         override
     {
+        //Non transferabble Harkonnen
+        for (uint i=0; i < ids.length; i++) {
+            require(i != 5, "Cannot transfer Harkonnen");
+        }
+
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
 

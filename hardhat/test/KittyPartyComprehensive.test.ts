@@ -20,18 +20,24 @@ import {
 let contractAddresses =  require("./ContractAddresses.ts");
 
 const testNetwork = "mumbai";
-const KP_DAO_ADDRESS = "0x9CbeF40aEe5Eb4b541DA73409F8425A3aae5fd1e";
 
 const sellTokenAddress = contractAddresses[testNetwork].sellTokenAddress;
 const aaveContractAddress = contractAddresses[testNetwork].aaveContractAddress;
 const aaveDaiContractAddress = contractAddresses[testNetwork].aaveDaiContractAddress;
 const aaveRewardContractAddress = contractAddresses[testNetwork].aaveRewardContractAddress;
 const aaveRewardTokenContractAddress = contractAddresses[testNetwork].aaveRewardTokenContractAddress;
-
-
+const daiHolder = contractAddresses[testNetwork].daiHolder;
+console.log(
+  "The addresses for test",
+  sellTokenAddress,
+  aaveContractAddress,
+  aaveDaiContractAddress,
+  aaveRewardContractAddress
+)
 describe("KittyParty contracts comprehensive test", function() {
     let deployer: Wallet, 
       kreator: Wallet, 
+      KP_DAO_WALLET: Wallet, 
       kitten1: Wallet, 
       kitten2: Wallet;
 
@@ -54,7 +60,7 @@ describe("KittyParty contracts comprehensive test", function() {
         console.log("KittyPartyController Master deployed address:: ", kittyPartyController.address);
 
         const _KittyPartyAccountant = await ethers.getContractFactory("KittyPartyAccountant");
-        kittyPartyAccountant = await _KittyPartyAccountant.deploy(KP_DAO_ADDRESS) as KittyPartyAccountant;
+        kittyPartyAccountant = await _KittyPartyAccountant.deploy(KP_DAO_WALLET.address) as KittyPartyAccountant;
         await kittyPartyAccountant.deployed();
         console.log("KittyPartyAccountant deployed address:: ", kittyPartyAccountant.address);
 
@@ -85,7 +91,7 @@ describe("KittyParty contracts comprehensive test", function() {
 
         const _DAI = await ethers.getContractFactory("ERC20");
         dai = _DAI.attach(sellTokenAddress) as ERC20;
-        await kittyPartyTreasury.__KittyPartyTreasury_init(dai.address, kittyPartyToken.address, KP_DAO_ADDRESS, kittyPartyAccountant.address);
+        await kittyPartyTreasury.__KittyPartyTreasury_init(dai.address, kittyPartyToken.address, KP_DAO_WALLET.address, kittyPartyAccountant.address);
         
         const KittyPartyStateTransitionKeeper = await ethers.getContractFactory('KittyPartyStateTransitionKeeper');
         kittyPartyStateTransitionKeeper = await KittyPartyStateTransitionKeeper.deploy() as KittyPartyStateTransitionKeeper;
@@ -96,7 +102,7 @@ describe("KittyParty contracts comprehensive test", function() {
         await kittyPartyFactory.deployed();
         console.log("KittyPartyFactory deployed address:: ", kittyPartyFactory.address);
 
-        await kittyPartyFactory.initialize(KP_DAO_ADDRESS);      
+        await kittyPartyFactory.initialize(KP_DAO_WALLET.address);      
         await kittyPartyStateTransitionKeeper.grantRole("0x61c92169ef077349011ff0b1383c894d86c5f0b41d986366b58a6cf31e93beda", kittyPartyFactory.address);
     
         const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero;
@@ -114,18 +120,18 @@ describe("KittyParty contracts comprehensive test", function() {
           "tomCatContract": kittyPartyController.address,
           "accountantContract": kittyPartyAccountant.address,
           "litterAddress": kittens.address,
-          "daoTreasuryContract": KP_DAO_ADDRESS,
+          "daoTreasuryContract": KP_DAO_WALLET.address,
           "keeperContractAddress": kittyPartyStateTransitionKeeper.address
         };
         
-        await kittyPartyFactory.setFactoryInit(kpFactory);  
-        await kittyPartyFactory.setApprovedStrategy(kittyPartyYieldGeneratorAave.address);    
+        await kittyPartyFactory.connect(KP_DAO_WALLET).setFactoryInit(kpFactory);  
+        await kittyPartyFactory.connect(KP_DAO_WALLET).setApprovedStrategy(kittyPartyYieldGeneratorAave.address);    
       };
 
     let loadFixture: ReturnType<typeof createFixtureLoader>;
 
     before('create fixture loader', async () => {
-      [deployer, kreator, kitten1, kitten2] = await (ethers as any).getSigners();
+      [deployer, kreator, kitten1, kitten2, KP_DAO_WALLET] = await (ethers as any).getSigners();
       loadFixture = createFixtureLoader([deployer, kreator, kitten1, kitten2]);
     });
 
@@ -152,18 +158,38 @@ describe("KittyParty contracts comprehensive test", function() {
         lpTokenAddress: aaveDaiContractAddress
       };
 
-      await dai.connect(kreator).approve(
+      //impersonate big holder and send transfers 
+      await network.provider.request({
+        method: "hardhat_impersonateAccount",
+        params: [daiHolder],
+      });
+      await network.provider.send("hardhat_setBalance", [
+        daiHolder,
+        "0x69D17119DC5A80000"
+      ]);
+      const daiSigner = await ethers.getSigner(daiHolder);
+
+      await dai.connect(daiSigner).transfer(kreator.address, KittyInitiator.amountInDAIPerRound)
+      await dai.connect(daiSigner).transfer(kitten1.address, KittyInitiator.amountInDAIPerRound)
+      await dai.connect(daiSigner).transfer(kitten2.address, KittyInitiator.amountInDAIPerRound)
+
+      const approveDAI = await dai.connect(kreator).approve(
         kittyPartyFactory.address, 
         (KittyInitiator.amountInDAIPerRound.div(10)).toString()
       );
 
-      await kittyPartyAccountant.mint(kreator.address, 1, 10, "0x");
+      approveDAI.wait();
+      // const balance = await dai.connect(kreator).balanceOf(kreator.address);
+      // console.log("The amount of allowance - ", ethers.utils.formatEther(balance))
+
+      const planetNFT = await kittyPartyAccountant.connect(KP_DAO_WALLET).mint(kreator.address, 1, 10, "0x");
+      planetNFT.wait()
       await kittyPartyFactory.connect(kreator).createKitty(
         KittyInitiator, 
         KittyYieldArgs
       );
 
-    });
+    })
 
     it('contracts deploy successfully', async function () {
       expect(kittens.address).to.not.be.undefined;
@@ -180,7 +206,7 @@ describe("KittyParty contracts comprehensive test", function() {
       expect(_kpfactory.tomCatContract).to.be.equal(kittyPartyController.address);
       expect(_kpfactory.accountantContract).to.be.equal(kittyPartyAccountant.address);
       expect(_kpfactory.litterAddress).to.be.equal(kittens.address);
-      expect(_kpfactory.daoTreasuryContract).to.be.equal(KP_DAO_ADDRESS);
+      expect(_kpfactory.daoTreasuryContract).to.be.equal(KP_DAO_WALLET.address);
       expect(_kpfactory.keeperContractAddress).to.be.equal(kittyPartyStateTransitionKeeper.address);
     });
 
