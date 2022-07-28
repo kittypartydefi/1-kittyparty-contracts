@@ -418,4 +418,30 @@ describe("KittyParty contracts comprehensive test", function() {
         parseFloat(ethers.utils.formatEther(kitten2Initial.toString()))
       ).to.be.equal(parseFloat(ethers.utils.formatEther(kitten2ReceiptBalance.toString())));
     });
+    
+    it('Cannot Stop staking without Completion of the given time.', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+    
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+      await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+    
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.applyInitialVerification();
+    
+      await expect(kittyParty.stopStaking()).to.be.reverted;
+    });
 });
+
+
+
+
