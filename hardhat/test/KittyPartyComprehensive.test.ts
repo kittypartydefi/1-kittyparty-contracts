@@ -33,7 +33,8 @@ describe("KittyParty contracts comprehensive test", function() {
     let deployer: Wallet, 
       kreator: Wallet, 
       kitten1: Wallet, 
-      kitten2: Wallet;
+      kitten2: Wallet,
+      kitten3: Wallet;
 
     let dai: ERC20;
     let kittens: Kittens;
@@ -125,8 +126,8 @@ describe("KittyParty contracts comprehensive test", function() {
     let loadFixture: ReturnType<typeof createFixtureLoader>;
 
     before('create fixture loader', async () => {
-      [deployer, kreator, kitten1, kitten2] = await (ethers as any).getSigners();
-      loadFixture = createFixtureLoader([deployer, kreator, kitten1, kitten2]);
+      [deployer, kreator, kitten1, kitten2, kitten3] = await (ethers as any).getSigners();
+      loadFixture = createFixtureLoader([deployer, kreator, kitten1, kitten2, kitten3]);
     });
 
     beforeEach('deploy contracts', async () => {
@@ -432,7 +433,7 @@ describe("KittyParty contracts comprehensive test", function() {
       expect(kittyList.length).to.be.equal(1);
     });
 
-    it('Kreator cannot join own party', async function() {
+    it('kreator cannot join own party', async function() {
       let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
       const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
       const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
@@ -443,7 +444,7 @@ describe("KittyParty contracts comprehensive test", function() {
       await expect(kittyParty.connect(kreator).depositAndAddKittenToParty(ethers.utils.formatBytes32String("join"))).to.be.reverted;
     });
 
-    it('Require minimum number of kittens ', async function() {
+    it('require minimum number of kittens ', async function() {
       let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
       const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
       const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
@@ -465,7 +466,7 @@ describe("KittyParty contracts comprehensive test", function() {
       await expect(kittyParty.applyInitialVerification()).to.be.reverted;
     });
 
-    it('Cannot stop staking at different stage', async function() {
+    it('cannot stop staking at different stage', async function() {
       let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
       const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
       const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
@@ -490,7 +491,7 @@ describe("KittyParty contracts comprehensive test", function() {
       expect(stage).to.be.equal(2);
     });
      
-    it('Cannot pay OrganizerFee at different stage', async function() {
+    it('cannot pay organizerfee at different stage', async function() {
       let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
       const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
       const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
@@ -519,7 +520,7 @@ describe("KittyParty contracts comprehensive test", function() {
       expect(stage).to.be.equal(2);
     });
 
-    it('Cannot apply winnerstrategy at different stage', async function() {
+    it('cannot apply winnerstrategy at different stage', async function() {
       let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
       const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
       const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
