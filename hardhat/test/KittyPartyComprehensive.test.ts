@@ -392,4 +392,248 @@ describe("KittyParty contracts comprehensive test", function() {
         parseFloat(ethers.utils.formatEther(kitten2Initial.toString()))
       ).to.be.equal(parseFloat(ethers.utils.formatEther(kitten2ReceiptBalance.toString())));
     });
+  
+    //Test for Non ideal cases:
+    it('cannot add kittens beyond  Maximum number of kittens allowed in a party', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await kitten1.sendTransaction({to:kitten3.address, value:ethers.utils.parseUnits("0.1")});
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten3).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await expect(kittyParty.connect(kitten3).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"))).to.be.reverted;
+      const kittyList = await kittens.getList(kittyPartyDeployed);
+      expect(kittyList[0].kitten).to.be.equal(kitten1.address);
+      expect(kittyList[1].kitten).to.be.equal(kitten2.address);
+      expect(kittyList.length).to.be.equal(2);
+    });
+
+    it('kittens Can only join the Party with appropriate invite link', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"))
+      
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await expect(kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("join"))).to.be.reverted;
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      const kittyList = await kittens.getList(kittyPartyDeployed);
+      expect(kittyList[0].kitten).to.be.equal(kitten2.address);
+      expect(kittyList.length).to.be.equal(1);
+    });
+
+    it('Kreator cannot join own party', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+     
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await expect(kittyParty.connect(kreator).depositAndAddKittenToParty(ethers.utils.formatBytes32String("join"))).to.be.reverted;
+    });
+
+    it('Require minimum number of kittens ', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+      await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      
+
+      let stage = await kittyParty.getStage();
+      expect(stage).to.be.equal(0);
+      
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await expect(kittyParty.applyInitialVerification()).to.be.reverted;
+    });
+
+    it('Cannot stop staking at different stage', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+      await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.applyInitialVerification();
+
+      await expect(kittyParty.stopStaking()).to.be.reverted;
+
+      let stage = await kittyParty.getStage();
+      expect(stage).to.be.equal(2);
+    });
+     
+    it('Cannot pay OrganizerFee at different stage', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+      await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.applyInitialVerification();
+
+      await expect(kittyParty.stopStaking()).to.be.reverted;
+      await expect(kittyParty.payOrganizerFees()).to.be.reverted;
+
+      const kreatorBalance = await kittyPartyAccountant.balanceOf(kreator.address, 0);
+      expect(parseFloat(ethers.utils.formatEther(kreatorBalance.toString()))).to.be.equal(0);
+
+      let stage = await kittyParty.getStage();
+      expect(stage).to.be.equal(2);
+    });
+
+    it('Cannot apply winnerstrategy at different stage', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+      await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.applyInitialVerification();
+
+      await expect(kittyParty.stopStaking()).to.be.reverted;
+      await expect(kittyParty.payOrganizerFees()).to.be.reverted;
+
+      const kreatorBalance = await kittyPartyAccountant.balanceOf(kreator.address, 0);
+      expect(parseFloat(ethers.utils.formatEther(kreatorBalance.toString()))).to.be.equal(0);
+
+
+      await expect(kittyParty.applyWinnerStrategy()).to.be.reverted;
+
+      const kitten1Balance = await kittyPartyAccountant.balanceOf(kitten1.address, 0);
+      const kitten2Balance = await kittyPartyAccountant.balanceOf(kitten2.address, 0);
+      expect(parseFloat(ethers.utils.formatEther(kitten1Balance.toString()))).to.be.equal(0);
+      expect(parseFloat(ethers.utils.formatEther(kitten2Balance.toString()))).to.be.equal(0);
+
+      let stage = await kittyParty.getStage();
+      expect(stage).to.be.equal(2);
+    });
+
+    it('cannot complete party at intermediate stages', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+      await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.applyInitialVerification();
+      await expect(kittyParty.applyCompleteParty()).to.be.reverted;
+
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.stopStaking();
+      await kittyParty.payOrganizerFees();
+      await kittyParty.applyWinnerStrategy();
+      
+      await expect(kittyParty.applyCompleteParty()).to.be.reverted;
+
+      let stage = await kittyParty.getStage();
+      expect(stage).to.be.equal(3);
+
+      let controllerVars = await kittyParty.kittyPartyControllerVars();
+      expect(controllerVars.internalState).to.be.equal(2);
+    });
+
+
+    it('cannot redeem more than balance amount after completing party', async function() {
+      let deployedKitty = await kittyPartyFactory.getMyKitties(kreator.address);
+      const kittyPartyDeployed = deployedKitty[deployedKitty.length - 1];
+      const _KittyPartyController = await ethers.getContractFactory("KittyPartyController");
+
+      let kittyParty = _KittyPartyController.attach(kittyPartyDeployed);
+      await dai.connect(kitten1).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+      await dai.connect(kitten2).approve(kittyPartyDeployed,ethers.utils.parseUnits("20"));
+        
+      await kittyPartyYieldGeneratorAave.setAllowanceDeposit(kittyPartyDeployed);
+      await kittyPartyYieldGeneratorAave.setAllowanceWithdraw(kittyPartyDeployed);
+
+      await kittyParty.connect(kreator).setInviteHash(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten1).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      await kittyParty.connect(kitten2).depositAndAddKittenToParty(ethers.utils.formatBytes32String("jointheparty"));
+      
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.applyInitialVerification();
+
+      await network.provider.send("evm_increaseTime", [1*24*60*61]);
+      await kittyParty.stopStaking();
+      await kittyParty.payOrganizerFees();
+      await kittyParty.applyWinnerStrategy();
+      
+      await network.provider.send("evm_increaseTime", [8*60*61]);
+      await kittyParty.applyCompleteParty();
+
+      let stage = await kittyParty.getStage();
+      expect(stage).to.be.equal(4);
+
+      let controllerVars = await kittyParty.kittyPartyControllerVars();
+      expect(controllerVars.internalState).to.be.equal(3);
+
+      const kreatorBalance = await kittyPartyAccountant.balanceOf(kreator.address, 0);
+      const kitten1ReceiptBalance = await kittyPartyAccountant.balanceOf(kitten1.address, 0);
+      const kitten2ReceiptBalance = await kittyPartyAccountant.balanceOf(kitten2.address, 0);
+
+      await kittyPartyAccountant.connect(kreator).setApprovalForAll(kittyPartyTreasury.address, true);
+      await kittyPartyAccountant.connect(kitten1).setApprovalForAll(kittyPartyTreasury.address, true);
+      
+      await kittyPartyTreasury.connect(kreator).redeemTokens(kreatorBalance);
+      await kittyPartyTreasury.connect(kitten1).redeemTokens(kitten1ReceiptBalance);
+      expect(kittyPartyTreasury.connect(kitten1).redeemTokens(kitten1ReceiptBalance)).to.be.reverted;
+    });
 });
+
