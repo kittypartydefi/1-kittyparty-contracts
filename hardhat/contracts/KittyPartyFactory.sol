@@ -10,8 +10,6 @@ import './interfaces/IKittyPartyInit.sol';
 import './interfaces/IKittyPartyAccountant.sol';
 import './interfaces/IKittyPartyKeeper.sol';
 
-import "hardhat/console.sol";
-
 contract KittyPartyFactory is IKittenPartyInit, Initializable {
 
     KittyPartyFactoryArgs public kpFactory;
@@ -76,12 +74,12 @@ contract KittyPartyFactory is IKittenPartyInit, Initializable {
         require(_kittyInitiator.maxKittens <= 20, "Too many Kittens");
         require(allowance >= _kittyInitiator.amountInDAIPerRound / 10, "Min 10% req as stake");
         require(_kittyInitiator.amountInDAIPerRound >= 20 * DECIMALS, "Min $20 req as stake");
-        require(dai.transferFrom(msg.sender, address(_kittyInitiator.yieldContract), allowance), "Kreator stake fail");
+        require(dai.transferFrom(msg.sender, address(kpFactory.daoTreasuryContract), allowance), "Kreator stake fail");
         require(_kittyInitiator.kreatorFeesInBasisPoints <= kreatorFeesInBasisPoints, "Fees too low");
         require(_kittyInitiator.daoFeesInBasisPoints <= daoFeesInBasisPoints, "Dao fees too low");
         //check kreators permissions        
         require(IKittyPartyAccountant(kpFactory.accountantContract).balanceOf(msg.sender, badgeType) > 0, "Kreator not permitted");
-        require(IKittyPartyAccountant(kpFactory.accountantContract).balanceOf(msg.sender, 5) == 0, "HARKONNEN");
+        require(IKittyPartyAccountant(kpFactory.accountantContract).balanceOf(msg.sender, 5) == 0, "HARK");
         require(IKittyPartyAccountant(kpFactory.accountantContract).setupMinter(kitty), "Not able to set minter");
    
         KittyPartyController(kitty).initialize(

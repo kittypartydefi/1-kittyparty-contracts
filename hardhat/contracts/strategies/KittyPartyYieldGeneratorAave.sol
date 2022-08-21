@@ -43,7 +43,7 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
      * @dev This function deposits DAI and receives equivalent amount of atokens
      */    
     function createLockedValue(bytes calldata) 
-        external 
+        external
         payable
         override
         returns (uint256 vaultTokensRec)
@@ -89,7 +89,7 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         uint256 lpTokenBalance = IERC20Upgradeable(kpInfo.lpTokenAddress).balanceOf(address(this));
 
         //set party yield as a portion of claimable pool
-        kpInfo.yieldGeneratedInLastRound = (lpTokenBalance * kpInfo.lockedAmount / totalLocked) - (kittyInitiator.amountInDAIPerRound / 10);
+        kpInfo.yieldGeneratedInLastRound = (lpTokenBalance * kpInfo.lockedAmount / totalLocked);
         totalLocked -= kpInfo.lockedAmount;
 
         // Create an array with lp token address for checking rewards
@@ -115,7 +115,7 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         // Withdraws deposited DAI and burns atokens
         payload = abi.encodeWithSignature("withdraw(address,uint256,address)",
                                           kpInfo.sellTokenAddress,
-                                          kpInfo.yieldGeneratedInLastRound + (kittyInitiator.amountInDAIPerRound / 10),
+                                          kpInfo.yieldGeneratedInLastRound,
                                           _treasuryContract);
         (success,) = address(AaveContract).call(payload);
         require(success, 'Withdraw failed');

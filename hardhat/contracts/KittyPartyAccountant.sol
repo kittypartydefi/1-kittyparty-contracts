@@ -1,28 +1,31 @@
 // SPDX-License-Identifier: BSL
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155BurnableUpgradeable.sol";
 
 import "./interfaces/IKittens.sol";
 
-contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnable {
+/**
+ * @dev This is the contract that takes care of the accounting of different users
+ * We make use of soulbound tokens for those users who commit fraud as decided by the group 
+ * invite tokens called Planetary are issued by the guild, keeping the same invite tokens can lead to better credit access
+*/
+
+contract KittyPartyAccountant is ERC1155Upgradeable, AccessControlUpgradeable, PausableUpgradeable, ERC1155BurnableUpgradeable {
     bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    ///@dev This is the token that will be given to users which allows them to withdraw their earnings and winnings
-    ///@dev The withdrawals will be from the treasury
-    ///@dev Besides this every kitty party will mint Non Fungible Tokens and send it to the kitten who successfully completed the rounds
-    uint256 public constant KITTYPARTYRECEIPT = 0; //ERC 20 DAI receipt which can be claimed from treasury
-    uint256 public constant PLANETARY = 1; // DAO approved kreator check
-    uint256 public constant STELLAR = 2; // DAO approved kreator check
-    uint256 public constant GALACTIC = 3; // DAO approved kreator check
-    uint256 public constant KREATOR = 4; // participation NFT used for airdrops
-    uint256 public constant HARKONNENS = 5; // blacklist some kreators in case of sybil attacks
-    uint256 public constant SPACINGGUILD = 6; // Members of the banking guild
+    uint8 public constant KITTYPARTYRECEIPT = 0; //ERC 20 DAI receipt which can be claimed from treasury
+    uint8 public constant PLANETARY = 1; // DAO approved kreator check
+    uint8 public constant STELLAR = 2; // DAO approved kreator check
+    uint8 public constant GALACTIC = 3; // DAO approved kreator check
+    uint8 public constant KREATOR = 4; // participation NFT used for airdrops
+    uint8 public constant HARKONNENS = 5; // blacklist some kreators in case of sybil attacks
+    uint8 public constant SPACINGGUILD = 6; // Members of the banking guild
 
     address public daoAddress;
     address public factoryContract;
@@ -35,7 +38,9 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
     event KPReceiptIssued(address kitten, address kittyparty, uint256 amountIssued);
     event CompletionBadgesMinted(address kitten, address kittyparty);
 
-    constructor(address _daoAddress) ERC1155("") {
+    function initialize(address _daoAddress)  initializer public {
+        __ERC1155_init("");
+        __ERC1155Burnable_init();
         daoAddress = _daoAddress;
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(DEFAULT_ADMIN_ROLE, _daoAddress);
@@ -64,7 +69,7 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         address litterAddress, 
         address kittyParty, 
         uint256[] memory kittenIndexes, 
-        uint256 amountToSent
+        uint256[] memory amountToSent
     ) 
         external 
         onlyRole(MINTER_ROLE)
@@ -77,12 +82,13 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
         uint256[] memory tokenAmounts = new uint256[](2);
         tokenTypes[0] = 0;
         tokenTypes[1] = 1;
-        tokenAmounts[0] = amountToSent;
+        
         tokenAmounts[1] = 1;
         for (uint i = 0; i < kittenIndexes.length; i++) {
             IKittens.Kitten memory localKitten = kittens_[kittenIndexes[i]];
+            tokenAmounts[0] = amountToSent[i];
             mintBatch(localKitten.kitten, tokenTypes, tokenAmounts, ""); //receipt and planetary emissions
-            emit KPReceiptIssued(localKitten.kitten, kittyParty,amountToSent);
+            emit KPReceiptIssued(localKitten.kitten, kittyParty, amountToSent[i]);
         }
     }
 
@@ -173,7 +179,7 @@ contract KittyPartyAccountant is ERC1155, AccessControl, Pausable, ERC1155Burnab
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC1155, AccessControl)
+        override(ERC1155Upgradeable, AccessControlUpgradeable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
