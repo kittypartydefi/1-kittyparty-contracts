@@ -1,5 +1,34 @@
 [
   {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "listOfKittensWhoPaidInThisRound",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "kreatorStake",
+        "type": "uint256"
+      }
+    ],
+    "name": "disbandStrategy",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "refundAmounts",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "getLength",
     "outputs": [
@@ -7,6 +36,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getWinAmounts",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -50,6 +92,11 @@
         "internalType": "uint256",
         "name": "_numberOfKittens",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_profitToSplit",
+        "type": "uint256"
       }
     ],
     "name": "initiateCheckWinner",
@@ -65,7 +112,7 @@
         "type": "uint256"
       }
     ],
-    "name": "prevWinnerIndexes",
+    "name": "winnerAmounts",
     "outputs": [
       {
         "internalType": "uint256",

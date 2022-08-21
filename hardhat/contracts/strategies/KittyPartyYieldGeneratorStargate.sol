@@ -8,10 +8,10 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 import '../interfaces/IKittyPartyInit.sol';
 import "../interfaces/IKittyPartyYieldGenerator.sol";
 
-contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerator, OwnableUpgradeable {
+contract KittyPartyYieldGeneratorstar is Initializable, IKittyPartyYieldGenerator, OwnableUpgradeable {
     address _treasuryContract;
-    address payable public AaveContract;
-    address payable public AaveRewardContract;
+    address payable public starContract;
+    address payable public starRewardContract;
     address public rewardTokenAddress;
 
     uint256 public constant MAX = type(uint256).max;
@@ -23,27 +23,27 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
     event RewardsClaimed(bool rewardsClaimed,uint256 rewardTokenBalance);
     event YieldClaimed(uint256 lpTokens);
 
-    function __KittyPartyYieldGeneratorAave_init(address treasuryContractParam) public initializer {
+    function __KittyPartyYieldGeneratorstar_init(address treasuryContractParam) public initializer {
         _treasuryContract = treasuryContractParam;
         __Ownable_init();
     }
 
     function setAllowanceDeposit(address _kittyParty) public {
         address sellToken = kittyPartyYieldInfo[_kittyParty].sellTokenAddress;
-        require(IERC20Upgradeable(sellToken).approve(AaveContract, MAX), "Not able to set allowance");
+        require(IERC20Upgradeable(sellToken).approve(starContract, MAX), "Not able to set allowance");
     }
 
     function setAllowanceWithdraw(address _kittyParty) public {
         address lpTokenAddress = kittyPartyYieldInfo[_kittyParty].lpTokenAddress;               
-        require(IERC20Upgradeable(lpTokenAddress).approve(AaveContract, MAX), "Not able to set allowance");
-        IERC20Upgradeable(rewardTokenAddress).approve(AaveRewardContract, MAX);
+        require(IERC20Upgradeable(lpTokenAddress).approve(starContract, MAX), "Not able to set allowance");
+        IERC20Upgradeable(rewardTokenAddress).approve(starRewardContract, MAX);
     }
 
     /**
      * @dev This function deposits DAI and receives equivalent amount of atokens
      */    
     function createLockedValue(bytes calldata) 
-        external
+        external 
         payable
         override
         returns (uint256 vaultTokensRec)
@@ -51,7 +51,7 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         address sellToken = kittyPartyYieldInfo[msg.sender].sellTokenAddress;
         address lpToken = kittyPartyYieldInfo[msg.sender].lpTokenAddress;
 
-        require(IERC20Upgradeable(sellToken).approve(AaveContract, MAX), "Not enough allowance");
+        require(IERC20Upgradeable(sellToken).approve(starContract, MAX), "Not enough allowance");
         uint256 daiBalance = IERC20Upgradeable(sellToken).balanceOf(address(this));
         uint256 initialBalance = IERC20Upgradeable(lpToken).balanceOf(address(this));
 
@@ -60,7 +60,7 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
                                                        daiBalance,
                                                        address(this),
                                                        0);
-        (bool success,) = address(AaveContract).call(payload);
+        (bool success,) = address(starContract).call(payload);
         require(success, 'Deposit Failed');
         
         vaultTokensRec = IERC20Upgradeable(lpToken).balanceOf(address(this)) - initialBalance;
@@ -84,12 +84,12 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         
         IKittenPartyInit.KittyInitiator memory kittyInitiator = abi.decode(returnData, (IKittenPartyInit.KittyInitiator));
         // Get funds back in the same token that we sold in  DAI, since for now the treasury only releases DAI
-        require(IERC20Upgradeable(kpInfo.sellTokenAddress).approve(AaveContract, MAX), "Not enough allowance");
+        require(IERC20Upgradeable(kpInfo.sellTokenAddress).approve(starContract, MAX), "Not enough allowance");
         uint256 rewardTokenBalance = 0;
         uint256 lpTokenBalance = IERC20Upgradeable(kpInfo.lpTokenAddress).balanceOf(address(this));
 
         //set party yield as a portion of claimable pool
-        kpInfo.yieldGeneratedInLastRound = (lpTokenBalance * kpInfo.lockedAmount / totalLocked);
+        kpInfo.yieldGeneratedInLastRound = (lpTokenBalance * kpInfo.lockedAmount / totalLocked) - (kittyInitiator.amountInDAIPerRound / 10);
         totalLocked -= kpInfo.lockedAmount;
 
         // Create an array with lp token address for checking rewards
@@ -99,7 +99,7 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         payload = abi.encodeWithSignature("getRewardsBalance(address[],address)",
                                                         lpTokens,
                                                         address(this));
-        (bool rewardsExists, bytes memory return_Data) = address(AaveRewardContract).staticcall(payload);
+        (bool rewardsExists, bytes memory return_Data) = address(starRewardContract).staticcall(payload);
 
         if(rewardsExists == true) {
             (rewardTokenBalance) = abi.decode(return_Data, (uint256));
@@ -108,16 +108,16 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
                                               lpTokens,
                                               rewardTokenBalance,
                                               _treasuryContract);
-            (bool rewardsClaimed,) = address(AaveRewardContract).call(payload);
+            (bool rewardsClaimed,) = address(starRewardContract).call(payload);
             emit RewardsClaimed(rewardsClaimed, rewardTokenBalance);
         }
 
         // Withdraws deposited DAI and burns atokens
         payload = abi.encodeWithSignature("withdraw(address,uint256,address)",
                                           kpInfo.sellTokenAddress,
-                                          kpInfo.yieldGeneratedInLastRound,
+                                          kpInfo.yieldGeneratedInLastRound + (kittyInitiator.amountInDAIPerRound / 10),
                                           _treasuryContract);
-        (success,) = address(AaveContract).call(payload);
+        (success,) = address(starContract).call(payload);
         require(success, 'Withdraw failed');
 
         emit YieldClaimed(kpInfo.yieldGeneratedInLastRound);
@@ -146,12 +146,12 @@ contract KittyPartyYieldGeneratorAave is Initializable, IKittyPartyYieldGenerato
         return kittyPartyYieldInfo[kittyParty].poolAddress;
     }
 
-    function setPlatformDepositContractAddress(address payable _AaveContract) external override onlyOwner {
-        AaveContract = _AaveContract;
+    function setPlatformDepositContractAddress(address payable _starContract) external override onlyOwner {
+        starContract = _starContract;
     }
 
-    function setPlatformRewardContractAddress(address payable _AaveRewardContract, address _rewardTokenAddress) external override onlyOwner {
-        AaveRewardContract = _AaveRewardContract;
+    function setPlatformRewardContractAddress(address payable _starRewardContract, address _rewardTokenAddress) external override onlyOwner {
+        starRewardContract = _starRewardContract;
         rewardTokenAddress = _rewardTokenAddress;
     }
 

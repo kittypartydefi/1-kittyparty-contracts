@@ -4,7 +4,8 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@rari-capital/solmate/src/utils/ReentrancyGuard.sol";
-
+//TODO: convert this into a yield generating vault as well
+//TODO: The strategy can be changed by the DAO. When there is a redeem we withdraw from yield and pay it out all in one transaction
 contract KittyPartyTreasury is Initializable, ReentrancyGuard {
     IERC20 public dai;
     IERC20 public kpt;

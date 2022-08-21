@@ -3,9 +3,10 @@
 //
 // When running the script with `hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-import  { config, ethers } from "hardhat";
+import  { config, ethers, upgrades } from "hardhat";
 import { Contract } from 'ethers';
 import fs from 'fs';
+
 let contractAddresses =  require("../test/ContractAddresses.ts");
 import { 
   KittyPartyFactory, KittyPartyStateTransition__factory,
@@ -46,7 +47,8 @@ async function main() {
   const dai = {"address": sellTokenAddress}; 
 
   const _KittyPartyAccountant = await ethers.getContractFactory("KittyPartyAccountant");
-  const kittyPartyAccountant = await _KittyPartyAccountant.deploy("0x56322a77E3fD213fA0aB3165C5078a9f197204C4");
+  const kittyPartyAccountant = await  upgrades.deployProxy(_KittyPartyAccountant,"0x56322a77E3fD213fA0aB3165C5078a9f197204C4");
+  const mc = await(kittyPartyAccountant);
   await kittyPartyAccountant.deployed();  
   
   const _Kittens = await ethers.getContractFactory("Kittens");
